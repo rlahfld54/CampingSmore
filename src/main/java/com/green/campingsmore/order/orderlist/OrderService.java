@@ -1,4 +1,4 @@
-package com.example.campingsmore.order.orderlist;
+package com.green.campingsmore.order.orderlist;
 
 public interface OrderService {
 

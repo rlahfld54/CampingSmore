@@ -1,4 +1,4 @@
-package com.example.campingsmore.order.cart.model;
+package com.green.campingsmore.order.cart.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

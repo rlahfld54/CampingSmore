@@ -1,10 +1,10 @@
 package com.green.campingsmore.community.board;
 
-import com.example.campingsmore.community.board.model.BoardEntity;
-import com.example.campingsmore.community.board.model.BoardInsDto;
-import com.example.campingsmore.community.board.model.BoardPicEntity;
+import com.green.campingsmore.community.board.model.BoardEntity;
+import com.green.campingsmore.community.board.model.BoardInsDto;
+import com.green.campingsmore.community.board.model.BoardPicEntity;
 import lombok.RequiredArgsConstructor;
-import com.example.campingsmore.community.board.utils.FileUtils;
+import com.green.campingsmore.community.board.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

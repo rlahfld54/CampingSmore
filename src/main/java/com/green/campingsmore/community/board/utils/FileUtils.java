@@ -1,4 +1,4 @@
-package com.example.campingsmore.community.board.utils;
+package com.green.campingsmore.community.board.utils;
 
 import java.nio.file.Paths;
 import java.util.UUID;

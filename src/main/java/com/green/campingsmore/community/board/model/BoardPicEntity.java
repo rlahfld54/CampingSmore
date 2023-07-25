@@ -1,4 +1,4 @@
-package com.example.campingsmore.community.board.model;
+package com.green.campingsmore.community.board.model;
 
 import lombok.Data;
 

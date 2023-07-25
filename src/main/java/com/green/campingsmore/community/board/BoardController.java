@@ -1,6 +1,6 @@
 package com.green.campingsmore.community.board;
 
-import com.example.campingsmore.community.board.model.BoardInsDto;
+import com.green.campingsmore.community.board.model.BoardInsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

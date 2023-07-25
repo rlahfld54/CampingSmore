@@ -1,4 +1,4 @@
-package com.example.campingsmore.order.payment;
+package com.green.campingsmore.order.payment;
 
 import org.apache.ibatis.annotations.Mapper;
 
