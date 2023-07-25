@@ -2,6 +2,7 @@ package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,9 +34,13 @@ public class BoardController {
     public Long delBoard(@RequestBody BoardDelDto dto){
         return service.delBoard(dto);
     }
-//    @GetMapping("/comunity")
-//    public BoardListVo selBoardList(){
-//        return service.selBoardList();
-//    }
+    @GetMapping("/comunity")
+    @Operation(summary = "게시글 리스트 보기")
+    public BoardRes selBoardList(@RequestParam (defaultValue = "1") int page, @RequestParam (defaultValue = "15") @Min(value = 15) int row){
+        BoardPageDto dto = new BoardPageDto();
+        dto.setPage(page);
+        dto.setRow(row);
+        return service.selBoardList(dto);
+    }
 
 }
