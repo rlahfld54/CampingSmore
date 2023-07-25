@@ -19,7 +19,7 @@
         </foreach>
     </insert>
     <select id="selMyBoard">
-        select iboard,icategory,title,created_at createdat,board_view boardview
+        select icategory,title,created_at createdat,board_view boardview
         from board
         where iuser = #{iuser} and del_yn = 1
     </select>
@@ -29,10 +29,26 @@
         where iboard=#{iboard}
     </update>
     <select id="selBoardList">
-        select A,iboard,A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
+        select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
         from board A
         inner join user B
         on A.iuser = B.iuser
+        order by A.iboard desc
         limit #{startIdx},#{row}
     </select>
+    <select id="maxBoard">
+        select count(iboard)
+        from board
+    </select>
+    <select id="categoryBoardList">
+        select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
+        from board A
+        inner join user B
+        on A.iuser = B.iuser
+        where A.icategory=#{icategory}
+        order by A.iboard desc
+        limit #{startIdx},#{row}
+
+    </select>
+
 </mapper>
