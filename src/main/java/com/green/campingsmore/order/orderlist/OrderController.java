@@ -1,4 +1,4 @@
-package com.example.campingsmore.order.orderlist;
+package com.green.campingsmore.order.orderlist;
 
 import org.springframework.web.bind.annotation.RestController;
 
