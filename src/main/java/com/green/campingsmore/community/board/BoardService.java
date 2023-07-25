@@ -1,4 +1,4 @@
-package com.example.campingsmore.community.board;
+package com.green.campingsmore.community.board;
 
 import com.example.campingsmore.community.board.model.BoardEntity;
 import com.example.campingsmore.community.board.model.BoardInsDto;

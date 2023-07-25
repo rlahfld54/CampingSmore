@@ -1,4 +1,4 @@
-package com.example.campingsmore.community.comment;
+package com.green.campingsmore.community.comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
