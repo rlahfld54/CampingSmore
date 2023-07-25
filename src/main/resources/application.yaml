@@ -25,9 +25,11 @@ file:
 server:
   port: 8080
 # KaKao
-  KaKao:
-    Auth: 0fc03c2467ca0d7ca9999c9d1ed64911
-  # Naver
-  Naver:
-    YOUR_CLIENT_ID: ncAR9prYDibH9NS7yQuA
-    YOUR_CLIENT_SECRET: vl2B4Z4tvO
+KaKao:
+  Auth: 0fc03c2467ca0d7ca9999c9d1ed64911
+
+
+# Naver
+Naver:
+  YOUR_CLIENT_ID: ncAR9prYDibH9NS7yQuA
+  YOUR_CLIENT_SECRET: vl2B4Z4tvO
