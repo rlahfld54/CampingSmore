@@ -1,4 +1,4 @@
-package com.example.campingsmore.dataset;
+package com.green.campingsmore.dataset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
