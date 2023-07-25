@@ -22,6 +22,7 @@ public class BoardController {
     public Long post(@RequestPart BoardInsDto dto, @RequestPart(required = false)List<MultipartFile> pics)throws Exception{
         return service.postBoard(dto, pics);
     }
+
     @GetMapping("/{iuser}")
     @Operation(summary = "내가 작성한글 보기")
     public List<BoardMyVo> selMyBoard(@PathVariable Long iuser){
@@ -29,6 +30,7 @@ public class BoardController {
         dto.setIuser(iuser);
         return service.selMyBoard(dto);
     }
+
     @PutMapping
     @Operation(summary = "게시글 삭제 하기")
     public Long delBoard(@RequestBody BoardDelDto dto){

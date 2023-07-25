@@ -19,4 +19,27 @@
             #{item.quantity}, #{item.totalPrice})
         </foreach>
     </insert>
+
+    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">
+        <id property="iorder" column="iorder"/>
+        <collection property="itemList" column="{iorder=iorder}" select="selPaymentDetail2"/>
+    </resultMap>
+    
+    <select id="selPaymentDetail1" resultMap="paymentDetailList">
+        SELECT A.iorder, A.iuser, A.total_price totalPrice, A.shipping_price shippingPrice, B.user_address userAddress, C.address
+        FROM `order` A
+        INNER JOIN `user` B
+        ON A.iuser = B.iuser
+        INNER JOIN shipping_address C
+        ON B.iuser = C.iuser
+        WHERE iorder = #{iorder};
+    </select>
+
+    <select id="selPaymentDetail2" resultType="PaymentDetailVo">
+        SELECT B.name, A.price, A.quantity, A.total_price, B.pic
+        FROM order_item A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE iorder = #{iorder};
+    </select>
 </mapper>
