@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campingsmore.order.cart.CartMapper">
+    <select id="selCart">
+        SELECT A.icart, B.name, B.price, A.quantity, A.check
+        FROM cart A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE A.iuser = #{iuser};
+    </select>
+
+    <insert id="insCart">
+        INSERT INTO cart
+        (iuser, iitem, quantity)
+        VALUES
+        (#{iuser}, #{iitem}, #{quantity})
+    </insert>
+
+    <delete id="delCart">
+        DELETE FROM cart
+        WHERE iuser = #{iuser}
+    </delete>
+</mapper>

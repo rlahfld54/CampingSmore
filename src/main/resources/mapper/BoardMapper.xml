@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campingsmore.community.board.BoardMapper">
+    <insert id="insBoard" useGeneratedKeys="true" keyProperty="iboard">
+        insert into board
+        (title, ctnt)
+        values
+        (#{title},#{ctnt})
+    </insert>
+    <insert id = "insBoardPic">
+        insert into boardpic
+        (iboard, pic)
+        values
+        <foreach collection="list" item="item" separator=",">
+           (#{item.iboard], #{item.pic})
+    </foreach>
+    </insert>
+
+</mapper>
