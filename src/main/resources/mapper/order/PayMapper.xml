@@ -3,5 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.payment.PayMapper">
+    <insert id="insPayInfo">
+        INSERT INTO `order`
+        (iuser, shipping_price, total_price)
+        VALUES
+        (#{iuser}, #{shippingPrice}, #{totalPrice})
+    </insert>
 
+    <insert id="insPayDetailInfo">
+        INSERT INTO `order_item`
+        (iorder, iitem, price, quantity, total_price)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.iorder}, #{item.iitem}, (SELECT price FROM item WHERE iitem=#{item.iitem}),
+            #{item.quantity}, #{item.totalPrice})
+        </foreach>
+    </insert>
 </mapper>

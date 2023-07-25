@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SelCartVo {
-    private int icart;
+    private Long icart;
     private String pic;
     private String name;
-    private int price;
-    private int quantity;
-    private int check;
+    private Long price;
+    private Long quantity;
+    private Long check;
 }
