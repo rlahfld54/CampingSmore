@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ItemMapper {
     int insItem(ItemInsParam p);
-    int selCate(ItemInsDto cate);
+    int selCate(ItemInsParam cate);
 }
