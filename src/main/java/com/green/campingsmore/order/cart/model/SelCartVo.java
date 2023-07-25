@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SelCartVo {
     private int icart;
+    private String pic;
     private String name;
+    private int price;
     private int quantity;
     private int check;
 }

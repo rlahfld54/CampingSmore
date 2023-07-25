@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.cart.CartMapper">
     <select id="selCart">
-        SELECT A.icart, B.name, B.price, A.quantity, A.check
+        SELECT A.icart, B.pic, B.name, B.price, A.quantity, A.check
         FROM cart A
         INNER JOIN item B
         ON A.iitem = B.iitem
