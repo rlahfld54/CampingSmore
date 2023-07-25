@@ -5,8 +5,8 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class ItemInsParam {
-    private Long itemCategory;
+public class ItemInsDto {
+    private String Category;
     private String name;
     private int price;
     private String pic;

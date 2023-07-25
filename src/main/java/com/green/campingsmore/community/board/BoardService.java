@@ -81,5 +81,16 @@ public class BoardService {
         return BoardRes.builder().isMore(isMore)
                 .row(dto.getRow()).maxPage(mp).list(list).build();//페이징
     }
+    public BoardRes categoryBoardList(BoardPageDto dto){
+        int num = dto.getPage() -1;
+        dto.setStartIdx(num*dto.getRow());
+        List<BoardListVo> list = mapper.categoryBoardList(dto);
+        Long maxboard = mapper.maxBoard();
+        int mp = (int) Math.ceil((double) maxboard / dto.getRow());
 
+        int isMore = mp > dto.getPage() ? 1:0;
+        return BoardRes.builder().isMore(isMore)
+                .row(dto.getRow()).maxPage(mp).list(list).build();
+        //카테고리별 리스트
+    }
 }
