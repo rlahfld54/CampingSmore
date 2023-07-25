@@ -54,7 +54,11 @@ public class NaverApi {
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+
+
+
                 return readBody(con.getInputStream());
+
             } else { // 오류 발생
                 return readBody(con.getErrorStream());
             }
@@ -63,6 +67,7 @@ public class NaverApi {
         } finally {
             con.disconnect();
         }
+
     }
 
 
