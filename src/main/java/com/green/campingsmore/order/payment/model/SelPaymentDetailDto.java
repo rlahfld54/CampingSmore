@@ -8,9 +8,9 @@ import java.util.List;
 public class SelPaymentDetailDto {
     private Long iorder;
     private Long iuser;
+    private String address;
     private Long totalPrice;
     private Long shippingPrice;
-    private String userAddress;
-    private String address;
+    private String shippingMemo;
     private List<PaymentDetailVo> itemList;
 }

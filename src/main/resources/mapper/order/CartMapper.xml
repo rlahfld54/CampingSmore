@@ -8,18 +8,21 @@
         FROM cart A
         INNER JOIN item B
         ON A.iitem = B.iitem
-        WHERE A.iuser = #{iuser};
+        WHERE A.iuser = #{iuser}
     </select>
 
     <insert id="insCart">
         INSERT INTO cart
-        (iuser, iitem, quantity)
-        VALUES
-        (#{iuser}, #{iitem}, #{quantity})
+        SET
+        iuser = #{iuser},
+        iitem = #{iitem}
+        <if test=" quantity >= 1">
+        , quantity = #{quantity}
+        </if>
     </insert>
 
     <delete id="delCart">
         DELETE FROM cart
-        WHERE iuser = #{iuser}
+        WHERE icart = #{icart}
     </delete>
 </mapper>
