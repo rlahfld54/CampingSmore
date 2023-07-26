@@ -9,5 +9,28 @@
         ,iuser=#{iuser}
         ,ctnt=#{ctnt}
     </insert>
-
+    <update id="updComment">
+        update comment
+        set ctnt=#{ctnt}
+        ,updated_at =now()
+        where icomment = #{icomment} and iuser=#{iuser}
+    </update>
+    <update id="delComment">
+        update comment
+        set del_yn = 0
+        where icomment=#{icomment} and iuser=#{iuser}
+    </update>
+    <select id="selComment">
+        select A.iboard, B.name,A.ctnt,A.created_at createdAt
+        from comment A
+        inner join user B
+        on A.iuser = B.iuser
+        where A.iboard=#{iboard} and A.del_yn=1
+        limit #{startIdx},#{row}
+    </select>
+    <select id="maxComment">
+        select count(icomment)
+        from comment
+        where iboard =#{iboard}
+    </select>
 </mapper>

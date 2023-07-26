@@ -3,6 +3,7 @@ package com.green.campingsmore.community.board;
 import com.green.campingsmore.community.board.model.*;
 import lombok.RequiredArgsConstructor;
 import com.green.campingsmore.community.board.utils.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -59,6 +60,7 @@ public class BoardService {
 //            if (!list.isEmpty()) {
 //                mapper.insBoardPic(list);
 //            }
+            log.info("list:{}",list);
         }
 
         return result;// 게시판 등록
