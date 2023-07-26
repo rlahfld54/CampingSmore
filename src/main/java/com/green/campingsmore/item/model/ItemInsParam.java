@@ -1,12 +1,12 @@
 package com.green.campingsmore.item.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
 public class ItemInsParam {
-    private Long itemCategory;
+    private Long iitemCategory;
     private String name;
     private int price;
     private String pic;

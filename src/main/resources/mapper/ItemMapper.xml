@@ -3,23 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.item.ItemMapper">
-    <insert id="insItem" parameterType="ItemInsDto">
-       <selectKey  keyProperty="Category" resultType="int" order="AFTER">
-           SELECT name FROM item_category
-           WHERE name = #{Category}
-       </selectKey>
+    <insert id="insItem">
         INSERT INTO item
-        SET
-        <if test="iitemCategory != null and iitemCategory != '' ">
-            iitemp_category = #{iitemCategory},
+        SET iitem_category = #{iitemCategory},
             name = #{name},
             price = #{price},
             pic = #{pic}
-        </if>
-
     </insert>
 
+    <insert id="insCate">
+        INSERT INTO item_category
+        SET name = #{categoryName}
+    </insert>
+
+    <select id="selCate" resultType="String">
+        SELECT name categoryName FROM item_category
+        WHERE name = #{categoryName}
+    </select>
+
+    <select id="selIcate" resultType="Long">
+        SELECT iitem_category iitemCategory FROM item_category
+        WHERE name = #{categoryName}
+    </select>
 
 
+    <select id="selCateItem" resultType="ItemSelPageVo">
+        SELECT iitem, name, pic, price, created_at createdAt
+        FROM item
+        WHERE iitem_category = #{iitemCategory}
+        ORDER BY created_at DESC
+        LIMIT ${startIdx}, ${row}
+    </select>
 
 </mapper>
