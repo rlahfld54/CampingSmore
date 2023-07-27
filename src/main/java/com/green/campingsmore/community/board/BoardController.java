@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/board")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService service;
@@ -54,6 +54,13 @@ public class BoardController {
         dto.setPage(page);
         dto.setRow(row);
         return service.categoryBoardList(dto);
-
+    }
+    @GetMapping("/board/title")
+    public BoardSelRes selBoard(@RequestParam String title,@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "15") @Min(value = 15)int row){
+        BoardPageDto dto = new BoardPageDto();
+        dto.setTitle(title);
+        dto.setPage(page);
+        dto.setRow(row);
+        return service.selBoard(dto);
     }
 }

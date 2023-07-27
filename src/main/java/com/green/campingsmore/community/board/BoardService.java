@@ -1,6 +1,9 @@
 package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
+import com.green.campingsmore.community.comment.model.CommentPageDto;
+import com.green.campingsmore.community.comment.model.CommentRes;
+import com.green.campingsmore.community.comment.model.CommentVo;
 import lombok.RequiredArgsConstructor;
 import com.green.campingsmore.community.board.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -95,8 +98,16 @@ public class BoardService {
                 .row(dto.getRow()).maxPage(mp).list(list).build();
         //카테고리별 리스트
     }
-//    public List<BoardListVo> selBoard(){
-//        List<BoardListVo> list = mapper.selBoard();
-//
-//    }
+    public BoardSelRes selBoard(BoardPageDto dto){
+        int num = dto.getPage()-1;
+        dto.setStartIdx(num*dto.getRow());
+        List<BoardSelVo> list = mapper.selBoard(dto);
+        Long maxpage = mapper.maxSelBoard();
+        int mp = (int) Math.ceil((double) maxpage / dto.getRow() );
+
+        int isMore = mp>dto.getPage() ? 1:0;
+        int page = mp - dto.getPage();
+        return BoardSelRes.builder().isMore(isMore).row(dto.getRow()).maxPage(mp).midPage(num).nowPage(dto.getPage()).list(list).build();
+
+    }
 }
