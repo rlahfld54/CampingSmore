@@ -1,9 +1,8 @@
 package com.green.campingsmore.order.payment;
 
-import com.green.campingsmore.order.payment.model.InsPayInfoDto;
-import com.green.campingsmore.order.payment.model.SelPaymentDetailDto;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface PayService {
-    int insPayInfo(InsPayInfoDto dto);
-    SelPaymentDetailDto selPaymentDetail(int iorder);
+
 }

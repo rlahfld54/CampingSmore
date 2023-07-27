@@ -3,43 +3,5 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.payment.PayMapper">
-    <insert id="insPayInfo">
-        INSERT INTO `order`
-        (iuser, shipping_price, total_price)
-        VALUES
-        (#{iuser}, #{shippingPrice}, #{totalPrice})
-    </insert>
 
-    <insert id="insPayDetailInfo">
-        INSERT INTO `order_item`
-        (iorder, iitem, price, quantity, total_price)
-        VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.iorder}, #{item.iitem}, (SELECT price FROM item WHERE iitem=#{item.iitem}),
-            #{item.quantity}, #{item.totalPrice})
-        </foreach>
-    </insert>
-
-    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">
-        <id property="iorder" column="iorder"/>
-        <collection property="itemList" column="{iorder=iorder}" select="selPaymentDetail2"/>
-    </resultMap>
-    
-    <select id="selPaymentDetail1" resultMap="paymentDetailList">
-        SELECT A.iorder, A.iuser, A.total_price totalPrice, A.shipping_price shippingPrice, B.user_address userAddress, C.address
-        FROM `order` A
-        INNER JOIN `user` B
-        ON A.iuser = B.iuser
-        INNER JOIN shipping_address C
-        ON B.iuser = C.iuser
-        WHERE iorder = #{iorder};
-    </select>
-
-    <select id="selPaymentDetail2" resultType="PaymentDetailVo">
-        SELECT B.name, A.price, A.quantity, A.total_price, B.pic
-        FROM order_item A
-        INNER JOIN item B
-        ON A.iitem = B.iitem
-        WHERE iorder = #{iorder};
-    </select>
 </mapper>

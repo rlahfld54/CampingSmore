@@ -1,3 +1,16 @@
+# mybatis config
+mybatis:
+  type-aliases-package: com.green.campingsmore
+  mapper-locations: classpath:mapper/**/*.xml
+
+# 토큰의 암호화 복호화를 위한 secret key로서 이후 HS256 알고리즘을 사용하기 위해, 256비트보다 커야한다.
+# 알파벳은 한단어 당 8bit 이므로 32글자 이상이면 된다.
+springboot:
+  jwt:
+    access-secret: DeaguGreenArtAcademyClass502ForJavaSpringBootaaaasdf
+    refresh-secret: HelloWorldRefreshTokenCreateBySecretHaHaaasdfasdf
+    header-scheme-name: Authorization
+    token-type: Bearer
 spring:
   servlet:
     multipart:
@@ -9,18 +22,13 @@ spring:
     username: team_e
     password: green502
 
-# mybatis config
-mybatis:
-  type-aliases-package: com.green.campingsmore
-  mapper-locations: mapper/**/*.xml
-
 # swagger
 springdoc:
   swagger-ui:
     path: /swagger.html
 
-file:
-  dir: home/download/
+#file:
+#  dir: home/download/
 
 server:
   port: 8080

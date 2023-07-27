@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.security.config.security.UserDetailsMapper">
+<mapper namespace="com.green.campingsmore.config.security.UserDetailsMapper">
+    <insert id="save">
+        INSERT INTO user
+        SET user_id = #{uid}
+        , password = #{upw}
+        , email = #{email}
+        , name = #{name}
+        , birth_date = #{birth_date}
+        , phone = #{phone}
+        , user_address = #{user_address}
+        , role = #{role}
+    </insert>
 
     <select id="getByUid">
-        SELECT iuser, user_id, password, role
-        FROM t_user
-        WHERE user_id = #{user_id}
+        SELECT iuser, user_id uid, password upw, name, role
+        FROM user
+        WHERE user_id = #{uid}
     </select>
 
+
+    <!-- ///////////////////////////////////////// user_token /////////-->
+    <insert id="updUserToken">
+        INSERT INTO user_token
+        (iuser, ip, access_token, refresh_token)
+        VALUES
+        (#{iuser}, #{ip}, #{accessToken}, #{refreshToken})
+
+        ON DUPLICATE KEY UPDATE
+        access_token= #{accessToken}
+        , refresh_token= #{refreshToken}
+    </insert>
+
+    <select id="selUserToken">
+        SELECT iuser, ip, access_token accessToken, refresh_token refreshToken, created_at createdAt, updated_at updatedAt
+        FROM user_token
+        WHERE iuser = #{iuser} AND ip = #{ip}
+    </select>
+
+    <delete id="deleteUser">
+
+    </delete>
 </mapper>
