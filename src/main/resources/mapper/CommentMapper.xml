@@ -33,4 +33,5 @@
         from comment
         where iboard =#{iboard}
     </select>
+
 </mapper>

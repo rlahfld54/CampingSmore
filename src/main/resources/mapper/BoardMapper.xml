@@ -48,7 +48,11 @@
         where A.icategory=#{icategory}
         order by A.iboard desc
         limit #{startIdx},#{row}
-
+    </select>
+    <select id="selBoard">
+        select title
+        from board
+        where title=#{title} like %?%
     </select>
 
 </mapper>
