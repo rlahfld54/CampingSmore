@@ -13,4 +13,6 @@ public interface PayMapper {
     int insPayInfo(InsPayInfoDto dto);
     int insPayDetailInfo(List<PayDetailInfoVo> list);
     SelPaymentDetailDto selPaymentDetail1(int iorder);
+    List<SelPaymentDetailDto> selPaymentDetailAll1(int iuser);
+    List<PaymentDetailVo> selPaymentPageItemList(int iorder);
 }

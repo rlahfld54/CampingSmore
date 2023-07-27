@@ -3,12 +3,13 @@ package com.green.campingsmore.order.payment.model;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class InsPayInfoDto {
     private Long iuser;
-    private Long shippingPrice;
+    private String address;
     private Long totalPrice;
+    private Long shippingPrice;
+    private String shippingMemo;
     private List<PayDetailInfoVo> purchaseList;
 }
