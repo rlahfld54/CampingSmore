@@ -40,6 +40,15 @@
         select count(iboard)
         from board
     </select>
+    <select id="maxSelBoard">
+        SELECT COUNT(A.iboard)
+        FROM (
+        SELECT x.iboard
+        FROM board x
+        INNER JOIN user y ON x.iuser = y.iuser
+        WHERE x.title LIKE CONCAT('%', #{title}, '%') AND x.del_yn = 1
+        ) A
+    </select>
     <select id="categoryBoardList">
         select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
         from board A
@@ -50,9 +59,12 @@
         limit #{startIdx},#{row}
     </select>
     <select id="selBoard">
-        select title
-        from board
-        where title=#{title} like %?%
+        select A.title, B.name, A.created_at createdat, A.board_view boardview
+        from board A
+        inner join user B
+        on A.iuser = B.iuser
+        where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1
+        limit #{startIdx},#{row}
     </select>
 
 </mapper>

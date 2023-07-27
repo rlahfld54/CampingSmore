@@ -3,9 +3,8 @@ package com.green.campingsmore.community.board.model;
 import lombok.Data;
 
 @Data
-public class BoardPageDto {
+public class BoardSelPageDto {
     private String title;
-    private Long icategory;
     private int row;
     private int page;
     private int startIdx;
