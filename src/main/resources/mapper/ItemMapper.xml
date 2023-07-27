@@ -2,7 +2,31 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.campingsmore.item.ItemMapper">
+<mapper namespace="com.green.campingsmore.item.ItemMapper">
+    <insert id="insItem">
+        INSERT INTO item
+        SET iitem_category = #{iitemCategory},
+            name = #{name},
+            price = #{price},
+            pic = #{pic}
+    </insert>
+
+    <insert id="insCate">
+        INSERT INTO item_category
+        SET name = #{categoryName}
+    </insert>
+
+    <select id="selCate" resultType="String">
+        SELECT name categoryName FROM item_category
+        WHERE name = #{categoryName}
+    </select>
+
+    <select id="selIcate" resultType="Long">
+        SELECT iitem_category iitemCategory FROM item_category
+        WHERE name = #{categoryName}
+    </select>
+
+
 
 
 </mapper>

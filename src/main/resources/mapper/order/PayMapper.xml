@@ -3,5 +3,75 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.payment.PayMapper">
+    <update id="updCheckBox">
+        UPDATE cart
+        SET
+        `check` = 1
+        WHERE iuser = #{iuser}
+    </update>
 
+    <insert id="insPayInfo">
+        INSERT INTO `order`
+        (iuser, address, total_price, shipping_price, shipping_memo)
+        VALUES
+        (#{iuser}, #{address}, #{totalPrice}, #{shippingPrice}, #{shippingMemo})
+    </insert>
+
+    <insert id="insPayDetailInfo">
+        INSERT INTO `order_item`
+        (iorder, iitem, price, quantity, total_price)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.iorder}, #{item.iitem}, (SELECT price FROM item WHERE iitem=#{item.iitem}),
+            #{item.quantity}, #{item.totalPrice})
+        </foreach>
+    </insert>
+
+    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">
+        <id property="iorder" column="iorder"/>
+        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>
+    </resultMap>
+    
+    <select id="selPaymentDetail1" resultMap="paymentDetailList">
+        SELECT A.iorder, A.iuser, A.address, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
+        FROM `order` A
+        WHERE iorder = #{iorder}
+
+    </select>
+
+    <select id="selPaymentDetail2" resultType="PaymentDetailVo">
+        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic
+        FROM order_item A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE iorder = #{iorder}
+    </select>
+
+    <resultMap id="paymentDetailAllList" type="SelPaymentDetailDto">
+        <id property="iorder" column="iorder"/>
+        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail22"/>
+    </resultMap>
+
+    <select id="selPaymentDetailAll1" resultMap="paymentDetailAllList">
+        SELECT A.iorder, A.iuser, A.address, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
+        FROM `order` A
+        WHERE iuser = #{iuser}
+    </select>
+
+    <select id="selPaymentDetailAll2" resultType="PaymentDetailVo">
+        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic
+        FROM order_item A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE iorder = #{iorder}
+    </select>
+
+    <select id="selPaymentPageItemList">
+        SELECT A.iitem, B.name, B.price, A.quantity, B.pic
+        FROM cart A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE iorder = #{iorder}
+        AND A.check = 1
+    </select>
 </mapper>

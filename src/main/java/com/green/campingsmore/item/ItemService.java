@@ -3,16 +3,16 @@ package com.green.campingsmore.item;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.dataset.NaverApi;
-import com.green.campingsmore.item.model.ItemInsDto;
+import com.green.campingsmore.item.model.SelCategory;
 import com.green.campingsmore.item.model.ItemInsParam;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Service
 public class ItemService {
     private final ItemMapper MAPPER;
@@ -23,7 +23,7 @@ public class ItemService {
         this.naverApi = naverApi;
     }
 
-    public String insItem(String text) {
+    public int insItem(String text) {
 
         String json = naverApi.search(text);
 
@@ -31,7 +31,7 @@ public class ItemService {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = null;
         ItemInsParam ipram = new ItemInsParam();
-        ItemInsDto dto = new ItemInsDto();
+
 
         try {
             map = mapper.readValue(json, Map.class);
@@ -39,18 +39,41 @@ public class ItemService {
             System.out.println(numList);
             for(LinkedHashMap<String, Object> item : numList) {
 
-                dto.setCategory((String)item.get("category2"));
-                dto.setName((String)item.get("title"));
-                dto.setPrice((Integer)item.get("lprice"));
-                dto.setPic((String)item.get("image"));
+                log.info("ipram.category2: {}",item.get("category2"));
+                String result = MAPPER.selCate((String)item.get("category2"));
+                log.info("cate : {}", MAPPER.selCate((String) item.get("category2")));
+
+
+                if (result == null) {
+                    MAPPER.insCate((String) item.get("category2"));
+                }
+                ipram.setIitemCategory(MAPPER.selIcate((String) item.get("category2")));
+                ipram.setName((String)item.get("title"));
+                ipram.setPrice(Integer.valueOf((String)item.get("lprice")));
+                ipram.setPic((String)item.get("image"));
+                log.info("ipram : {}",ipram);
+                MAPPER.insItem(ipram);
+
+                /*if (result.equals(item.get("category2"))) {
+                    ipram.setIitemCategory(cate.getIitemCategory());
+                    ipram.setName((String)item.get("title"));
+                    ipram.setPrice(Integer.valueOf((String)item.get("lprice")));
+                    ipram.setPic((String)item.get("image"));
+                    log.info("ipram : {}",ipram);
+                    MAPPER.insItem(ipram);
+                }*/
+
+
+
+
+
+
             }
-
-
+            return 1;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
-        return json;
     }
 
 }
