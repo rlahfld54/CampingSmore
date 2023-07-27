@@ -55,9 +55,10 @@ public class BoardController {
         dto.setRow(row);
         return service.categoryBoardList(dto);
     }
-    @GetMapping("/board/title")
+    @GetMapping("/title")
+    @Operation(summary = "제목으로 검색")
     public BoardSelRes selBoard(@RequestParam String title,@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "15") @Min(value = 15)int row){
-        BoardPageDto dto = new BoardPageDto();
+        BoardSelPageDto dto = new BoardSelPageDto();
         dto.setTitle(title);
         dto.setPage(page);
         dto.setRow(row);

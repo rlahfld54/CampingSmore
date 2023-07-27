@@ -46,7 +46,7 @@
         SELECT x.iboard
         FROM board x
         INNER JOIN user y ON x.iuser = y.iuser
-        WHERE x.title LIKE "%?%" AND x.del_yn = 1
+        WHERE x.title LIKE CONCAT('%', #{title}, '%') AND x.del_yn = 1
         ) A
     </select>
     <select id="categoryBoardList">
@@ -63,7 +63,7 @@
         from board A
         inner join user B
         on A.iuser = B.iuser
-        where A.title like "%?%" and A.del_yn = 1
+        where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1
         limit #{startIdx},#{row}
     </select>
 

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.ceil;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -80,7 +82,7 @@ public class BoardService {
         dto.setStartIdx(num*dto.getRow());
         List<BoardListVo> list = mapper.selBoardList(dto);
         Long maxboard = mapper.maxBoard();
-        int mp = (int) Math.ceil((double) maxboard / dto.getRow());
+        int mp = (int) ceil((double) maxboard / dto.getRow());
 
         int isMore = mp > dto.getPage() ? 1:0;
         return BoardRes.builder().isMore(isMore)
@@ -91,23 +93,24 @@ public class BoardService {
         dto.setStartIdx(num*dto.getRow());
         List<BoardListVo> list = mapper.categoryBoardList(dto);
         Long maxboard = mapper.maxBoard();
-        int mp = (int) Math.ceil((double) maxboard / dto.getRow());
+        int mp = (int) ceil((double) maxboard / dto.getRow());
 
         int isMore = mp > dto.getPage() ? 1:0;
         return BoardRes.builder().isMore(isMore)
                 .row(dto.getRow()).maxPage(mp).list(list).build();
         //카테고리별 리스트
     }
-    public BoardSelRes selBoard(BoardPageDto dto){
+    public BoardSelRes selBoard(BoardSelPageDto dto){
+
+        String title = dto.getTitle();
         int num = dto.getPage()-1;
         dto.setStartIdx(num*dto.getRow());
         List<BoardSelVo> list = mapper.selBoard(dto);
-        Long maxpage = mapper.maxSelBoard();
-        int mp = (int) Math.ceil((double) maxpage / dto.getRow() );
+        double maxpage = mapper.maxSelBoard(dto);
+        int mp = (int) ceil(maxpage/dto.getRow());
 
         int isMore = mp>dto.getPage() ? 1:0;
         int page = mp - dto.getPage();
-        return BoardSelRes.builder().isMore(isMore).row(dto.getRow()).maxPage(mp).midPage(num).nowPage(dto.getPage()).list(list).build();
-
+        return BoardSelRes.builder().isMore(isMore).title(dto.getTitle()).row(dto.getRow()).maxPage(mp).midPage(page).nowPage(dto.getPage()).list(list).build();
     }
 }

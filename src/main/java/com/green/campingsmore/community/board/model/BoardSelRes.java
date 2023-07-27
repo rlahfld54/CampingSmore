@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
+
+@Getter
 @Builder
 @AllArgsConstructor
 public class BoardSelRes {
+    private String title;
     private int isMore;
     private int row;
     private int maxPage;
