@@ -1,7 +1,9 @@
 package com.green.campingsmore.item;
 
-import com.green.campingsmore.item.model.ItemInsParam;
+import com.green.campingsmore.item.model.*;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface ItemMapper {
@@ -9,6 +11,8 @@ public interface ItemMapper {
     int insCate(String categoryName);
     String selCate(String categoryName);
     Long selIcate(String categoryName);
+    List<ItemVo> selCateItem(ItemSelCateDto dto);
 
-    /*selCateItem();*/
+    int delDetail(Long iitem);
+    int insDetail(ItemDetailInsDto dto);
 }

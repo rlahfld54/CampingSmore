@@ -3,11 +3,11 @@ package com.green.campingsmore.item;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.dataset.NaverApi;
-import com.green.campingsmore.item.model.SelCategory;
-import com.green.campingsmore.item.model.ItemInsParam;
+import com.green.campingsmore.item.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.Map;
 public class ItemService {
     private final ItemMapper MAPPER;
     private final NaverApi naverApi;
+
 @Autowired
     public ItemService(ItemMapper MAPPER, NaverApi naverApi) {
         this.MAPPER = MAPPER;
@@ -63,17 +64,39 @@ public class ItemService {
                     MAPPER.insItem(ipram);
                 }*/
 
-
-
-
-
-
             }
             return 1;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+
+    public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
+        // 아이템 PK에 사진이 있으면 삭제
+        // 아이템 PK로 아이템 추가
+        MAPPER.delDetail(Long.valueOf(iitem));
+
+        ItemDetailInsDto dto = new ItemDetailInsDto();
+        dto.setIitem(iitem);
+        for (int i = 0; i < picUrl.size(); i++) {
+            log.info("picUrl.get(i): {}",picUrl.get(i));
+            dto.setPic(picUrl.get(i));
+            MAPPER.insDetail(dto);
+        }
+
+     return null;
+    }
+
+    public List<ItemVo> selCateItem(int cate, int page) {
+
+        ItemSelCateDto dto = new ItemSelCateDto();
+        dto.setIitemCategory(Long.valueOf(cate));
+        dto.setPage(page);
+        dto.setRow(21);
+        dto.setStartIdx((dto.getPage()-1)* dto.getRow());
+        return MAPPER.selCateItem(dto);
     }
 
 }
