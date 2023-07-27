@@ -2,7 +2,6 @@ package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@Tag(name = "게시판")
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 public class BoardController {
