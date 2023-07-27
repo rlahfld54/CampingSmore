@@ -67,8 +67,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication (String token) {
         log.info("JwtTokenProvider - getAuthentication: 토큰 인증 정보 조회 시작");
-        //UserDetails userDetails = SERVICE.loadUserByUsername(getUsername(token));
         UserDetails userDetails = getUserDetailsFromToken(token, ACCESS_KEY);
+        System.out.println("userDetails : "+ userDetails);
         log.info("JwtTokenProvider - getAuthentication: 토큰 인증 정보 조회 완료, UserDetails UserName : {}"
                 , userDetails.getUsername());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

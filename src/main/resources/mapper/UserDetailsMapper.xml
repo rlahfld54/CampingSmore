@@ -39,7 +39,7 @@
         WHERE iuser = #{iuser} AND ip = #{ip}
     </select>
 
-    <update id="deleteUser">
+    <update id="delYnUser">
         UPDATE user
         SET del_yn = 0
         where iuser = #{iuser}

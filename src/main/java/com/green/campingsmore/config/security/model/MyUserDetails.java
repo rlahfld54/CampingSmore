@@ -34,7 +34,7 @@ public class MyUserDetails implements UserDetails {
     public String getPassword() { return this.upw; }
 
     @Override
-    public String getUsername() { return this.uid; }
+    public String getUsername() { return this.name; }
 
     @Override
     public boolean isAccountNonExpired() { return true; }
