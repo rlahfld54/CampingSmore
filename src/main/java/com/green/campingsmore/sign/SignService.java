@@ -144,5 +144,9 @@ public class SignService {
     public int deleteUser(int iuser){
         return MAPPER.delYnUser(iuser);
     }
+
+    public String searchID(String name,String phone,String birth){
+        return MAPPER.searchID();
+    }
 }
 

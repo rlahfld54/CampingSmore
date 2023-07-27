@@ -44,4 +44,9 @@
         SET del_yn = 0
         where iuser = #{iuser}
     </update>
+
+    <select id="searchID">
+        SELECT user_id FROM user
+        WHERE name=#{name} and phone=#{phone} and birth_date=#{birth_date}
+    </select>
 </mapper>

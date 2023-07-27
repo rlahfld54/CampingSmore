@@ -36,13 +36,14 @@ public class SecurityConfiguration {
                                     , "/static/css/**"
                                     , "/index.html"
                                     , "/"
+                            ,"/**"
                                     , "/view/**"
                             ).permitAll()
-                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-                            .requestMatchers("**exception**").permitAll()
-                            .requestMatchers("/todo-api").hasAnyRole("USER", "ADMIN")
-                            .anyRequest().hasRole("ADMIN")
+//                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
+//                            .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
+//                            .requestMatchers("**exception**").permitAll()
+//                            .requestMatchers("/todo-api").hasAnyRole("USER", "ADMIN")
+//                            .anyRequest().hasRole("ADMIN")
                 ) //사용 권한 체크
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세션 사용 X
         .httpBasic(http -> http.disable()) //UI 있는 시큐리티 설정을 비활성화
