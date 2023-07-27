@@ -1,8 +1,9 @@
 package com.green.campingsmore.order.payment;
 
+import com.green.campingsmore.order.cart.CartMapper;
 import com.green.campingsmore.order.payment.model.InsPayInfoDto;
 import com.green.campingsmore.order.payment.model.PayDetailInfoVo;
-import com.green.campingsmore.order.payment.model.PaymentDetailVo;
+import com.green.campingsmore.order.payment.model.PaymentDetailDto;
 import com.green.campingsmore.order.payment.model.SelPaymentDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 public class PayServiceImpl implements PayService {
 
     private final PayMapper MAPPER;
+    private final CartMapper CartMAPPER;
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -37,25 +39,32 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public SelPaymentDetailDto selPaymentDetail(int iorder) {
+    public SelPaymentDetailDto selPaymentDetail(Long iorder) {
         return MAPPER.selPaymentDetail1(iorder);
     }
 
     @Override
-    public List<SelPaymentDetailDto> selPaymentDetailAll(int iuser) {
+    public List<SelPaymentDetailDto> selPaymentDetailAll(Long iuser) {
         return MAPPER.selPaymentDetailAll1(iuser);
     }
 
     @Override
-    public List<PaymentDetailVo> selPaymentPageItemList(int iorder) {
-        List<PaymentDetailVo> list = MAPPER.selPaymentPageItemList(iorder);
+    public List<PaymentDetailDto> selPaymentPageItemList(Long iuser, ) {
 
-        for (int i = 0; i < list.size(); i++) {
-            PaymentDetailVo vo = new PaymentDetailVo();
-            Long totalPrice = vo.getPrice() * vo.getQuantity();
-            list.get(i).setTotalPrice(totalPrice);
-        }
-        return list;
+        CartMAPPER.updCheckBox(dto.getList());   //체크박스 업데이트
+
+        List<PaymentDetailDto> paymentList = MAPPER.selPaymentPageItemList(iuser);
+        for (int i = 0; i < paymentList.size(); i++) {
+            Long getPrice = paymentList.get(i).getPrice();
+            Long getQuantity = paymentList.get(i).getQuantity();
+            Long totalPrice =  getPrice * getQuantity;
+            paymentList.get(i).setTotalPrice(totalPrice);
+        }   //리스트에 일일이 총가격 계산후 주입
+        return paymentList;
     }
 
+    @Override
+    public PaymentDetailDto selPaymentPageItem(Long iuser, Long iitem) {
+        return MAPPER.selPaymentPageItem(iitem, iuser);
+    }
 }

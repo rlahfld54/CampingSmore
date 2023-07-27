@@ -10,4 +10,5 @@ public interface CartService {
     Long insCart(InsCartDto dto);
     List<SelCartVo> selCart(Long iuser);
     Long delCart(Long icart);
+    Long delCartAll(List<Long> icart);
 }

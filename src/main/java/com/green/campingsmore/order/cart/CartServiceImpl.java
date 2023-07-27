@@ -24,7 +24,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Long delCart(Long icart){
+    public Long delCart(Long icart) {
         return MAPPER.delCart(icart);
+    }
+
+    @Override
+    public Long delCartAll(List<Long> icart) {
+        for (Long aLong : icart) {
+            MAPPER.delCart(aLong);
+        }
+        return 1L;
     }
 }

@@ -3,12 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.payment.PayMapper">
-    <update id="updCheckBox">
-        UPDATE cart
-        SET
-        `check` = 1
-        WHERE iuser = #{iuser}
-    </update>
+
 
     <insert id="insPayInfo">
         INSERT INTO `order`
@@ -27,29 +22,28 @@
         </foreach>
     </insert>
 
-    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">
-        <id property="iorder" column="iorder"/>
-        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>
-    </resultMap>
-    
-    <select id="selPaymentDetail1" resultMap="paymentDetailList">
-        SELECT A.iorder, A.iuser, A.address, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
+<!--    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">-->
+<!--        <id property="iorder" column="iorder"/>-->
+<!--        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>-->
+<!--    </resultMap>-->
+
+    <select id="selPaymentDetail1">
+        SELECT A.address, A.shipping_memo, A.total_price
         FROM `order` A
-        WHERE iorder = #{iorder}
-
+        WHERE iorder = #{iorder};
     </select>
 
-    <select id="selPaymentDetail2" resultType="PaymentDetailVo">
-        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic
-        FROM order_item A
-        INNER JOIN item B
-        ON A.iitem = B.iitem
-        WHERE iorder = #{iorder}
-    </select>
+<!--    <select id="selPaymentDetail2" resultType="PaymentDetailDto">-->
+<!--        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic-->
+<!--        FROM order_item A-->
+<!--        INNER JOIN item B-->
+<!--        ON A.iitem = B.iitem-->
+<!--        WHERE iorder = #{iorder}-->
+<!--    </select>-->
 
     <resultMap id="paymentDetailAllList" type="SelPaymentDetailDto">
         <id property="iorder" column="iorder"/>
-        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail22"/>
+        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>
     </resultMap>
 
     <select id="selPaymentDetailAll1" resultMap="paymentDetailAllList">
@@ -58,7 +52,7 @@
         WHERE iuser = #{iuser}
     </select>
 
-    <select id="selPaymentDetailAll2" resultType="PaymentDetailVo">
+    <select id="selPaymentDetailAll2" resultType="PaymentDetailDto">
         SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic
         FROM order_item A
         INNER JOIN item B
@@ -71,7 +65,17 @@
         FROM cart A
         INNER JOIN item B
         ON A.iitem = B.iitem
-        WHERE iorder = #{iorder}
+        WHERE iuser = #{iuser}
+        AND A.check = 1
+    </select>
+
+    <select id="selPaymentPageItem">
+        SELECT A.iitem, B.name, B.price, A.quantity, B.pic
+        FROM cart A
+        INNER JOIN item B
+        ON A.iitem = B.iitem
+        WHERE A.iuser = #{iuser}
+        AND A.iitem = #{iitem}
         AND A.check = 1
     </select>
 </mapper>

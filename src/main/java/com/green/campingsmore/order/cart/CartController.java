@@ -34,4 +34,11 @@ public class CartController {
     private Long delCart(@PathVariable Long icart) {
         return SERVICE.delCart(icart);
     }
+
+    @DeleteMapping
+    @Operation(summary = "장바구니 목록 선택삭제")
+    private Long delCartAll(@RequestParam List<Long> icart) {
+        return SERVICE.delCartAll(icart);
+//
+    }
 }
