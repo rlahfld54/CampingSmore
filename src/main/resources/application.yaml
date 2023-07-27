@@ -27,6 +27,12 @@ springdoc:
   swagger-ui:
     path: /swagger.html
 
+#components:
+#  securitySchemes:
+#    bearerAuth:            # arbitrary name for the security scheme
+#      type: http
+#      scheme: bearer
+#      bearerFormat: JWT
 #file:
 #  dir: home/download/
 

@@ -1,4 +1,4 @@
-package com.green.security.config.security;
+package com.green.campingsmore.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.security.config.security.model.EntryPointErrorResponse;

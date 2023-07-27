@@ -140,5 +140,9 @@ public class SignService {
         result.setCode(CommonRes.FAIL.getCode());
         result.setMsg(CommonRes.FAIL.getMsg());
     }
+
+    public int deleteUser(int iuser){
+        return MAPPER.delYnUser(iuser);
+    }
 }
 

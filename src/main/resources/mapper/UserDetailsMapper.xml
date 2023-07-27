@@ -39,7 +39,9 @@
         WHERE iuser = #{iuser} AND ip = #{ip}
     </select>
 
-    <delete id="deleteUser">
-
-    </delete>
+    <update id="deleteUser">
+        UPDATE user
+        SET del_yn = 0
+        where iuser = #{iuser}
+    </update>
 </mapper>
