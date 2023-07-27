@@ -13,5 +13,6 @@ public interface UserDetailsMapper {
     int updUserToken(UserTokenDto dto);
     UserTokenEntity selUserToken(UserTokenEntity p);
     int delYnUser(int iuser);
-    String searchID();
+    String searchID(String name,String phone,String birth);
+    void updateUserInfo(SignUpDto signUpDto);
 }

@@ -45,8 +45,8 @@
         where iuser = #{iuser}
     </update>
 
-    <select id="searchID">
+    <select id="searchID" resultType="string">
         SELECT user_id FROM user
-        WHERE name=#{name} and phone=#{phone} and birth_date=#{birth_date}
+        WHERE name=#{name} and phone=#{phone} and birth_date=#{birth}
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "회원")
 @RequestMapping("/sign-api")
 public class SignController {
     private final SignService SERVICE;
@@ -71,13 +73,13 @@ public class SignController {
     @GetMapping("/search-id")
     @Operation(summary = "아이디 찾기",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
-                    "refreshToken :  리프레쉬 토큰 \n\n "
+                    "user_id :  아이디 찾기 \n\n "
     )
-    public void searchID(@RequestParam String name
+    public String searchID(@RequestParam String name
                          ,@RequestParam String phone
                          ,@RequestParam String birth
     ){
-        SERVICE.searchID(name,phone,birth);
+        return SERVICE.searchID(name,phone,birth);
     }
 
     @DeleteMapping("/delete-user")
@@ -87,5 +89,22 @@ public class SignController {
     )
     public void deleteUser(@RequestParam int iuser){
         SERVICE.deleteUser(iuser);
+    }
+
+
+    @PostMapping("/sign-up")
+    @Operation(summary = "회원 정보 수정",
+            description = "Try it out -> Execute 눌러주세요 \n\n "+
+                    "uid: 회원가입 아이디 \n\n " +
+                    "upw : 비밀번호 ex)1234 \n\n " +
+                    "email : 이메일 ex)rlahfld54@gmail.com \n\n " +
+                    "name: 이름 \n\n " +
+                    "birth_date: 생년월일 ex)1998-06-12 \n\n " +
+                    "phone: 핸드폰 번호 \n\n " +
+                    "user_address: 주소 \n\n " +
+                    "role: USER 이거나 ADMIN\n\n "
+    )
+    public void updateUserInfo(@RequestBody SignUpDto signUpDto) {
+        SERVICE.updateUserInfo(signUpDto);
     }
 }

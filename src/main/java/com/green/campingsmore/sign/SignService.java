@@ -146,7 +146,11 @@ public class SignService {
     }
 
     public String searchID(String name,String phone,String birth){
-        return MAPPER.searchID();
+        return MAPPER.searchID(name,phone,birth);
+    }
+
+    public void updateUserInfo(SignUpDto signUpDto){
+        MAPPER.updateUserInfo(signUpDto);
     }
 }
 
