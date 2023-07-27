@@ -95,4 +95,8 @@ public class BoardService {
                 .row(dto.getRow()).maxPage(mp).list(list).build();
         //카테고리별 리스트
     }
+//    public List<BoardListVo> selBoard(){
+//        List<BoardListVo> list = mapper.selBoard();
+//
+//    }
 }

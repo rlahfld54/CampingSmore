@@ -31,7 +31,7 @@ public class FileUtils {
             File[] fileArr = file.listFiles();
             for (File f : fileArr) {
                 if (f.isDirectory()) {//재귀처리
-                    delFolder((f.getPath()));
+                    delFolder(f.getPath());
                 } else {
                     f.delete();
                 }

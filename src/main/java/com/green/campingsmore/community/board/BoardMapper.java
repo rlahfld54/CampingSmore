@@ -14,4 +14,5 @@ public interface BoardMapper {
     List<BoardListVo> selBoardList(BoardPageDto dto);
     Long maxBoard();
     List<BoardListVo> categoryBoardList(BoardPageDto dto);
+//    List<BoardListVo> selBoard();
 }
