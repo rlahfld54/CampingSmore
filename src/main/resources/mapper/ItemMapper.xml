@@ -27,12 +27,6 @@
     </select>
 
 
-    <select id="selCateItem" resultType="ItemSelPageVo">
-        SELECT iitem, name, pic, price, created_at createdAt
-        FROM item
-        WHERE iitem_category = #{iitemCategory}
-        ORDER BY created_at DESC
-        LIMIT ${startIdx}, ${row}
-    </select>
+
 
 </mapper>
