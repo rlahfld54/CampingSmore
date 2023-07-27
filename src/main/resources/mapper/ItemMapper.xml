@@ -26,7 +26,25 @@
         WHERE name = #{categoryName}
     </select>
 
+    <select id="selCateItem" resultType="ItemVo">
+        SELECT iitem, name, pic, price, created_at createdAt
+        FROM item
+        WHERE iitem_category = #{iitemCategory}
+        AND del_yn = 1
+        ORDER BY created_at DESC
+        LIMIT ${startIdx}, ${row}
+    </select>
 
+    <delete id="delDetail">
+        DELETE FROM item_detail_pic
+        WHERE iitem = #{iitem}
+    </delete>
+
+    <insert id="insDetail">
+        INSERT INTO item_detail_pic
+        SET iitem = #{iitem},
+        pic = #{pic}
+    </insert>
 
 
 </mapper>

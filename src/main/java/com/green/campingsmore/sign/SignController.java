@@ -68,12 +68,24 @@ public class SignController {
         return dto == null ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null) : ResponseEntity.ok(dto);
     }
 
-//    @DeleteMapping("/delete-user")
-//    @Operation(summary = "회원탈퇴",
-//            description = "Try it out -> Execute 눌러주세요 \n\n "+
-//                    "iuser:  iuser PK \n\n "
-//    )
-//    public void deleteUser(@RequestParam int iuser){
-//        SERVICE.deleteUser(iuser);
-//    }
+    @GetMapping("/search-id")
+    @Operation(summary = "아이디 찾기",
+            description = "Try it out -> Execute 눌러주세요 \n\n "+
+                    "refreshToken :  리프레쉬 토큰 \n\n "
+    )
+    public void searchID(@RequestParam String name
+                         ,@RequestParam String phone
+                         ,@RequestParam String birth
+    ){
+        SERVICE.searchID(name,phone,birth);
+    }
+
+    @DeleteMapping("/delete-user")
+    @Operation(summary = "회원탈퇴",
+            description = "Try it out -> Execute 눌러주세요 \n\n "+
+                    "iuser:  iuser PK \n\n "
+    )
+    public void deleteUser(@RequestParam int iuser){
+        SERVICE.deleteUser(iuser);
+    }
 }
