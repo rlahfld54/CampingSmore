@@ -49,4 +49,15 @@
         SELECT user_id FROM user
         WHERE name=#{name} and phone=#{phone} and birth_date=#{birth}
     </select>
+
+    <update id="updateUserInfo">
+        UPDATE user
+        SET password = #{upw}
+        , email = #{email}
+        , name = #{name}
+        , birth_date = #{birth_date}
+        , phone = #{phone}
+        , user_address = #{user_address}
+        where user_id = #{uid}
+    </update>
 </mapper>

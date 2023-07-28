@@ -9,6 +9,7 @@ import com.green.campingsmore.config.security.model.UserTokenDto;
 import com.green.campingsmore.config.security.model.UserTokenEntity;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,11 @@ public class SignService {
     private final UserDetailsMapper MAPPER;
     private final JwtTokenProvider JWT_PROVIDER;
     private final PasswordEncoder PW_ENCODER;
+    private final AuthenticationFacade facade;
+
+    public void test() {
+        log.info("service-test-iuser : {}", facade.getLoginUserPk());
+    }
 
     public SignUpResultDto signUp(SignUpDto signUpDto) {
         log.info("[getSignUpResult] signDataHandler로 회원 정보 요청");
@@ -149,8 +155,8 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
-    public void updateUserInfo(SignUpDto signUpDto){
-        MAPPER.updateUserInfo(signUpDto);
+    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto){
+        return MAPPER.updateUserInfo(updateUserInfoDto);
     }
 }
 
