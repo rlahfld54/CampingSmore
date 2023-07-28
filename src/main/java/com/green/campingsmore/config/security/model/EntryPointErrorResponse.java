@@ -1,4 +1,4 @@
-package com.green.campingsmore.security.config.security.model;
+package com.green.campingsmore.config.security.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
