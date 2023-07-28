@@ -1,9 +1,6 @@
 package com.green.campingsmore.item;
 
-import com.green.campingsmore.item.model.ItemDetailInsDto;
-import com.green.campingsmore.item.model.ItemSelCateVo;
-import com.green.campingsmore.item.model.ItemSelDetailVo;
-import com.green.campingsmore.item.model.ItemVo;
+import com.green.campingsmore.item.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,7 @@ public class ItemController {
     }*/
 
     @PostMapping("/item/dtailpic")
-    @Operation(summary = "아이템 상세이미지 업로드"
+    @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
@@ -58,6 +55,22 @@ public class ItemController {
             "\"iitem\": [-] 아이템 PK,<br>")
     public ItemSelDetailVo getItemDetail(@RequestParam Long iitem){
         return SERVICE.selDetail(iitem);
+    }
+
+    @PostMapping("/item/bestitem")
+    @Operation(summary = "추천 아이템 추가"
+            , description = "" +
+            "\"iitem\": [-] 아이템 PK,<br>" +
+            "\"monthLike\": [yyyy-MM-dd] 추천 아이템 노출 할 년월")
+    public int insBestItem(@RequestBody ItemInsBest dto) {
+        return SERVICE.insBestItem(dto);
+    }
+
+    @GetMapping("/itme/bestitem")
+    @Operation(summary = "추천 아이템 리스트"
+            , description = "" )
+    public List<ItemVo> getBestItem() {
+        return null;
     }
 
 
