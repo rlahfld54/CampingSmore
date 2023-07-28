@@ -1,6 +1,7 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
@@ -103,7 +104,7 @@ public class SignController {
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
                     "프론트에서 로그인후 아이디를 백엔드로 보내줘야함??>?>?- 본인인증..? \n\n "+
-                    "uid : 아이디 \n\n " +
+                    "uid : 아이디 => 프론트에서 아이디 보내줘야함\n\n " +
                     "upw : 비밀번호 \n\n " +
                     "email : 이메일\n\n " +
                     "name: 이름 \n\n " +
@@ -111,8 +112,10 @@ public class SignController {
                     "phone: 핸드폰 번호 \n\n " +
                     "user_address: 주소 \n\n "
     )
-    public int updateUserInfo(@RequestBody UpdateUserInfoDto updateUserInfoDto) {
+    public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user,@RequestBody UpdateUserInfoDto updateUserInfoDto) {
         // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
+        log.info("controller-iuser {}", user.getIuser());
+        SERVICE.test();
 
         System.out.println(updateUserInfoDto);
         return SERVICE.updateUserInfo(updateUserInfoDto);
