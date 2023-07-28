@@ -27,11 +27,6 @@ public class SignService {
     private final UserDetailsMapper MAPPER;
     private final JwtTokenProvider JWT_PROVIDER;
     private final PasswordEncoder PW_ENCODER;
-    private final AuthenticationFacade facade;
-
-    public void test() {
-        log.info("service-test-iuser : {}", facade.getLoginUserPk());
-    }
 
     public SignUpResultDto signUp(SignUpDto signUpDto) {
         log.info("[getSignUpResult] signDataHandler로 회원 정보 요청");
