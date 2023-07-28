@@ -26,12 +26,6 @@
         SELECT  A.iitem,A.`name`, A.pic, A.`name`, A.price, A.created_at createdAt, A.info, GROUP_CONCAT(B.pic) picList
         FROM item A, item_detail_pic B
         WHERE A.iitem = #{iitem}
-
-    </select>
-
-    <select id="selIcate" resultType="Long">
-        SELECT iitem_category iitemCategory FROM item_category
-        WHERE name = #{categoryName}
     </select>
 
     <select id="selCateItem" resultType="ItemVo">
@@ -41,6 +35,26 @@
         AND del_yn = 1
         ORDER BY created_at DESC
         LIMIT ${startIdx}, ${row}
+    </select>
+
+    <insert id="insBestItem">
+        INSERT INTO best_item
+        SET iitem = #{iitem},
+        month_like = #{monthLike}
+    </insert>
+
+
+    <select id="selBestItem" resultType="ItemVo">
+        SELECT iitem, name, pic, price, created_at createdAt
+        FROM best_item
+        WHERE month_like =
+        ORDER BY iitem_category DESC
+    </select>
+
+
+    <select id="selIcate" resultType="Long">
+        SELECT iitem_category iitemCategory FROM item_category
+        WHERE name = #{categoryName}
     </select>
 
     <delete id="delDetailPic">

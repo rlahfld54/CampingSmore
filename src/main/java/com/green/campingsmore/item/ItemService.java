@@ -103,8 +103,12 @@ public class ItemService {
         return MAPPER.selCateItem(dto);
     }
 
-    public ItemSelDetailVo selDetail(Long iitem) {
+    public int insBestItem(ItemInsBest dto) {
 
+    return MAPPER.insBestItem(dto);
+    }
+
+    public ItemSelDetailVo selDetail(Long iitem) {
     return MAPPER.selDetail(iitem);
     }
 }

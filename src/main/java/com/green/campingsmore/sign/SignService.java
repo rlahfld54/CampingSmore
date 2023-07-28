@@ -1,6 +1,7 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.UserDetailsMapper;
 import com.green.campingsmore.config.security.model.LoginDto;
@@ -9,6 +10,7 @@ import com.green.campingsmore.config.security.model.UserTokenDto;
 import com.green.campingsmore.config.security.model.UserTokenEntity;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,11 @@ public class SignService {
     private final UserDetailsMapper MAPPER;
     private final JwtTokenProvider JWT_PROVIDER;
     private final PasswordEncoder PW_ENCODER;
+    private final AuthenticationFacade facade;
+
+    public void test() {
+        log.info("service-test-iuser : {}", facade.getLoginUserPk());
+    }
 
     public SignUpResultDto signUp(SignUpDto signUpDto) {
         log.info("[getSignUpResult] signDataHandler로 회원 정보 요청");
@@ -66,7 +73,6 @@ public class SignService {
         }
         log.info("[getSignInResult] 패스워드 일치");
 
-
         log.info("[getSignInResult] access_token 객체 생성");
         String accessToken = JWT_PROVIDER.generateJwtToken(String.valueOf(loginDto.getIuser()), Collections.singletonList(loginDto.getRole()), JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
         String refreshToken = JWT_PROVIDER.generateJwtToken(String.valueOf(loginDto.getIuser()), Collections.singletonList(loginDto.getRole()), JWT_PROVIDER.REFRESH_TOKEN_VALID_MS, JWT_PROVIDER.REFRESH_KEY);
@@ -87,6 +93,7 @@ public class SignService {
 
         log.info("[getSignInResult] SignInResultDto 객체 값 주입");
         setSuccessResult(dto);
+
         return dto;
     }
 
@@ -149,8 +156,11 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
-    public void updateUserInfo(SignUpDto signUpDto){
-        MAPPER.updateUserInfo(signUpDto);
+    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto){
+        // 비밀번호 암호화 해줘야할듯
+//        PW_ENCODER.encode(updateUserInfoDto.getUpw());
+        updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
+        return MAPPER.updateUserInfo(updateUserInfoDto);
     }
 }
 
