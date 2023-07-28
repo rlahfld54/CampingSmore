@@ -1,16 +1,14 @@
 package com.green.campingsmore.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.campingsmore.config.security.model.EntryPointErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Slf4j
@@ -21,7 +19,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         ObjectMapper objectMapper = new ObjectMapper();
         log.info("[commence] 인증 실패로 response.sendError 발생");
 
-        com.green.campingsmore.security.config.security.model.EntryPointErrorResponse msg = new com.green.campingsmore.security.config.security.model.EntryPointErrorResponse();
+        EntryPointErrorResponse msg = new EntryPointErrorResponse();
         msg.setMsg("인증이 실패하였습니다.");
 
         res.setStatus(401);
