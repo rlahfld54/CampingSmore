@@ -38,12 +38,11 @@ public class PayController {
         return SERVICE.insPayInfo(dto);
     }
 
-    @GetMapping("/{iuser}/{iorder}")
+    @GetMapping("/{iorder}")
     @Operation(summary = "결제 내역 보기",
-            description = "<h3> iuser : 결제한 유저 PK\n" +
-            "<h3> iorder : 주문 PK\n"
+            description = "<h3> iorder : 주문 PK\n"
     )    //유저 결제시 띄움(결제창에서 바로띄움)
-    private PaymentCompleteDto getPaymentComplete(@PathVariable Long iuser, @PathVariable Long iorder) {
+    private PaymentCompleteDto getPaymentComplete(@PathVariable Long iorder) {
         return SERVICE.selPaymentComplete(iorder);
     }
 
