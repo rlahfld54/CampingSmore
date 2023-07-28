@@ -9,9 +9,11 @@ import java.util.List;
 public interface ItemMapper {
     int insItem(ItemInsParam ipram);
     int insCate(String categoryName);
+    List<ItemSelCateVo> selCategory();
     String selCate(String categoryName);
     Long selIcate(String categoryName);
     List<ItemVo> selCateItem(ItemSelCateDto dto);
+    ItemSelDetailVo selDetail(Long iitem);
 
     int delDetail(Long iitem);
     int insDetail(ItemDetailInsDto dto);

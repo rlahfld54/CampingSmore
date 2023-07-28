@@ -72,6 +72,10 @@ public class ItemService {
 
     }
 
+    public List<ItemSelCateVo> selCategory(){
+
+    return MAPPER.selCategory();
+    }
 
     public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
         // 아이템 PK에 사진이 있으면 삭제
@@ -99,4 +103,8 @@ public class ItemService {
         return MAPPER.selCateItem(dto);
     }
 
+    public ItemSelDetailVo selDetail(Long iitem) {
+
+    return MAPPER.selDetail(iitem);
+    }
 }

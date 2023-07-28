@@ -4,7 +4,6 @@ import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +17,7 @@ public class BoardController {
     private final BoardService service;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "게시판 사진 다중 업로드")
+    @Operation(summary = "게시판 등록")
     public Long post(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) throws Exception {
         return service.postBoard(dto, pics);
     }
@@ -64,4 +63,5 @@ public class BoardController {
         dto.setRow(row);
         return service.selBoard(dto);
     }
+
 }
