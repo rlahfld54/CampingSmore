@@ -11,5 +11,4 @@ public class SelCartVo {
     private String name;
     private Long price;
     private Long quantity;
-    private Long check;
 }

@@ -7,9 +7,9 @@
 
     <insert id="insPayInfo">
         INSERT INTO `order`
-        (iuser, address, total_price, shipping_price, shipping_memo)
+        (iuser, address, address_detail, total_price, shipping_price, shipping_memo)
         VALUES
-        (#{iuser}, #{address}, #{totalPrice}, #{shippingPrice}, #{shippingMemo})
+        (#{iuser}, #{address}, #{addressDetail}, #{totalPrice}, #{shippingPrice}, #{shippingMemo})
     </insert>
 
     <insert id="insPayDetailInfo">
@@ -17,37 +17,29 @@
         (iorder, iitem, price, quantity, total_price)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.iorder}, #{item.iitem}, (SELECT price FROM item WHERE iitem=#{item.iitem}),
-            #{item.quantity}, #{item.totalPrice})
+            ((SELECT iorder FROM `order` order BY iorder DESC LIMIT 0,1),
+            #{item.iitem},
+            (SELECT price FROM item WHERE iitem=#{item.iitem}),
+            #{item.quantity},
+            #{item.totalPrice})
         </foreach>
     </insert>
 
-<!--    <resultMap id="paymentDetailList" type="SelPaymentDetailDto">-->
-<!--        <id property="iorder" column="iorder"/>-->
-<!--        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>-->
-<!--    </resultMap>-->
 
-    <select id="selPaymentDetail1">
-        SELECT A.address, A.shipping_memo, A.total_price
-        FROM `order` A
-        WHERE iorder = #{iorder};
+    <select id="selPaymentComplete">
+        SELECT address, address_detail addressDetail, shipping_memo shippingMemo, total_price totalPrice
+        FROM `order`
+        WHERE iorder = #{iorder}
     </select>
 
-<!--    <select id="selPaymentDetail2" resultType="PaymentDetailDto">-->
-<!--        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic-->
-<!--        FROM order_item A-->
-<!--        INNER JOIN item B-->
-<!--        ON A.iitem = B.iitem-->
-<!--        WHERE iorder = #{iorder}-->
-<!--    </select>-->
 
     <resultMap id="paymentDetailAllList" type="SelPaymentDetailDto">
         <id property="iorder" column="iorder"/>
-        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetail2"/>
+        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetailAll2"/>
     </resultMap>
 
     <select id="selPaymentDetailAll1" resultMap="paymentDetailAllList">
-        SELECT A.iorder, A.iuser, A.address, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
+        SELECT A.iorder, A.iuser, A.address, A.address_detail addressDetail, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
         FROM `order` A
         WHERE iuser = #{iuser}
     </select>
@@ -61,21 +53,18 @@
     </select>
 
     <select id="selPaymentPageItemList">
+        <foreach collection="list" item="item" index="index" separator="UNION">
         SELECT A.iitem, B.name, B.price, A.quantity, B.pic
         FROM cart A
         INNER JOIN item B
         ON A.iitem = B.iitem
-        WHERE iuser = #{iuser}
-        AND A.check = 1
+        WHERE A.icart = #{item}
+        </foreach>
     </select>
 
     <select id="selPaymentPageItem">
-        SELECT A.iitem, B.name, B.price, A.quantity, B.pic
-        FROM cart A
-        INNER JOIN item B
-        ON A.iitem = B.iitem
-        WHERE A.iuser = #{iuser}
-        AND A.iitem = #{iitem}
-        AND A.check = 1
+        SELECT iitem, `name`, price, pic
+        FROM item
+        WHERE iitem = #{iitem};
     </select>
 </mapper>
