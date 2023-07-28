@@ -1,9 +1,11 @@
 package com.green.campingsmore.community.comment;
 
+import com.green.campingsmore.community.board.model.BoardSelRes;
 import com.green.campingsmore.community.comment.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,7 @@ public class CommentController {
         dto.setRow(row);
         return service.selComment(dto);
     }
+
 }
 
 

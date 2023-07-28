@@ -2,10 +2,8 @@ package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,8 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@Tag(name = "게시판")
-@RequestMapping("/api/board")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService service;
@@ -56,6 +53,15 @@ public class BoardController {
         dto.setPage(page);
         dto.setRow(row);
         return service.categoryBoardList(dto);
-
     }
+    @GetMapping("/title")
+    @Operation(summary = "제목으로 검색")
+    public BoardSelRes selBoard(@RequestParam String title,@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "15") @Min(value = 15)int row){
+        BoardSelPageDto dto = new BoardSelPageDto();
+        dto.setTitle(title);
+        dto.setPage(page);
+        dto.setRow(row);
+        return service.selBoard(dto);
+    }
+
 }
