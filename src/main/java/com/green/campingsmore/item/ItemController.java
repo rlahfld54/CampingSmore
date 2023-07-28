@@ -52,7 +52,7 @@ public class ItemController {
         return null;
     }
 
-    @GetMapping("/item/cate")
+    /*@GetMapping("/item/cate")*/
 
 
 
