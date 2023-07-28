@@ -4,7 +4,6 @@ import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,4 +63,5 @@ public class BoardController {
         dto.setRow(row);
         return service.selBoard(dto);
     }
+
 }
