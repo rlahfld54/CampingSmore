@@ -59,11 +59,14 @@
         limit #{startIdx},#{row}
     </select>
     <select id="selBoard">
-        select A.iboard, A.icategory, A.title, B.name, A.created_at createdat, A.board_view boardview
+        select A.iboard, C.name category, A.title, B.name, A.created_at createdat, A.board_view boardview
         from board A
         inner join user B
         on A.iuser = B.iuser
+        inner join board_category C
+        on A.icategory = C.icategory
         where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1
+        order by A.iboard desc
         limit #{startIdx},#{row}
     </select>
     <select id="deBoard">
