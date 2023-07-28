@@ -9,8 +9,9 @@ public class SelPaymentDetailDto {
     private Long iorder;
     private Long iuser;
     private String address;
+    private String addressDetail;
     private Long totalPrice;
     private Long shippingPrice;
     private String shippingMemo;
-    private List<PaymentDetailVo> itemList;
+    private List<PaymentDetailDto> itemList;
 }

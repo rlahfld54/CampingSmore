@@ -1,9 +1,13 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.config.security.AuthenticationFacade;
+import com.green.campingsmore.config.security.model.LoginDto;
+import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -23,6 +28,7 @@ public class SignController {
 
     //ApiParam은 문서 자동화를 위한 Swagger에서 쓰이는 어노테이션이고
     //RequestParam은 http 로부터 요청 온 정보를 받아오기 위한 스프링 어노테이션이다.
+    //@AuthenticationPrincipal을 통해 로그인한 사용자 정보,PK를 받아 사용할 수 있다.
     @PostMapping("/sign-in")
     @Operation(summary = "로그인",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
@@ -38,6 +44,7 @@ public class SignController {
         if (dto.getCode() == CommonRes.SUCCESS.getCode()) {
             log.info("[signIn] 정상적으로 로그인 되었습니다. id: {}, token: {}", id, dto.getAccessToken());
         }
+
         return dto;
     }
 
@@ -93,10 +100,24 @@ public class SignController {
 
 
     @PostMapping("/updateUserInfo")
-    @Operation(summary = "회원 정보 수정",
-            description = "Try it out -> Execute 눌러주세요 \n\n "
+    @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
+            description = "Try it out -> Execute 눌러주세요 \n\n "+
+                    "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
+                    "프론트에서 로그인후 아이디를 백엔드로 보내줘야함??>?>?- 본인인증..? \n\n "+
+                    "uid : 아이디 => 프론트에서 아이디 보내줘야함\n\n " +
+                    "upw : 비밀번호 \n\n " +
+                    "email : 이메일\n\n " +
+                    "name: 이름 \n\n " +
+                    "birth_date: 생년월일 \n\n " +
+                    "phone: 핸드폰 번호 \n\n " +
+                    "user_address: 주소 \n\n "
     )
-    public void updateUserInfo(@RequestBody SignUpDto signUpDto) {
-        SERVICE.updateUserInfo(signUpDto);
+    public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user,@RequestBody UpdateUserInfoDto updateUserInfoDto) {
+        // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
+        log.info("controller-iuser {}", user.getIuser());
+        SERVICE.test();
+
+        System.out.println(updateUserInfoDto);
+        return SERVICE.updateUserInfo(updateUserInfoDto);
     }
 }

@@ -4,6 +4,7 @@ import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +25,20 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Long delCart(Long icart){
+    public Long delCart(Long icart) {
         return MAPPER.delCart(icart);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public Long delCartAll(List<Long> icart) {
+        try {
+            for (Long aLong : icart) {
+                MAPPER.delCart(aLong);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1L;
     }
 }

@@ -17,7 +17,7 @@ public class BoardController {
     private final BoardService service;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "게시판 사진 다중 업로드")
+    @Operation(summary = "게시판 등록")
     public Long post(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) throws Exception {
         return service.postBoard(dto, pics);
     }
