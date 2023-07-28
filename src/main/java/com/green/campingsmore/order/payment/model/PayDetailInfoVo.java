@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PayDetailInfoVo {
-    private Long iorder;
     private Long iitem;
     private Long quantity;
     private Long totalPrice;

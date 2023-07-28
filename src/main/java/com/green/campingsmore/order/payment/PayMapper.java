@@ -1,9 +1,6 @@
 package com.green.campingsmore.order.payment;
 
-import com.green.campingsmore.order.payment.model.PayDetailInfoVo;
-import com.green.campingsmore.order.payment.model.InsPayInfoDto;
-import com.green.campingsmore.order.payment.model.PaymentDetailVo;
-import com.green.campingsmore.order.payment.model.SelPaymentDetailDto;
+import com.green.campingsmore.order.payment.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +9,8 @@ import java.util.List;
 public interface PayMapper {
     int insPayInfo(InsPayInfoDto dto);
     int insPayDetailInfo(List<PayDetailInfoVo> list);
-    SelPaymentDetailDto selPaymentDetail1(int iorder);
-    List<SelPaymentDetailDto> selPaymentDetailAll1(int iuser);
-    List<PaymentDetailVo> selPaymentPageItemList(int iorder);
+    PaymentCompleteDto selPaymentComplete(Long iorder);
+    List<SelPaymentDetailDto> selPaymentDetailAll1(Long iuser);
+    List<PaymentDetailDto> selPaymentPageItemList(List<Long> list);
+    PaymentDetailDto selPaymentPageItem(Long iitem);
 }

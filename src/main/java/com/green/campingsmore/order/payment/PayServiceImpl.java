@@ -1,15 +1,14 @@
 package com.green.campingsmore.order.payment;
 
-import com.green.campingsmore.order.payment.model.InsPayInfoDto;
-import com.green.campingsmore.order.payment.model.PayDetailInfoVo;
-import com.green.campingsmore.order.payment.model.PaymentDetailVo;
-import com.green.campingsmore.order.payment.model.SelPaymentDetailDto;
+import com.green.campingsmore.order.payment.model.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PayServiceImpl implements PayService {
@@ -24,38 +23,55 @@ public class PayServiceImpl implements PayService {
 
         try {
             orderDto.setIuser(dto.getIuser());
+            orderDto.setAddress(dto.getAddress());
             orderDto.setShippingPrice(dto.getShippingPrice());
             orderDto.setTotalPrice(dto.getTotalPrice());
             MAPPER.insPayInfo(orderDto);
 
             List<PayDetailInfoVo> purchaseList = dto.getPurchaseList();
+            log.info("purchaseList = {}", purchaseList);
             MAPPER.insPayDetailInfo(purchaseList);
         } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
         return 1;
     }
 
     @Override
-    public SelPaymentDetailDto selPaymentDetail(int iorder) {
-        return MAPPER.selPaymentDetail1(iorder);
+    public PaymentCompleteDto selPaymentComplete(Long iorder) {
+        return MAPPER.selPaymentComplete(iorder);
     }
 
     @Override
-    public List<SelPaymentDetailDto> selPaymentDetailAll(int iuser) {
+    public List<SelPaymentDetailDto> selPaymentDetailAll(Long iuser) {
         return MAPPER.selPaymentDetailAll1(iuser);
     }
 
     @Override
-    public List<PaymentDetailVo> selPaymentPageItemList(int iorder) {
-        List<PaymentDetailVo> list = MAPPER.selPaymentPageItemList(iorder);
+    public PaymentDetailDto selPaymentPageItem(Long iitem, Long quantity) {
+        PaymentDetailDto dto = MAPPER.selPaymentPageItem(iitem);
+        Long price = dto.getPrice();
 
-        for (int i = 0; i < list.size(); i++) {
-            PaymentDetailVo vo = new PaymentDetailVo();
-            Long totalPrice = vo.getPrice() * vo.getQuantity();
-            list.get(i).setTotalPrice(totalPrice);
-        }
-        return list;
+        dto.setQuantity(quantity);
+        dto.setTotalPrice(price * quantity);
+        return dto;
     }
 
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public List<PaymentDetailDto> selPaymentPageItemList(CartPKDto dto) {
+        List<PaymentDetailDto> paymentDetailDtos = MAPPER.selPaymentPageItemList(dto.getIcart());
+        try {
+            for (PaymentDetailDto paymentDetailDto : paymentDetailDtos) {
+                Long price = paymentDetailDto.getPrice();
+                Long quantity = paymentDetailDto.getQuantity();
+                Long totalPrice = price * quantity;
+                paymentDetailDto.setTotalPrice(totalPrice);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return paymentDetailDtos;
+    }
 }
