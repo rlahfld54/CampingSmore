@@ -2,11 +2,12 @@ package com.green.campingsmore.item.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemVo {
     private Long iitem;
     private String name;

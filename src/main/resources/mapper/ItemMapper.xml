@@ -16,9 +16,17 @@
         SET name = #{categoryName}
     </insert>
 
-    <select id="selCate" resultType="String">
-        SELECT name categoryName FROM item_category
-        WHERE name = #{categoryName}
+    <select id="selCategory" resultType="ItemSelCateVo">
+        SELECT iitem_category iitemCategory, `name`
+        FROM item_category
+        order BY `name` DESC
+    </select>
+
+    <select id="selDetail" resultType="ItemSelDetailVo">
+        SELECT  A.iitem,A.`name`, A.pic, A.`name`, A.price, A.created_at createdAt, A.info, GROUP_CONCAT(B.pic) picList
+        FROM item A, item_detail_pic B
+        WHERE A.iitem = #{iitem}
+
     </select>
 
     <select id="selIcate" resultType="Long">
@@ -35,12 +43,12 @@
         LIMIT ${startIdx}, ${row}
     </select>
 
-    <delete id="delDetail">
+    <delete id="delDetailPic">
         DELETE FROM item_detail_pic
         WHERE iitem = #{iitem}
     </delete>
 
-    <insert id="insDetail">
+    <insert id="insDetailPic">
         INSERT INTO item_detail_pic
         SET iitem = #{iitem},
         pic = #{pic}
