@@ -11,6 +11,6 @@ public interface CommentMapper {
     Long updComment(CommentEntity entity);
     Long delComment(CommentDelDto dto);
     List<CommentVo> selComment(CommentPageDto dto);
-    Long maxComment();
+    Long maxComment(CommentPageDto dto);
 
 }

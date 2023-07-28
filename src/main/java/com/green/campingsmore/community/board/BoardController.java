@@ -63,5 +63,11 @@ public class BoardController {
         dto.setRow(row);
         return service.selBoard(dto);
     }
+    @GetMapping("/{iboard}/community")
+    public BoardCmtDeVo deBoard(@PathVariable Long iboard){
+        BoardDeDto dto = new BoardDeDto();
+        dto.setIboard(iboard);
+        return service.deBoard(dto);
+    }
 
 }

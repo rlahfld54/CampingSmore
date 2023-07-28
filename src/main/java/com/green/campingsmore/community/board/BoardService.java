@@ -1,6 +1,8 @@
 package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
+import com.green.campingsmore.community.comment.CommentMapper;
+import com.green.campingsmore.community.comment.CommentService;
 import com.green.campingsmore.community.comment.model.CommentPageDto;
 import com.green.campingsmore.community.comment.model.CommentRes;
 import com.green.campingsmore.community.comment.model.CommentVo;
@@ -24,6 +26,7 @@ import static java.lang.Math.ceil;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardMapper mapper;
+    private final CommentService commentService;
     private final int ROW = 15;
     private final int Page = 1;
 
@@ -62,11 +65,10 @@ public class BoardService {
                 list.add(picEntity);
                 mapper.insBoardPic(list);
             }
+        }
 //            if (!list.isEmpty()) {
 //                mapper.insBoardPic(list);
 //            }
-            log.info("list:{}",list);
-        }
 
         return result;// 게시판 등록
     }
@@ -102,7 +104,6 @@ public class BoardService {
     }
     public BoardSelRes selBoard(BoardSelPageDto dto){
 
-        String title = dto.getTitle();
         int num = dto.getPage()-1;
         dto.setStartIdx(num*dto.getRow());
         List<BoardSelVo> list = mapper.selBoard(dto);
@@ -112,5 +113,21 @@ public class BoardService {
         int isMore = mp>dto.getPage() ? 1:0;
         int page = mp - dto.getPage();
         return BoardSelRes.builder().isMore(isMore).title(dto.getTitle()).row(dto.getRow()).maxPage(mp).midPage(page).nowPage(dto.getPage()).list(list).build();
+    }
+    public BoardCmtDeVo deBoard(BoardDeDto dto){
+        int row = 15;
+        int page = 1;
+        BoardDeVo boardDeVo = mapper.deBoard(dto);
+        CommentPageDto dto1 = new CommentPageDto();
+        dto1.setIboard(dto.getIboard());
+        dto1.setPage(page);
+        dto1.setRow(row);
+        CommentRes commentRes = commentService.selComment(dto1);
+
+        BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).commentList(commentRes)
+                .build();
+        return result;
+
+
     }
 }

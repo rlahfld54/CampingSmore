@@ -70,13 +70,15 @@
         limit #{startIdx},#{row}
     </select>
     <select id="deBoard">
-        select icategory, title, name, pic,created_at createdat, board_view boardview, ctnt, name, created_at createdat, ctnt
-        from board A
-        inner join user B
-        on A.iuser = B.iuser
-        inner join board_image C
-        on A.iboard = C.iboard
-        where A.iboard = #{iboard}
+        SELECT A.iboard,D.name, A.title, A.ctnt, C.name, A.created_at createdat, B.pic
+        FROM board A
+        left JOIN board_image B
+        ON A.iboard = B.iboard
+        LEFT JOIN user C
+        ON A.iuser = C.iuser
+        LEFT JOIN board_category D
+        ON A.icategory = D.icategory
+        WHERE A.iboard = #{iboard}
     </select>
 
 </mapper>

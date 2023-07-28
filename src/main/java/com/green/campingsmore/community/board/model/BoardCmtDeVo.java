@@ -1,0 +1,14 @@
+package com.green.campingsmore.community.board.model;
+
+import com.green.campingsmore.community.comment.model.CommentRes;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+@Builder
+public class BoardCmtDeVo {
+    private BoardDeVo boardDeVo;
+    private CommentRes commentList;
+}
