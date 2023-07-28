@@ -8,6 +8,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class BoardSelVo {
+    private Long iboard;
+    private Long icategory;
     private String title;
     private String name;
     private LocalDate createdat;
