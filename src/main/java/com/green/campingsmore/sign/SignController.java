@@ -7,6 +7,7 @@ import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UpdatePwDto;
 import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -103,7 +104,7 @@ public class SignController {
     @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
-                    "프론트에서 로그인후 아이디를 백엔드로 보내줘야함??>?>?- 본인인증..? \n\n "+
+                    "프론트에서 로그인후 아이디를 백엔드로 보내줘야함- 본인인증..? \n\n "+
                     "uid : 아이디 => 프론트에서 아이디 보내줘야함\n\n " +
                     "upw : 비밀번호 \n\n " +
                     "email : 이메일\n\n " +
@@ -119,5 +120,19 @@ public class SignController {
 
         System.out.println(updateUserInfoDto);
         return SERVICE.updateUserInfo(updateUserInfoDto);
+    }
+
+    @PostMapping("/search-pw")
+    @Operation(summary = "비밀번호 찾기 - 이메일로 임시 비밀번호 제공",
+            description = "Try it out -> Execute 눌러주세요 \n\n " +
+                        "user_id :  아이디 \n\n "+
+                        "name :  이름 \n\n "+
+                        "email :  이메일 \n\n "
+    )
+    public int searchPW(@RequestParam String id,
+                        @RequestParam String name,
+                        @RequestParam String email
+                        ) {
+        return SERVICE.searchPW(id,name,email);
     }
 }
