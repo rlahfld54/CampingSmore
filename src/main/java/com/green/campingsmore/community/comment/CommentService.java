@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.lang.Math.ceil;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -30,8 +32,8 @@ public class CommentService {
         int page = dto.getPage() -1;
         dto.setStartIdx(page*dto.getRow());
         List<CommentVo> list = mapper.selComment(dto);
-        Long maxpage = mapper.maxComment();
-        int mc=(int) Math.ceil((double) maxpage/dto.getRow());
+        double maxpage = mapper.maxComment(dto);
+        int mc=(int) ceil( maxpage/dto.getRow());
 
         int isMore = mc <dto.getPage() ? 0:1;
         int num = mc - dto.getPage();
@@ -39,11 +41,9 @@ public class CommentService {
                 .isMore(isMore)
                 .row(dto.getRow())
                 .maxpage(mc)
-                .list(list)
                 .nowPage(dto.getPage())
                 .midPage(num)
+                .list(list)
                 .build();
     }
-
-
 }

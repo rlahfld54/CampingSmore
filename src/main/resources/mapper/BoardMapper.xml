@@ -70,13 +70,36 @@
         limit #{startIdx},#{row}
     </select>
     <select id="deBoard">
-        select icategory, title, name, pic,created_at createdat, board_view boardview, ctnt, name, created_at createdat, ctnt
-        from board A
-        inner join user B
-        on A.iuser = B.iuser
-        inner join board_image C
-        on A.iboard = C.iboard
-        where A.iboard = #{iboard}
+        SELECT A.iboard,D.name, A.title, A.ctnt, C.name, A.created_at createdat,A.board_view boardview
+        FROM board A
+        LEFT JOIN user C
+        ON A.iuser = C.iuser
+        LEFT JOIN board_category D
+        ON A.icategory = D.icategory
+        WHERE A.iboard = #{iboard}
     </select>
+
+    <select id="picBoard">
+        SELECT iboard,pic
+        FROM board_image
+        WHERE iboard = #{iboard}
+    </select>
+    <update id="updBoard">
+        update board
+        set title = #{title}
+        ,ctnt = #{ctnt}
+        where iboard =#{iboard} and iuser =#{iuser}
+    </update>
+    <delete id="delPic">
+        DELETE
+        FROM board_image
+        WHERE iboardpic = #{iboardpic}
+    </delete>
+    <update id="viewBoard">
+        UPDATE board
+        SET board_view = board_view+1
+        WHERE iboard = #{iboard}
+    </update>
+
 
 </mapper>
