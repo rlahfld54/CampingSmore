@@ -1,7 +1,6 @@
 package com.green.campingsmore.item;
 
 import com.green.campingsmore.item.model.*;
-import com.green.campingsmore.review.model.ItemSelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +31,22 @@ public class ItemController {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "아이템 검색 및 검색리스트"
+            , description = "" +
+            "\"text\": [-] 검색어,<br>" +
+            "\"page\": [-] 리스트 페이지<br>" +
+            "\"row\": [고정] 아이템 개수<br>")
+    public List<ItemVo> getSearchItem(@RequestParam String text,
+                                       @RequestParam(defaultValue = "1")int page,
+                                       @RequestParam(defaultValue = "21")int row) {
+        ItemSearchDto dto = new ItemSearchDto();
+        dto.setText(text);
+        dto.setPage(page);
+        dto.setRow(row);
+        return SERVICE.searchItem(dto);
+    }
+
     @GetMapping("/category")
     @Operation(summary = "아이템 카테고리"
             , description = "" )
@@ -43,21 +58,29 @@ public class ItemController {
     @Operation(summary = "아이템 카테고리별 리스트"
             , description = "" +
             "\"cate\": [-] 카테고리 PK,<br>" +
-            "\"page\": [-] 리스트 페이지<br>")
-    public List<ItemVo> getICateList(@RequestParam int cate,
-                                    @RequestParam(defaultValue = "1") int page) {
-
-        return SERVICE.selCateItem(cate, page);
+            "\"page\": [-] 리스트 페이지,<br>" +
+            "\"row\": [고정] 아이템 개수<br>")
+    public List<ItemVo> getICateList(@RequestParam Long cate,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "21")int row) {
+        ItemSelCateDto dto = new ItemSelCateDto();
+        dto.setIitemCategory(cate);
+        dto.setPage(page);
+        dto.setRow(row);
+        return SERVICE.selCateItem(dto);
     }
 
     @GetMapping("/detail")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>")
-    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem){
+    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
+                                            @RequestParam(defaultValue = "1")int page,
+                                            @RequestParam(defaultValue = "5")int row){
         ItemSelDto dto = new ItemSelDto();
-        dto.setPage(1);
+        dto.setPage(page);
         dto.setIitem(iitem);
+        dto.setRow(row);
         return SERVICE.selDetail(dto);
     }
 

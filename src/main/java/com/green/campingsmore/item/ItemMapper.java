@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface ItemMapper {
     int insItem(ItemInsParam ipram);
+    List<ItemVo> searchItem(ItemSearchDto dto);
     int insCate(String categoryName);
     List<ItemSelCateVo> selCategory();
     String selCate(String categoryName);

@@ -6,13 +6,11 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Builder
-@Getter
-public class ItemRes {
+@Data
+public class ItemSearchRes {
+    private String text;
     private int row;
-    private int maxPage;
+    private int startIdx;
     private int page;
     private List<ItemVo> list;
-
-
 }

@@ -11,6 +11,15 @@
             pic = #{pic}
     </insert>
 
+    <select id="searchItem" resultType="ItemVo">
+        SELECT iitem, `name`, pic, price, created_at createdAt
+        FROM item
+        WHERE `name` LIKE CONCAT('%',#{text},'%')
+        AND del_yn = 1
+        ORDER BY created_at DESC
+        LIMIT ${startIdx}, ${row}
+    </select>
+
     <insert id="insCate">
         INSERT INTO item_category
         SET name = #{categoryName}

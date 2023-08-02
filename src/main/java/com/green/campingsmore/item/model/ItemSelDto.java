@@ -1,4 +1,4 @@
-package com.green.campingsmore.review.model;
+package com.green.campingsmore.item.model;
 
 import lombok.Data;
 
