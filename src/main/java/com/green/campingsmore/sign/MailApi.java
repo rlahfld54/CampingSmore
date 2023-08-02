@@ -1,31 +1,12 @@
 package com.green.campingsmore.sign;
 
-import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.sign.model.UpdatePwDto;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
-import org.apache.commons.mail.SimpleEmail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class MailApi {
-//	public static void main(String[] args) throws Exception {
-//		Email email = new SimpleEmail();
-//		email.setHostName("smtp.naver.com");
-//		email.setSmtpPort(465);
-//		email.setCharset("utf-8"); // 인코딩 설정(utf-8, euc-kr)
-//		email.setAuthenticator(new DefaultAuthenticator("SMTP 메일 계정", "비밀번호"));
-//		email.setSSL(true);
-//		email.setFrom("보내는 사람 이메일", "이름");
-//		email.setSubject("메일 제목");
-//		email.setMsg("메일 내용");
-//		email.addTo("받는 사람 이메일", "이름");
-//		email.send();
-//	}
 
 	@Value("${Naver.NAVER_ID}")
 	private String NAVER_ID;
