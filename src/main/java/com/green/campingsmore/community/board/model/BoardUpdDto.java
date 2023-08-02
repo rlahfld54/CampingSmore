@@ -5,11 +5,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class BoardEntity {
+public class BoardUpdDto {
     private Long iboard;
-    private Long iuser;
-    private Long icategory;
     private String title;
     private String ctnt;
-    private String pic;
+    private Long iboardpic;
 }

@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Builder
 public class BoardCmtDeVo {
     private BoardDeVo boardDeVo;
     private CommentRes commentList;
+    private List<BoardPicVo> picList;
 }

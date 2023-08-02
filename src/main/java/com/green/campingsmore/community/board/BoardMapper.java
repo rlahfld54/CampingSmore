@@ -17,4 +17,7 @@ public interface BoardMapper {
     List<BoardSelVo> selBoard(BoardSelPageDto dto);
     Long maxSelBoard(BoardSelPageDto dto);
     BoardDeVo deBoard(BoardDeDto dto);
+    List<BoardPicVo> picBoard(BoardDeDto dto);
+    Long updBoard(BoardEntity entity);
+    Long delPic(BoardPicEntity pic);
 }

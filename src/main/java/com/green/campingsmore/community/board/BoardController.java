@@ -63,11 +63,17 @@ public class BoardController {
         dto.setRow(row);
         return service.selBoard(dto);
     }
-    @GetMapping("/{iboard}/community")
+    @GetMapping("/{iboard}/boardDetail")
+    @Operation(summary = "게시글 디테일 보기")
     public BoardCmtDeVo deBoard(@PathVariable Long iboard){
         BoardDeDto dto = new BoardDeDto();
         dto.setIboard(iboard);
         return service.deBoard(dto);
+    }
+    @PutMapping(value = "/update",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "게시판 수정")
+    public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
+        return service.updBoard(pic, dto);
     }
 
 }
