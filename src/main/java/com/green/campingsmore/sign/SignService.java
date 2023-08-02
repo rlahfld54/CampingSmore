@@ -4,22 +4,22 @@ import com.green.campingsmore.CommonRes;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.UserDetailsMapper;
-import com.green.campingsmore.config.security.model.LoginDto;
-import com.green.campingsmore.config.security.model.SignUpDto;
-import com.green.campingsmore.config.security.model.UserTokenDto;
-import com.green.campingsmore.config.security.model.UserTokenEntity;
+import com.green.campingsmore.config.security.model.*;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UpdatePwDto;
 import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -29,6 +29,10 @@ public class SignService {
     private final JwtTokenProvider JWT_PROVIDER;
     private final PasswordEncoder PW_ENCODER;
     private final AuthenticationFacade facade;
+    private final MailApi mail;
+
+    @Value("${Naver.NAVER_ID}")
+    private String NAVER_ID;
 
     public void test() {
         log.info("service-test-iuser : {}", facade.getLoginUserPk());
@@ -162,5 +166,27 @@ public class SignService {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
         return MAPPER.updateUserInfo(updateUserInfoDto);
     }
+
+    public int searchPW(String id, String name, String email){
+        // 임시 비밀번호 발급해서 DB에 저장하기
+        UpdatePwDto updatePwDto = new UpdatePwDto();
+        updatePwDto.setUid(id);
+        String PW = UUID.randomUUID().toString();
+        System.out.println("PW : " + PW);
+        updatePwDto.setPassword(PW_ENCODER.encode(PW));
+        updatePwDto.setName(name);
+        updatePwDto.setEmail(email);
+
+        // 임시 비밀번호 네이버 이메일로 쏴주기
+        try {
+            mail.sendMail(updatePwDto,PW);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return MAPPER.searchPW(updatePwDto);
+    }
+
+
 }
 

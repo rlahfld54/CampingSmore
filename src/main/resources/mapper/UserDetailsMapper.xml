@@ -20,8 +20,6 @@
         WHERE user_id = #{uid}
     </select>
 
-
-    <!-- ///////////////////////////////////////// user_token /////////-->
     <insert id="updUserToken">
         INSERT INTO user_token
         (iuser, ip, access_token, refresh_token)
@@ -58,6 +56,12 @@
         , birth_date = #{birth_date}
         , phone = #{phone}
         , user_address = #{user_address}
+        where user_id = #{uid}
+    </update>
+
+    <update id="searchPW">
+        UPDATE user
+        SET password = #{password}
         where user_id = #{uid}
     </update>
 </mapper>

@@ -14,5 +14,4 @@ public class BoardCmtDeVo {
     private BoardDeVo boardDeVo;
     private List<BoardPicVo> picList;
     private CommentRes commentList;
-
 }
