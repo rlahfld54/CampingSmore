@@ -14,4 +14,5 @@ public class BoardDeVo {
     private String ctnt;
     private String name;
     private LocalDateTime createdat;
+    private Long boardview;
 }

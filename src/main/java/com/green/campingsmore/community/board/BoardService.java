@@ -75,6 +75,7 @@ public class BoardService {
         entity.setIboard(dto.getIboard());
         entity.setTitle(dto.getTitle());
         entity.setCtnt(dto.getCtnt());
+        entity.setIuser(dto.getIuser());
         Long result = mapper.updBoard(entity);
         BoardPicEntity boardPicEntity = new BoardPicEntity();
         boardPicEntity.setIboardpic(dto.getIboard());
@@ -158,6 +159,7 @@ public class BoardService {
     public BoardCmtDeVo deBoard(BoardDeDto dto) {
         int row = 15;
         int page = 1;
+        mapper.viewBoard(dto);
         BoardDeVo boardDeVo = mapper.deBoard(dto);
         CommentPageDto dto1 = new CommentPageDto();
         dto1.setIboard(dto.getIboard());

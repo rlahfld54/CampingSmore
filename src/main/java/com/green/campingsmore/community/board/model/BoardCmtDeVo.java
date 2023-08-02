@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 public class BoardCmtDeVo {
     private BoardDeVo boardDeVo;
-    private CommentRes commentList;
     private List<BoardPicVo> picList;
+    private CommentRes commentList;
+
 }

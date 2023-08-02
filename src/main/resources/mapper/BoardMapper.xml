@@ -70,7 +70,7 @@
         limit #{startIdx},#{row}
     </select>
     <select id="deBoard">
-        SELECT A.iboard,D.name, A.title, A.ctnt, C.name, A.created_at createdat
+        SELECT A.iboard,D.name, A.title, A.ctnt, C.name, A.created_at createdat,A.board_view boardview
         FROM board A
         LEFT JOIN user C
         ON A.iuser = C.iuser
@@ -88,13 +88,18 @@
         update board
         set title = #{title}
         ,ctnt = #{ctnt}
-        where iboard =#{iboard}
+        where iboard =#{iboard} and iuser =#{iuser}
     </update>
     <delete id="delPic">
         DELETE
         FROM board_image
         WHERE iboardpic = #{iboardpic}
     </delete>
+    <update id="viewBoard">
+        UPDATE board
+        SET board_view = board_view+1
+        WHERE iboard = #{iboard}
+    </update>
 
 
 </mapper>

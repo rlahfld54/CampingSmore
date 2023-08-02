@@ -20,4 +20,5 @@ public interface BoardMapper {
     List<BoardPicVo> picBoard(BoardDeDto dto);
     Long updBoard(BoardEntity entity);
     Long delPic(BoardPicEntity pic);
+    Long viewBoard(BoardDeDto dto);
 }
