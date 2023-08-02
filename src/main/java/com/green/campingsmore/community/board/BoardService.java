@@ -31,7 +31,7 @@ public class BoardService {
     private final int ROW = 15;
     private final int Page = 1;
 
-    @Value("/home/download/")
+    @Value("${file.dir}")
     private String fileDir;
 
     @Transactional(rollbackFor = Exception.class)

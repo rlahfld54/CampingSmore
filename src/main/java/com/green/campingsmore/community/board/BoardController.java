@@ -2,6 +2,7 @@ package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
+@Tag(name = "게시판")
 public class BoardController {
     private final BoardService service;
 
@@ -75,5 +77,4 @@ public class BoardController {
     public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
         return service.updBoard(pic, dto);
     }
-
 }
