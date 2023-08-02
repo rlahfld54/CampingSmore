@@ -31,7 +31,7 @@ public class ItemController {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
-    @GetMapping("/search")
+/*    @GetMapping("/search")
     @Operation(summary = "아이템 검색 및 검색리스트"
             , description = "" +
             "\"text\": [-] 검색어,<br>" +
@@ -45,6 +45,26 @@ public class ItemController {
         dto.setPage(page);
         dto.setRow(row);
         return SERVICE.searchItem(dto);
+    }*/
+
+    @GetMapping("/search")
+    @Operation(summary = "아이템 검색 및 검색리스트"
+            , description = "" +
+            "\"text\": [-] 검색어,<br>" +
+            "\"page\": [-] 리스트 페이지<br>" +
+            "\"row\": [고정] 아이템 개수<br>")
+    public List<ItemVo> getSearchItem(@RequestParam(required=false)String text,
+                                      @RequestParam(defaultValue = "1")int page,
+                                      @RequestParam(defaultValue = "21")int row,
+                                      @RequestParam(required=false)Long cate,
+                                      @RequestParam(defaultValue = "0")int sort) {
+        ItemSearchDto2 dto = new ItemSearchDto2();
+        dto.setText(text);
+        dto.setPage(page);
+        dto.setRow(row);
+        dto.setIitemCategory(cate);
+        dto.setSort(sort);
+        return SERVICE.searchItem(dto);
     }
 
     @GetMapping("/category")
@@ -54,21 +74,6 @@ public class ItemController {
         return SERVICE.selCategory();
     }
 
-    @GetMapping("/itemlist")
-    @Operation(summary = "아이템 카테고리별 리스트"
-            , description = "" +
-            "\"cate\": [-] 카테고리 PK,<br>" +
-            "\"page\": [-] 리스트 페이지,<br>" +
-            "\"row\": [고정] 아이템 개수<br>")
-    public List<ItemVo> getICateList(@RequestParam Long cate,
-                                     @RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(defaultValue = "21")int row) {
-        ItemSelCateDto dto = new ItemSelCateDto();
-        dto.setIitemCategory(cate);
-        dto.setPage(page);
-        dto.setRow(row);
-        return SERVICE.selCateItem(dto);
-    }
 
     @GetMapping("/detail")
     @Operation(summary = "아이템 상세페이지"
@@ -77,7 +82,7 @@ public class ItemController {
     public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
                                             @RequestParam(defaultValue = "1")int page,
                                             @RequestParam(defaultValue = "5")int row){
-        ItemSelDto dto = new ItemSelDto();
+        ItemSelDetailDto dto = new ItemSelDetailDto();
         dto.setPage(page);
         dto.setIitem(iitem);
         dto.setRow(row);

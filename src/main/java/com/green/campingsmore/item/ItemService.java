@@ -76,13 +76,20 @@ public class ItemService {
 
     }
 
-    public List<ItemVo> searchItem(ItemSearchDto dto) {
+/*    public List<ItemVo> searchItem(ItemSearchDto dto) {
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         log.info("res : {}", dto);
 
 
      return MAPPER.searchItem(dto);
-    }
+    }*/
+    public List<ItemVo> searchItem(ItemSearchDto2 dto) {
+    dto.setStartIdx((dto.getPage()-1) * dto.getRow());
+    log.info("res : {}", dto);
+
+
+    return MAPPER.searchItem(dto);
+}
 
 
     public List<ItemSelCateVo> selCategory(){
@@ -106,17 +113,12 @@ public class ItemService {
      return null;
     }
 
-    public List<ItemVo> selCateItem(ItemSelCateDto dto) {
-        dto.setStartIdx((dto.getPage()-1)* dto.getRow());
-        return MAPPER.selCateItem(dto);
-    }
-
     public int insBestItem(ItemInsBest dto) {
 
     return MAPPER.insBestItem(dto);
     }
 
-    public ItemDetailReviewVo selDetail(ItemSelDto dto) {
+    public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
         ItemSelDetailVo vo = MAPPER.selDetail(dto.getIitem());
 
         ReviewPageDto reviewDto = new ReviewPageDto();
