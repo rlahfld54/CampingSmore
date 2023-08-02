@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @Tag(name="아이템")
-@RequestMapping("/api/campingsmore")
+@RequestMapping("/api/item")
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService SERVICE;
@@ -22,7 +22,7 @@ public class ItemController {
 
     }*/
 
-    @PostMapping("/item/dtailpic")
+    @PostMapping("/dtailpic")
     @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
@@ -31,33 +31,65 @@ public class ItemController {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
-    @GetMapping("/item/category")
+/*    @GetMapping("/search")
+    @Operation(summary = "아이템 검색 및 검색리스트"
+            , description = "" +
+            "\"text\": [-] 검색어,<br>" +
+            "\"page\": [-] 리스트 페이지<br>" +
+            "\"row\": [고정] 아이템 개수<br>")
+    public List<ItemVo> getSearchItem(@RequestParam String text,
+                                       @RequestParam(defaultValue = "1")int page,
+                                       @RequestParam(defaultValue = "21")int row) {
+        ItemSearchDto dto = new ItemSearchDto();
+        dto.setText(text);
+        dto.setPage(page);
+        dto.setRow(row);
+        return SERVICE.searchItem(dto);
+    }*/
+
+    @GetMapping("/search")
+    @Operation(summary = "아이템 검색 및 검색리스트"
+            , description = "" +
+            "\"text\": [-] 검색어,<br>" +
+            "\"page\": [-] 리스트 페이지<br>" +
+            "\"row\": [고정] 아이템 개수<br>")
+    public List<ItemVo> getSearchItem(@RequestParam(required=false)String text,
+                                      @RequestParam(defaultValue = "1")int page,
+                                      @RequestParam(defaultValue = "21")int row,
+                                      @RequestParam(required=false)Long cate,
+                                      @RequestParam(defaultValue = "0")int sort) {
+        ItemSearchDto2 dto = new ItemSearchDto2();
+        dto.setText(text);
+        dto.setPage(page);
+        dto.setRow(row);
+        dto.setIitemCategory(cate);
+        dto.setSort(sort);
+        return SERVICE.searchItem(dto);
+    }
+
+    @GetMapping("/category")
     @Operation(summary = "아이템 카테고리"
             , description = "" )
     public List<ItemSelCateVo> getCategory(){
         return SERVICE.selCategory();
     }
 
-    @GetMapping("/item/itemlist")
-    @Operation(summary = "아이템 카테고리별 리스트"
-            , description = "" +
-            "\"cate\": [-] 카테고리 PK,<br>" +
-            "\"page\": [-] 리스트 페이지<br>")
-    public List<ItemVo> getICateList(@RequestParam int cate,
-                                    @RequestParam(defaultValue = "1") int page) {
 
-        return SERVICE.selCateItem(cate, page);
-    }
-
-    @GetMapping("/item/detail")
+    @GetMapping("/detail")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>")
-    public ItemSelDetailVo getItemDetail(@RequestParam Long iitem){
-        return SERVICE.selDetail(iitem);
+    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
+                                            @RequestParam(defaultValue = "1")int page,
+                                            @RequestParam(defaultValue = "5")int row){
+        ItemSelDetailDto dto = new ItemSelDetailDto();
+        dto.setPage(page);
+        dto.setIitem(iitem);
+        dto.setRow(row);
+        return SERVICE.selDetail(dto);
     }
 
-    @PostMapping("/item/bestitem")
+    @PostMapping("/bestitem")
     @Operation(summary = "추천 아이템 추가"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
@@ -66,11 +98,11 @@ public class ItemController {
         return SERVICE.insBestItem(dto);
     }
 
-    @GetMapping("/itme/bestitem")
+    @GetMapping("/bestitem")
     @Operation(summary = "추천 아이템 리스트"
             , description = "" )
     public List<ItemVo> getBestItem() {
-        return null;
+        return SERVICE.selBestItem();
     }
 
 

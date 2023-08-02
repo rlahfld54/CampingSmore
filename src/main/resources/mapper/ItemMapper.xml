@@ -3,18 +3,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.item.ItemMapper">
+
     <insert id="insItem">
         INSERT INTO item
         SET iitem_category = #{iitemCategory},
-            name = #{name},
-            price = #{price},
-            pic = #{pic}
+        name = #{name},
+        price = #{price},
+        pic = #{pic}
     </insert>
 
     <insert id="insCate">
         INSERT INTO item_category
         SET name = #{categoryName}
     </insert>
+
+
+
+
+    <select id="searchItem" resultType="ItemVo">
+        SELECT iitem, `name`, pic, price, created_at createdAt
+        FROM item
+        <where>
+            <if test = "text != null">
+                and `name` LIKE CONCAT('%',#{text},'%')
+            </if>
+            <if test = "iitemCategory != null">
+                and iitem_category = #{iitemCategory}
+            </if>
+            AND del_yn = 1
+        </where>
+        <if test = "sort == 0">
+            ORDER BY created_at DESC
+        </if>
+        <if test = "sort == 1">
+            ORDER BY created_at
+        </if>
+        <if test="sort == 2">
+            ORDER BY price DESC
+        </if>
+        <if test="sort == 3">
+            ORDER BY price
+        </if>
+        LIMIT ${startIdx}, ${row}
+    </select>
+
 
     <select id="selCategory" resultType="ItemSelCateVo">
         SELECT iitem_category iitemCategory, `name`
@@ -28,14 +60,8 @@
         WHERE A.iitem = #{iitem}
     </select>
 
-    <select id="selCateItem" resultType="ItemVo">
-        SELECT iitem, name, pic, price, created_at createdAt
-        FROM item
-        WHERE iitem_category = #{iitemCategory}
-        AND del_yn = 1
-        ORDER BY created_at DESC
-        LIMIT ${startIdx}, ${row}
-    </select>
+
+
 
     <insert id="insBestItem">
         INSERT INTO best_item
@@ -43,13 +69,17 @@
         month_like = #{monthLike}
     </insert>
 
-
     <select id="selBestItem" resultType="ItemVo">
-        SELECT iitem, name, pic, price, created_at createdAt
-        FROM best_item
-        WHERE month_like =
-        ORDER BY iitem_category DESC
+        SELECT  A.iitem, A.`name`, A.pic, A.price, A.created_at createdAt
+        FROM item A
+        INNER JOIN best_item B
+        ON A.iitem = B.iitem
+        WHERE DATE_format(month_like, "%Y-%m") = DATE_format(NOW(),"%Y-%m")
+        ORDER BY iitem;
     </select>
+
+
+
 
 
     <select id="selIcate" resultType="Long">
