@@ -4,10 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.dataset.NaverApi;
 import com.green.campingsmore.item.model.*;
+import com.green.campingsmore.review.ReviewMapper;
+import com.green.campingsmore.review.ReviewService;
+import com.green.campingsmore.review.model.ItemSelDto;
+import com.green.campingsmore.review.model.ReviewPageDto;
+import com.green.campingsmore.review.model.ReviewRes;
+import com.green.campingsmore.review.model.ReviewSelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,11 +22,13 @@ import java.util.Map;
 public class ItemService {
     private final ItemMapper MAPPER;
     private final NaverApi naverApi;
+    private final ReviewService REVIEWSERVICE;
 
 @Autowired
-    public ItemService(ItemMapper MAPPER, NaverApi naverApi) {
+    public ItemService(ItemMapper MAPPER, NaverApi naverApi, ReviewService REVIEWSERVICE) {
         this.MAPPER = MAPPER;
         this.naverApi = naverApi;
+        this.REVIEWSERVICE = REVIEWSERVICE;
     }
 
     public int insItem(String text) {
@@ -108,7 +115,25 @@ public class ItemService {
     return MAPPER.insBestItem(dto);
     }
 
-    public ItemSelDetailVo selDetail(Long iitem) {
-    return MAPPER.selDetail(iitem);
+    public ItemDetailReviewVo selDetail(ItemSelDto dto) {
+        ItemSelDetailVo vo = MAPPER.selDetail(dto.getIitem());
+
+        ReviewPageDto reviewDto= new ReviewPageDto();
+        reviewDto.setIitem(dto.getIitem());
+        reviewDto.setPage(dto.getPage());
+        reviewDto.setRow(5);
+        reviewDto.setStartIdx((dto.getPage() - 1) * reviewDto.getRow());
+        ReviewRes reviewList = REVIEWSERVICE.selReview(reviewDto);
+    return ItemDetailReviewVo.builder()
+            .item(vo)
+            .review(reviewList)
+            .build();
+    }
+/*    public ItemSelDetailVo selDetail(Long iitem) {
+        return MAPPER.selDetail(iitem);
+    }*/
+
+    public List<ItemVo> selBestItem() {
+    return MAPPER.selBestItem();
     }
 }
