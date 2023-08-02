@@ -1,6 +1,7 @@
 package com.green.campingsmore.item;
 
 import com.green.campingsmore.item.model.*;
+import com.green.campingsmore.review.model.ItemSelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @Tag(name="아이템")
-@RequestMapping("/api/campingsmore")
+@RequestMapping("/api/item")
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService SERVICE;
@@ -22,7 +23,7 @@ public class ItemController {
 
     }*/
 
-    @PostMapping("/item/dtailpic")
+    @PostMapping("/dtailpic")
     @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
@@ -31,14 +32,14 @@ public class ItemController {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
-    @GetMapping("/item/category")
+    @GetMapping("/category")
     @Operation(summary = "아이템 카테고리"
             , description = "" )
     public List<ItemSelCateVo> getCategory(){
         return SERVICE.selCategory();
     }
 
-    @GetMapping("/item/itemlist")
+    @GetMapping("/itemlist")
     @Operation(summary = "아이템 카테고리별 리스트"
             , description = "" +
             "\"cate\": [-] 카테고리 PK,<br>" +
@@ -49,15 +50,18 @@ public class ItemController {
         return SERVICE.selCateItem(cate, page);
     }
 
-    @GetMapping("/item/detail")
+    @GetMapping("/detail")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>")
-    public ItemSelDetailVo getItemDetail(@RequestParam Long iitem){
-        return SERVICE.selDetail(iitem);
+    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem){
+        ItemSelDto dto = new ItemSelDto();
+        dto.setPage(1);
+        dto.setIitem(iitem);
+        return SERVICE.selDetail(dto);
     }
 
-    @PostMapping("/item/bestitem")
+    @PostMapping("/bestitem")
     @Operation(summary = "추천 아이템 추가"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
@@ -66,11 +70,11 @@ public class ItemController {
         return SERVICE.insBestItem(dto);
     }
 
-    @GetMapping("/itme/bestitem")
+    @GetMapping("/bestitem")
     @Operation(summary = "추천 아이템 리스트"
             , description = "" )
     public List<ItemVo> getBestItem() {
-        return null;
+        return SERVICE.selBestItem();
     }
 
 
