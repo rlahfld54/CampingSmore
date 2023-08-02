@@ -29,23 +29,16 @@ springdoc:
   swagger-ui:
     path: /swagger.html
 
-#components:
-#  securitySchemes:
-#    bearerAuth:            # arbitrary name for the security scheme
-#      type: http
-#      scheme: bearer
-#      bearerFormat: JWT
-#file:
-#  dir: home/download/
-
 server:
   port: 8080
 # KaKao
 KaKao:
   Auth: 0fc03c2467ca0d7ca9999c9d1ed64911
 
-
 # Naver
 Naver:
   YOUR_CLIENT_ID: ncAR9prYDibH9NS7yQuA
   YOUR_CLIENT_SECRET: vl2B4Z4tvO
+  NAVER_ID: green502test@naver.com
+  SMTP: smtp.naver.com
+  MAIL_PORT: 995
