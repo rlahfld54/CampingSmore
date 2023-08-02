@@ -15,6 +15,7 @@ public interface ItemMapper {
     List<ItemVo> selCateItem(ItemSelCateDto dto);
     ItemSelDetailVo selDetail(Long iitem);
     int insBestItem(ItemInsBest dto);
+    List<ItemVo> selBestItem();
 
 
     int delDetail(Long iitem);
