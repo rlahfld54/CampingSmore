@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.item.ItemMapper">
 
+<!--  아이템 추가  -->
     <insert id="insItem">
         INSERT INTO item
         SET iitem_category = #{iitemCategory},
@@ -12,6 +13,7 @@
         pic = #{pic}
     </insert>
 
+<!--카테고리 추가-->
     <insert id="insCate">
         INSERT INTO item_category
         SET name = #{categoryName}
@@ -19,16 +21,16 @@
 
 
 
-
+<!--아이템 검색 및 검색리스트-->
     <select id="searchItem" resultType="ItemVo">
         SELECT iitem, `name`, pic, price, created_at createdAt
         FROM item
         <where>
-            <if test = "text != null">
-                and `name` LIKE CONCAT('%',#{text},'%')
-            </if>
             <if test = "iitemCategory != null">
                 and iitem_category = #{iitemCategory}
+            </if>
+            <if test = "text != null">
+                and `name` LIKE CONCAT('%',#{text},'%')
             </if>
             AND del_yn = 1
         </where>
@@ -47,13 +49,14 @@
         LIMIT ${startIdx}, ${row}
     </select>
 
-
+<!-- 카테고리 보기 -->
     <select id="selCategory" resultType="ItemSelCateVo">
         SELECT iitem_category iitemCategory, `name`
         FROM item_category
         order BY `name` DESC
     </select>
 
+<!--  아이템 상세페이지  -->
     <select id="selDetail" resultType="ItemSelDetailVo">
         SELECT  A.iitem,A.`name`, A.pic, A.`name`, A.price, A.created_at createdAt, A.info, GROUP_CONCAT(B.pic) picList
         FROM item A, item_detail_pic B
@@ -62,13 +65,14 @@
 
 
 
-
+<!-- 추천 아이템 추가 -->
     <insert id="insBestItem">
         INSERT INTO best_item
         SET iitem = #{iitem},
         month_like = #{monthLike}
     </insert>
 
+<!--  추천 아이템 리스트  -->
     <select id="selBestItem" resultType="ItemVo">
         SELECT  A.iitem, A.`name`, A.pic, A.price, A.created_at createdAt
         FROM item A
@@ -81,12 +85,13 @@
 
 
 
-
+<!-- 카테고리 -->
     <select id="selIcate" resultType="Long">
         SELECT iitem_category iitemCategory FROM item_category
         WHERE name = #{categoryName}
     </select>
 
+    <!-- 아이템 상세페이지 변경 del->ins -->
     <delete id="delDetailPic">
         DELETE FROM item_detail_pic
         WHERE iitem = #{iitem}

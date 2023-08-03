@@ -92,22 +92,24 @@ public class ItemService {
 }
 
 
+    // 카테고리
     public List<ItemSelCateVo> selCategory(){
 
     return MAPPER.selCategory();
     }
 
+    //상세이미지 추가
     public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
         // 아이템 PK에 사진이 있으면 삭제
         // 아이템 PK로 아이템 추가
-        MAPPER.delDetail(Long.valueOf(iitem));
+        MAPPER.delDetailPic(Long.valueOf(iitem));
 
         ItemDetailInsDto dto = new ItemDetailInsDto();
         dto.setIitem(iitem);
         for (int i = 0; i < picUrl.size(); i++) {
             log.info("picUrl.get(i): {}",picUrl.get(i));
             dto.setPic(picUrl.get(i));
-            MAPPER.insDetail(dto);
+            MAPPER.insDetailPic(dto);
         }
 
      return null;
@@ -118,6 +120,7 @@ public class ItemService {
     return MAPPER.insBestItem(dto);
     }
 
+    //
     public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
         ItemSelDetailVo vo = MAPPER.selDetail(dto.getIitem());
 
@@ -139,4 +142,5 @@ public class ItemService {
     public List<ItemVo> selBestItem() {
     return MAPPER.selBestItem();
     }
+
 }
