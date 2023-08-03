@@ -1,6 +1,7 @@
 package com.green.campingsmore.order.cart;
 
 import com.green.campingsmore.order.cart.model.InsCartDto2;
+import com.green.campingsmore.order.cart.model.SelCartVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,12 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 @MybatisTest
@@ -22,6 +28,12 @@ class CartMapperTest {
     @Test
     @DisplayName("CartMapper - 장바구니 목록 보여주기")
     void selCart() {
+        Long iuser = 1L;
+        List<SelCartVo> list = mapper.selCart(iuser);
+        assertEquals(2,list.size());
+
+        SelCartVo item1 = list.get(0);
+        assertEquals(1L, item1.getIcart());
     }
 
     @Test
