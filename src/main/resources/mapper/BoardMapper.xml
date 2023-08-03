@@ -18,6 +18,14 @@
            (#{item.iboard}, #{item.pic})
         </foreach>
     </insert>
+
+    <update id="updBoardMain">
+        update board
+        set title = #{title}
+        ,ctnt = #{ctnt}
+        ,iuser = #{iuser}
+        where iboard =#{iboard}
+    </update>
     <select id="selMyBoard">
         select icategory,title,created_at createdat,board_view boardview
         from board
@@ -100,6 +108,4 @@
         SET board_view = board_view+1
         WHERE iboard = #{iboard}
     </update>
-
-
 </mapper>

@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     Long insBoard(BoardEntity entity);
+    Long updBoardMain(BoardEntity entity);
     Long insBoardPic(List<BoardPicEntity> pic);
     List<BoardMyVo> selMyBoard(BoardMyDto dto);
     Long delBoard(BoardDelDto dto);
