@@ -53,10 +53,10 @@ public class ItemController {
             "\"text\": [-] 검색어,<br>" +
             "\"page\": [-] 리스트 페이지<br>" +
             "\"row\": [고정] 아이템 개수<br>")
-    public List<ItemVo> getSearchItem(@RequestParam(required=false)String text,
+    public List<ItemVo> getSearchItem(@RequestParam(value = "text",required=false)String text,
                                       @RequestParam(defaultValue = "1")int page,
                                       @RequestParam(defaultValue = "21")int row,
-                                      @RequestParam(required=false)Long cate,
+                                      @RequestParam(value = "cate",required=false)Long cate,
                                       @RequestParam(defaultValue = "0")int sort) {
         ItemSearchDto2 dto = new ItemSearchDto2();
         dto.setText(text);
