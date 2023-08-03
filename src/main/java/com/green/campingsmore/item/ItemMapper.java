@@ -9,10 +9,12 @@ import java.util.List;
 public interface ItemMapper {
     int insItem(ItemInsParam ipram);
     int insCate(String categoryName);
+//    List<ItemVo> searchItem(ItemSearchDto dto);
+    List<ItemVo> searchItem(ItemSearchDto2 dto);
     List<ItemSelCateVo> selCategory();
     String selCate(String categoryName);
     Long selIcate(String categoryName);
-    List<ItemVo> selCateItem(ItemSelCateDto dto);
+
     ItemSelDetailVo selDetail(Long iitem);
     int insBestItem(ItemInsBest dto);
     List<ItemVo> selBestItem();

@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.dataset.NaverApi;
 import com.green.campingsmore.item.model.*;
-import com.green.campingsmore.review.ReviewMapper;
 import com.green.campingsmore.review.ReviewService;
-import com.green.campingsmore.review.model.ItemSelDto;
 import com.green.campingsmore.review.model.ReviewPageDto;
 import com.green.campingsmore.review.model.ReviewRes;
-import com.green.campingsmore.review.model.ReviewSelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +76,22 @@ public class ItemService {
 
     }
 
+/*    public List<ItemVo> searchItem(ItemSearchDto dto) {
+        dto.setStartIdx((dto.getPage()-1) * dto.getRow());
+        log.info("res : {}", dto);
+
+
+     return MAPPER.searchItem(dto);
+    }*/
+    public List<ItemVo> searchItem(ItemSearchDto2 dto) {
+    dto.setStartIdx((dto.getPage()-1) * dto.getRow());
+    log.info("res : {}", dto);
+
+
+    return MAPPER.searchItem(dto);
+}
+
+
     public List<ItemSelCateVo> selCategory(){
 
     return MAPPER.selCategory();
@@ -100,29 +113,19 @@ public class ItemService {
      return null;
     }
 
-    public List<ItemVo> selCateItem(int cate, int page) {
-
-        ItemSelCateDto dto = new ItemSelCateDto();
-        dto.setIitemCategory(Long.valueOf(cate));
-        dto.setPage(page);
-        dto.setRow(21);
-        dto.setStartIdx((dto.getPage()-1)* dto.getRow());
-        return MAPPER.selCateItem(dto);
-    }
-
     public int insBestItem(ItemInsBest dto) {
 
     return MAPPER.insBestItem(dto);
     }
 
-    public ItemDetailReviewVo selDetail(ItemSelDto dto) {
+    public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
         ItemSelDetailVo vo = MAPPER.selDetail(dto.getIitem());
 
-        ReviewPageDto reviewDto= new ReviewPageDto();
+        ReviewPageDto reviewDto = new ReviewPageDto();
         reviewDto.setIitem(dto.getIitem());
         reviewDto.setPage(dto.getPage());
-        reviewDto.setRow(5);
-        reviewDto.setStartIdx((dto.getPage() - 1) * reviewDto.getRow());
+        reviewDto.setRow(dto.getRow());
+        reviewDto.setStartIdx((dto.getPage() - 1) * dto.getRow());
         ReviewRes reviewList = REVIEWSERVICE.selReview(reviewDto);
     return ItemDetailReviewVo.builder()
             .item(vo)

@@ -11,7 +11,7 @@
         WHERE A.iuser = #{iuser}
     </select>
 
-    <insert id="insCart">
+    <insert id="insCart" useGeneratedKeys="true" keyProperty="icart">
         INSERT INTO cart
         SET
         iuser = #{iuser},
@@ -25,4 +25,5 @@
         DELETE FROM cart
         WHERE icart = #{icart}
     </delete>
+
 </mapper>

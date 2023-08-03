@@ -1,6 +1,7 @@
 package com.green.campingsmore.order.cart;
 
 import com.green.campingsmore.order.cart.model.InsCartDto;
+import com.green.campingsmore.order.cart.model.InsCartDto2;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,11 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Long insCart(InsCartDto dto) {
-        return MAPPER.insCart(dto);
+        InsCartDto2 dto2 = new InsCartDto2();
+        dto2.setIuser(dto.getIuser());
+        dto2.setIitem(dto.getIitem());
+        dto2.setQuantity(dto.getQuantity());
+        return MAPPER.insCart(dto2);
     }
 
     @Override
