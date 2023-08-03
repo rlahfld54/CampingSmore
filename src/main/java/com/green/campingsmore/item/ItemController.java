@@ -15,19 +15,28 @@ import java.util.List;
 public class ItemController {
     private final ItemService SERVICE;
 
-    /*@PostMapping("/item/post")
+    /* api 아이템 불러오기
+    @PostMapping("/post")
     @Operation(summary = "사용금지")
     public int insItem(@RequestParam String text) {
         return SERVICE.insItem(text);
 
     }*/
 
+//    @PostMapping("/itempost")
+//    @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
+//            , description = "" +
+//            "\"iitem\": [-] 아이템 PK,<br>" +
+//            "\"picUrl\": [-] 사진 이미지 url<br>")
+//    public int insItem(@RequestParam )
+
     @PostMapping("/dtailpic")
     @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem, @RequestParam List<String> picUrl) {
+    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem,
+                                               @RequestParam List<String> picUrl) {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
