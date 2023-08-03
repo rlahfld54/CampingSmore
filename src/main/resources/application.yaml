@@ -47,6 +47,9 @@ KaKao:
 Naver:
   YOUR_CLIENT_ID: ncAR9prYDibH9NS7yQuA
   YOUR_CLIENT_SECRET: vl2B4Z4tvO
+  NAVER_ID: green502test@naver.com
+  SMTP: smtp.naver.com
+  MAIL_PORT: 995
 
 
 ---
