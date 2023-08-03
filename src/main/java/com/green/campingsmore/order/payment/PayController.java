@@ -54,12 +54,22 @@ public class PayController {
         return SERVICE.selPaymentDetailAll(iuser);
     }
 
-    @PutMapping("/paymentList/{iuser}")
-    @Operation(summary = "결제 내역 삭제(마이 페이지)",
-            description = "<h3> iorder : 결제내역 PK\n"
+    @GetMapping("/paymentList/detail/{iorder}")
+    @Operation(summary = "상세 결제 내역 보기(마이 페이지)",
+            description = "<h3> iorder : 결제내역 PK\n" +
+                    "<h3> iitem : 아이템 PK\n"
     ) //유저마이페이지에서 조회
-    private Long delPaymentDetail(@PathVariable Long iorder) {
-        return SERVICE.delPaymentDetail(iorder);
+    private SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@PathVariable Long iorder, @RequestParam Long iitem) {
+        return SERVICE.SelDetailedItemPaymentInfo(iorder, iitem);
+    }
+
+    @PutMapping("/paymentList/{iorder}")
+    @Operation(summary = "전체 결제 내역에서 하나의 결제 내역 삭제(아이템별, 마이 페이지)",
+            description = "<h3> iorder : 결제내역 PK\n" +
+            "<h3> iitem : 아이템 PK\n"
+    ) //유저마이페이지에서 조회
+    private Long delPaymentDetail(@PathVariable Long iorder, @RequestParam Long iitem) {
+        return SERVICE.delPaymentDetail(iorder, iitem);
     }
 
     @PostMapping("/order/cart")

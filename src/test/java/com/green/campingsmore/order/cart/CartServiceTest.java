@@ -2,6 +2,7 @@ package com.green.campingsmore.order.cart;
 
 import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.SelCartVo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ class CartServiceTest {
 
 
     @Test
+    @DisplayName("CartService - 장바구니 정보 저장")
     void insCart() {
         Long testResult = 1L;
         when(mapper.insCart(any())).thenReturn(testResult);
@@ -46,6 +48,7 @@ class CartServiceTest {
     }
 
     @Test
+    @DisplayName("CartService - 장바구니 목록 보여주기")
     void selCart() {
         //given
         SelCartVo vo1 = new SelCartVo(1L,"바베큐.jpg","음모오",12345L,2L);
@@ -74,6 +77,7 @@ class CartServiceTest {
     }
 
     @Test
+    @DisplayName("CartService - 하나의 장바구니 정보 삭제")
     void delCart() {
         Long testResult = 1L;
         when(mapper.delCart(any())).thenReturn(testResult);
@@ -85,6 +89,7 @@ class CartServiceTest {
     }
 
     @Test
+    @DisplayName("CartService - 체크된 장바구니 정보들 삭제")
     void delCartAll() {
         Long testIcart1 = 1L;
         Long testIcart2 = 2L;

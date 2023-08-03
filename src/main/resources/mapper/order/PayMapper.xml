@@ -39,20 +39,21 @@
     </resultMap>
 
     <select id="selPaymentDetailAll1" resultMap="paymentDetailAllList">
-        SELECT A.iorder, A.iuser, A.address, A.address_detail addressDetail, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
-        FROM `order` A
+        SELECT iorder
+        FROM `order`
         WHERE iuser = #{iuser}
         AND del_yn = 1
     </select>
 
     <select id="selPaymentDetailAll2" resultType="PaymentDetailDto2">
-        SELECT B.iitem, B.`name`, A.price, A.quantity, A.total_price totalPrice, B.pic, C.created_at paymentDate
+        SELECT B.iitem, B.`name`, A.price, A.total_price totalPrice, B.pic, C.created_at paymentDate
         FROM order_item A
         INNER JOIN item B
         ON A.iitem = B.iitem
         INNER JOIN `order` C
         ON A.iorder = C.iorder
         WHERE C.iorder = #{iorder}
+        AND A.del_yn = 1
     </select>
 
     <select id="selPaymentPageItemList">
@@ -72,8 +73,23 @@
     </select>
 
     <update id="delPaymentDetail">
-        UPDATE `order`
+        UPDATE `order_item`
         SET del_yn = 0
         WHERE iorder = #{iorder}
+        AND iitem = #{iitem}
     </update>
+
+    <select id="SelDetailedItemPaymentInfo">
+        SELECT A.iitem, C.name, A.price, A.quantity,
+        A.total_price totalPrice, C.pic, B.created_at paymentDate,
+        B.address, B.address_detail addressDetail,
+        B.shipping_price shippingPrice, B.shipping_memo shippingMemo
+        FROM order_item A
+        INNER JOIN `order` B
+        ON A.iorder = B.iorder
+        INNER JOIN item C
+        ON A.iitem = C.iitem
+        WHERE B.iorder = #{iorder}
+        AND A.iitem = #{iitem}
+    </select>
 </mapper>

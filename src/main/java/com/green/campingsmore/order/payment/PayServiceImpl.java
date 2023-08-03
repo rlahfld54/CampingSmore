@@ -76,7 +76,12 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public Long delPaymentDetail(Long iorder) {
-        return MAPPER.delPaymentDetail(iorder);
+    public Long delPaymentDetail(Long iorder, Long iitem) {
+        return MAPPER.delPaymentDetail(iorder, iitem);
+    }
+
+    @Override
+    public SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem) {
+        return MAPPER.SelDetailedItemPaymentInfo(iorder, iitem);
     }
 }

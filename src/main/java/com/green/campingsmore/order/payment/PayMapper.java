@@ -13,5 +13,6 @@ public interface PayMapper {
     List<SelPaymentDetailDto> selPaymentDetailAll1(Long iuser);
     List<PaymentDetailDto> selPaymentPageItemList(List<Long> list);
     PaymentDetailDto selPaymentPageItem(Long iitem);
-    Long delPaymentDetail(Long iorder);
+    Long delPaymentDetail(Long iorder, Long iitem);
+    SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem);
 }
