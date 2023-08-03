@@ -22,7 +22,7 @@ spring:
     username: team_e
     password: green502
 file:
-  dir: /home/download
+  dir: /home/download/
 # swagger
 springdoc:
   swagger-ui:
@@ -34,8 +34,6 @@ springdoc:
 #      type: http
 #      scheme: bearer
 #      bearerFormat: JWT
-#file:
-#  dir: home/download/
 
 server:
   port: 8080

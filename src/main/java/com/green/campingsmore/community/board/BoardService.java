@@ -78,7 +78,7 @@ public class BoardService {
                 }
                 BoardPicEntity picEntity = new BoardPicEntity();
                 picEntity.setIboard(entity.getIboard());
-                picEntity.setPic("file:///D:/"+fileDir+"/"+centerPath+"/"+saveName);
+                picEntity.setPic("file:///D:/"+fileDir+centerPath+"/"+saveName);
                 list.add(picEntity);
                 mapper.insBoardPic(list);
             }
