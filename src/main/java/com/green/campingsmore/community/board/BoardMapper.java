@@ -22,4 +22,8 @@ public interface BoardMapper {
     Long updBoard(BoardEntity entity);
     Long delPic(BoardPicEntity pic);
     Long viewBoard(BoardDeDto dto);
+    Long delWriteBoard(Long iboard);
+    Long delPicBoard(Long iboard);
+    Long insBoardOnePic(BoardPicEntity pic);
+    Long delOnePic(Long iboardpic);
 }

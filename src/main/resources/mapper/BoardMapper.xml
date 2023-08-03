@@ -18,10 +18,26 @@
            (#{item.iboard}, #{item.pic})
         </foreach>
     </insert>
+    <insert id="insBoardOnePic">
+        insert into board_image
+        set iboard =#{iboard}
+        ,pic =#{pic}
+    </insert>
+    <delete id="delWriteBoard">
+        DELETE
+        FROM board
+        WHERE iboard = #{iboard}
+    </delete>
+    <delete id="delPicBoard">
+        delete
+        from board_image
+        where iboard=#{iboard}
+    </delete>
 
     <update id="updBoardMain">
         update board
         set title = #{title}
+        ,icategory =#{icategory}
         ,ctnt = #{ctnt}
         ,iuser = #{iuser}
         where iboard =#{iboard}
@@ -41,7 +57,7 @@
         from board A
         inner join user B
         on A.iuser = B.iuser
-        order by A.iboard desc
+        order by A.icategory asc,A.iboard desc
         limit #{startIdx},#{row}
     </select>
     <select id="maxBoard">
@@ -108,4 +124,9 @@
         SET board_view = board_view+1
         WHERE iboard = #{iboard}
     </update>
+    <delete id="delOnePic">
+        DELETE
+        FROM board_image
+        WHERE iboardpic = #{iboardpic}
+    </delete>
 </mapper>

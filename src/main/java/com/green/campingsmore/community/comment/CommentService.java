@@ -36,13 +36,11 @@ public class CommentService {
         int mc=(int) ceil( maxpage/dto.getRow());
 
         int isMore = mc <dto.getPage() ? 0:1;
-        int num = mc - dto.getPage();
         return CommentRes.builder()
                 .isMore(isMore)
                 .row(dto.getRow())
                 .maxpage(mc)
                 .nowPage(dto.getPage())
-                .midPage(num)
                 .list(list)
                 .build();
     }

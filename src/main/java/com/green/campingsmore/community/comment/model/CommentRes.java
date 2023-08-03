@@ -11,6 +11,5 @@ public class CommentRes {
     private int row;
     private int maxpage;
     private int nowPage;
-    private int midPage;
     private List<CommentVo> list;
 }
