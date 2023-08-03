@@ -1,10 +1,13 @@
 package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
+import com.green.campingsmore.config.security.model.MyUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,12 +16,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
+
+@Tag(name = "게시판")
 public class BoardController {
+
     private final BoardService service;
+
 
     @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "게시판 등록")
-    public Long post(@RequestPart BoardInsDto dto, @RequestPart(required = false) List<MultipartFile> pics) throws Exception {
+
+    public Long postBoard(/*@AuthenticationPrincipal MyUserDetails user
+            ,*/ @RequestPart BoardInsDto dto
+            , @RequestPart(required = false) List<MultipartFile> pics) throws Exception {
+        // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
+//        System.out.println("controller-iuser {}"+ user.getIuser());
+//        service.test();
         return service.postBoard(dto, pics);
     }
 
@@ -75,5 +88,4 @@ public class BoardController {
     public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
         return service.updBoard(pic, dto);
     }
-
 }

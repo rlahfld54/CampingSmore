@@ -3,7 +3,6 @@ mybatis:
   type-aliases-package: com.green.campingsmore
   mapper-locations: classpath:mapper/**/*.xml
 
-
 # 토큰의 암호화 복호화를 위한 secret key로서 이후 HS256 알고리즘을 사용하기 위해, 256비트보다 커야한다.
 # 알파벳은 한단어 당 8bit 이므로 32글자 이상이면 된다.
 springboot:
@@ -22,17 +21,28 @@ spring:
     url: jdbc:mariadb://192.168.0.144:3306/team_e
     username: team_e
     password: green502
-
+file:
+  dir: /home/download
 # swagger
 springdoc:
   swagger-ui:
     path: /swagger.html
+
+#components:
+#  securitySchemes:
+#    bearerAuth:            # arbitrary name for the security scheme
+#      type: http
+#      scheme: bearer
+#      bearerFormat: JWT
+#file:
+#  dir: home/download/
 
 server:
   port: 8080
 # KaKao
 KaKao:
   Auth: 0fc03c2467ca0d7ca9999c9d1ed64911
+
 
 # Naver
 Naver:
@@ -41,3 +51,20 @@ Naver:
   NAVER_ID: green502test@naver.com
   SMTP: smtp.naver.com
   MAIL_PORT: 995
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:mariadb://localhost:3306/campingsmore_test
+    username: root
+    password: green502
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:init/schema.sql
+      data-locations: classpath:init/data.sql

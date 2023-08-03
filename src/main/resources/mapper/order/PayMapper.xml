@@ -4,7 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.order.payment.PayMapper">
 
-
     <insert id="insPayInfo">
         INSERT INTO `order`
         (iuser, address, address_detail, total_price, shipping_price, shipping_memo)
