@@ -30,11 +30,33 @@ class CartMapperTest {
     void selCart() {
         Long iuser = 1L;
         List<SelCartVo> list = mapper.selCart(iuser);
-        assertEquals(2,list.size());
+        assertEquals(2, list.size());
 
         SelCartVo item1 = list.get(0);
         assertEquals(1L, item1.getIcart());
-        assertEquals(1L, item1.getIcart());
+        log.info("첫번째 cart pk : {}", item1.getIcart());
+
+        assertNotNull(item1.getPrice());
+        assertEquals(16500L, item1.getPrice());
+        log.info("첫번째 cart itemPrice : {}", item1.getPrice());
+
+        assertNotNull(item1.getQuantity());
+        assertEquals(1L, item1.getQuantity());
+        log.info("첫번째 cart itemQuantity : {}", item1.getQuantity());
+
+        assertNotNull(item1.getPic());
+        assertEquals("https://shopping-phinf.pstatic.net/main_8014052/80140522706.10.jpg", item1.getPic());
+        log.info("첫번째 cart itemPic : {}", item1.getPic());
+
+        assertNotNull(item1.getName());
+        assertEquals("양의나라 유기농 양고기 양갈비 양꼬치 프렌치렉 숄더랙 캠핑 냉장 냉동", item1.getName());
+        log.info("첫번째 cart itemName : {}", item1.getName());
+
+        //----
+
+        SelCartVo item2 = list.get(1);
+        assertEquals(2L, item2.getIcart());
+        log.info("두번째 cart pk : {}", item2.getIcart());
     }
 
     @Test
@@ -69,6 +91,10 @@ class CartMapperTest {
     @Test
     @DisplayName("CartMapper - 장바구니 내용 삭제")
     void delCart() {
+        Long iuser = 1L;
+        Long delCart = mapper.delCart(iuser);
 
+        assertEquals(1L, delCart);
+        log.info("Cart delete 성공여부 : {} (1 = 성공, 0 = 실패)", delCart);
     }
 }

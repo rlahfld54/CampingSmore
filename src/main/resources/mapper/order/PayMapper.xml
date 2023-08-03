@@ -45,12 +45,14 @@
         AND del_yn = 1
     </select>
 
-    <select id="selPaymentDetailAll2" resultType="PaymentDetailDto">
-        SELECT B.iitem, B.name, A.price, A.quantity, A.total_price totalPrice, B.pic
+    <select id="selPaymentDetailAll2" resultType="PaymentDetailDto2">
+        SELECT B.iitem, B.`name`, A.price, A.quantity, A.total_price totalPrice, B.pic, C.created_at paymentDate
         FROM order_item A
         INNER JOIN item B
         ON A.iitem = B.iitem
-        WHERE iorder = #{iorder}
+        INNER JOIN `order` C
+        ON A.iorder = C.iorder
+        WHERE C.iorder = #{iorder}
     </select>
 
     <select id="selPaymentPageItemList">

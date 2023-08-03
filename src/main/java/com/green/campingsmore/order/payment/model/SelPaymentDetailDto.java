@@ -13,5 +13,5 @@ public class SelPaymentDetailDto {
     private Long totalPrice;
     private Long shippingPrice;
     private String shippingMemo;
-    private List<PaymentDetailDto> itemList;
+    private List<PaymentDetailDto2> itemList;
 }
