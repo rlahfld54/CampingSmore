@@ -6,12 +6,15 @@ import com.green.campingsmore.community.comment.CommentService;
 import com.green.campingsmore.community.comment.model.CommentPageDto;
 import com.green.campingsmore.community.comment.model.CommentRes;
 import com.green.campingsmore.community.comment.model.CommentVo;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import com.green.campingsmore.community.board.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -28,20 +31,32 @@ import static java.lang.Math.decrementExact;
 public class BoardService {
     private final BoardMapper mapper;
     private final CommentService commentService;
+    private final AuthenticationFacade facade;
     private final int ROW = 15;
     private final int Page = 1;
 
     @Value("${file.dir}")
     private String fileDir;
 
+//    public void test() {
+//        log.info("service-test-iuser : {}", facade.getLoginUserPk());
+//    }
+
     @Transactional(rollbackFor = Exception.class)
     public Long postBoard(BoardInsDto dto, List<MultipartFile> pics) throws Exception {
         BoardEntity entity = new BoardEntity();
+        entity.setIcategory(1L);
+        entity.setTitle("");
+        entity.setCtnt("");
+        entity.setIuser(1L);
+        mapper.insBoard(entity);
+
         entity.setIuser(dto.getIuser());
-        entity.setIcategory(dto.getIcategory());
         entity.setTitle(dto.getTitle());
         entity.setCtnt(dto.getCtnt());
-        Long result = mapper.insBoard(entity);
+        entity.setIcategory(dto.getIcategory());
+        Long result = mapper.updBoardMain(entity);
+
         if (pics != null) {
             String centerPath = String.format("boardPics/%d", entity.getIboard());
             String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
@@ -50,7 +65,6 @@ public class BoardService {
                 file.mkdirs();
             }
             List<BoardPicEntity> list = new ArrayList<>();
-
             for (int i = 0; i < pics.size(); i++) {
                 String originFile = pics.get(i).getOriginalFilename();
                 String saveName = FileUtils.makeRandomFileNm(originFile);
@@ -62,7 +76,7 @@ public class BoardService {
                 }
                 BoardPicEntity picEntity = new BoardPicEntity();
                 picEntity.setIboard(entity.getIboard());
-                picEntity.setPic(saveName);
+                picEntity.setPic("file:///D:/"+fileDir+"/"+centerPath+"/"+saveName);
                 list.add(picEntity);
                 mapper.insBoardPic(list);
             }
