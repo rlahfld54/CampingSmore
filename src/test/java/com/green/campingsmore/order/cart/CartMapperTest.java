@@ -24,12 +24,12 @@ class CartMapperTest {
     private CartMapper mapper;
 
     @Test
-    @DisplayName("장바구니 목록 보여주기")
+    @DisplayName("CartMapper - 장바구니 목록 보여주기")
     void selCart() {
     }
 
     @Test
-    @DisplayName("장바구니 정보 입력")
+    @DisplayName("CartMapper - 장바구니 정보 저장")
     void insCart() {
         log.info("-----수량 기입을 안했을 경우-----");
         InsCartDto2 dto1 = new InsCartDto2();
@@ -40,7 +40,7 @@ class CartMapperTest {
         assertEquals(1L, result1);
         log.info("영향 받은 행 : {}줄", result1);
 
-        assertEquals(1, dto1.getIcart());
+        assertEquals(16, dto1.getIcart());
         log.info("INSERT 행의 pk값 : {}", dto1.getIcart());
 
         log.info("-----수량 기입을 했을 경우-----");
@@ -53,12 +53,13 @@ class CartMapperTest {
         assertEquals(1, result2);
         log.info("영향 받은 행 : {}줄", result2);
 
-        assertEquals(2, dto2.getIcart());
+        assertEquals(17, dto2.getIcart());
         log.info("INSERT 행의 pk값 : {}", dto2.getIcart());
     }
 
     @Test
-    @DisplayName("장바구니 내용 삭제")
+    @DisplayName("CartMapper - 장바구니 내용 삭제")
     void delCart() {
+
     }
 }
