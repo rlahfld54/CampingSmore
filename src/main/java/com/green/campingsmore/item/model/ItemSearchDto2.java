@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ItemSearchDto2 {
-    private String text;
     private Long iitemCategory;
+    private String text;
     private int sort;
     private int startIdx;
     private int page;

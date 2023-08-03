@@ -15,19 +15,28 @@ import java.util.List;
 public class ItemController {
     private final ItemService SERVICE;
 
-    /*@PostMapping("/item/post")
+    /* api 아이템 불러오기
+    @PostMapping("/post")
     @Operation(summary = "사용금지")
     public int insItem(@RequestParam String text) {
         return SERVICE.insItem(text);
 
     }*/
 
+//    @PostMapping("/itempost")
+//    @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
+//            , description = "" +
+//            "\"iitem\": [-] 아이템 PK,<br>" +
+//            "\"picUrl\": [-] 사진 이미지 url<br>")
+//    public int insItem(@RequestParam )
+
     @PostMapping("/dtailpic")
     @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem, @RequestParam List<String> picUrl) {
+    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem,
+                                               @RequestParam List<String> picUrl) {
         return SERVICE.insDetailPic(iitem, picUrl);
     }
 
@@ -51,12 +60,15 @@ public class ItemController {
     @Operation(summary = "아이템 검색 및 검색리스트"
             , description = "" +
             "\"text\": [-] 검색어,<br>" +
-            "\"page\": [-] 리스트 페이지<br>" +
-            "\"row\": [고정] 아이템 개수<br>")
-    public List<ItemVo> getSearchItem(@RequestParam(value = "text",required=false)String text,
+            "\"page\": [-] 리스트 페이지,<br>" +
+            "\"row\": [고정] 아이템 개수,<br>" +
+            "\"cate\": [-] 카테고리(11: 축산물, 16: 수산물, 13: 소스/드레싱, 18: 밀키트, 17: 농산물),<br>" +
+            "\"sort\": [1] 판매순 랭킹(0 : 최신순, 1: 오래된순, 2: 높은가격순, 3: 낮은가격순)  <br>"
+    )
+    public List<ItemVo> getSearchItem(@RequestParam(value = "cate",required=false)Long cate,
+                                      @RequestParam(value = "text",required=false)String text,
                                       @RequestParam(defaultValue = "1")int page,
                                       @RequestParam(defaultValue = "21")int row,
-                                      @RequestParam(value = "cate",required=false)Long cate,
                                       @RequestParam(defaultValue = "0")int sort) {
         ItemSearchDto2 dto = new ItemSearchDto2();
         dto.setText(text);
@@ -78,7 +90,9 @@ public class ItemController {
     @GetMapping("/detail")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
-            "\"iitem\": [-] 아이템 PK,<br>")
+            "\"iitem\": [-] 아이템 PK,<br>"+
+            "\"page\": [-] 리스트 페이지,<br>" +
+            "\"row\": [고정] 아이템 개수<br>" )
     public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
                                             @RequestParam(defaultValue = "1")int page,
                                             @RequestParam(defaultValue = "5")int row){
@@ -90,7 +104,7 @@ public class ItemController {
     }
 
     @PostMapping("/bestitem")
-    @Operation(summary = "추천 아이템 추가"
+    @Operation(summary = "추천 아이템 추가 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"monthLike\": [yyyy-MM-dd] 추천 아이템 노출 할 년월")
