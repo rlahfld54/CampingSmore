@@ -51,11 +51,13 @@ public class BoardService {
         entity.setIuser(1L);
         mapper.insBoard(entity);
 
+        Long iboard = entity.getIboard();
+
         entity.setIuser(dto.getIuser());
         entity.setTitle(dto.getTitle());
         entity.setCtnt(dto.getCtnt());
         entity.setIcategory(dto.getIcategory());
-        Long result = mapper.updBoardMain(entity);
+        mapper.updBoardMain(entity);
 
         if (pics != null) {
             String centerPath = String.format("boardPics/%d", entity.getIboard());
@@ -81,7 +83,7 @@ public class BoardService {
                 mapper.insBoardPic(list);
             }
         }
-        return result;// 게시판 등록
+        return iboard;// 게시판 등록
     }
 
     public Long updBoard(List<MultipartFile> pic, BoardUpdDto dto) {
