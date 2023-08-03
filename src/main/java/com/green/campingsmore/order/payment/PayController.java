@@ -41,7 +41,7 @@ public class PayController {
     @GetMapping("/{iorder}")
     @Operation(summary = "결제 내역 보기",
             description = "<h3> iorder : 주문 PK\n"
-    )    //유저 결제시 띄움(결제창에서 바로띄움)
+    )    //유저 결제시 띄움(결제창에서 바로 띄움)
     private PaymentCompleteDto getPaymentComplete(@PathVariable Long iorder) {
         return SERVICE.selPaymentComplete(iorder);
     }
@@ -49,12 +49,20 @@ public class PayController {
     @GetMapping("/paymentList/{iuser}")
     @Operation(summary = "전체 결제 내역 보기(마이 페이지)",
             description = "<h3> iuser : 유저 PK\n"
-    ) //유저마이페이지에서 조회, 마이페이지 이동예정
+    ) //유저마이페이지에서 조회
     private List<SelPaymentDetailDto> getPaymentList(@PathVariable Long iuser) {
         return SERVICE.selPaymentDetailAll(iuser);
     }
 
-    @PostMapping("/order/cart")  //예정
+    @PutMapping("/paymentList/{iuser}")
+    @Operation(summary = "결제 내역 삭제(마이 페이지)",
+            description = "<h3> iorder : 결제내역 PK\n"
+    ) //유저마이페이지에서 조회
+    private Long delPaymentDetail(@PathVariable Long iorder) {
+        return SERVICE.delPaymentDetail(iorder);
+    }
+
+    @PostMapping("/order/cart")
     @Operation(summary = "장바구니 결제 버튼 -> 체크된 장바구니 아이템 정보들을 결제 페이지에서 보여주기")
     private List<PaymentDetailDto> getPaymentItemList(@RequestBody CartPKDto dto) {
         return SERVICE.selPaymentPageItemList(dto);

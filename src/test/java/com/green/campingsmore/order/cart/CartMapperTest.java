@@ -34,6 +34,7 @@ class CartMapperTest {
 
         SelCartVo item1 = list.get(0);
         assertEquals(1L, item1.getIcart());
+        assertEquals(1L, item1.getIcart());
     }
 
     @Test

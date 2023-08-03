@@ -10,4 +10,5 @@ public interface PayService {
     List<SelPaymentDetailDto> selPaymentDetailAll(Long iuser);
     PaymentDetailDto selPaymentPageItem(Long iitem, Long quantity);
     List<PaymentDetailDto> selPaymentPageItemList(CartPKDto dto);
+    Long delPaymentDetail(Long iorder);
 }

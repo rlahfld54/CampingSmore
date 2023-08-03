@@ -29,6 +29,7 @@
         SELECT address, address_detail addressDetail, shipping_memo shippingMemo, total_price totalPrice
         FROM `order`
         WHERE iorder = #{iorder}
+        AND del_yn = 1
     </select>
 
 
@@ -41,6 +42,7 @@
         SELECT A.iorder, A.iuser, A.address, A.address_detail addressDetail, A.total_price totalPrice, A.shipping_price shippingPrice, A.shipping_memo shippingMemo
         FROM `order` A
         WHERE iuser = #{iuser}
+        AND del_yn = 1
     </select>
 
     <select id="selPaymentDetailAll2" resultType="PaymentDetailDto">
@@ -64,6 +66,12 @@
     <select id="selPaymentPageItem">
         SELECT iitem, `name`, price, pic
         FROM item
-        WHERE iitem = #{iitem};
+        WHERE iitem = #{iitem}
     </select>
+
+    <update id="delPaymentDetail">
+        UPDATE `order`
+        SET del_yn = 0
+        WHERE iorder = #{iorder}
+    </update>
 </mapper>
