@@ -34,7 +34,7 @@ public class BoardController {
 ////        service.test();
 //        return service.postBoard(dto, pics);
 //    }
-    @PostMapping("/insertiboard")
+    @GetMapping("/iboard")
     @Operation(summary = "pk값 반환")
     public Long postboard(){
         return service.postboard();
@@ -45,18 +45,17 @@ public class BoardController {
         return service.postOnePic(iboard,pic);
     }
     @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "사진 여러개 업로드 할때 리스트로 url 반환 안쓸듯?")
+    @Operation(summary = "사진 여러개 업로드 할때 리스트로 url 반환")
     public List<String> uploadFiles(Long iboard,@RequestPart(required = false) List<MultipartFile> pics) throws Exception {
         return service.postPic(iboard,pics);
     }
-    @PutMapping("/insertboard")
+    @PostMapping("/board")
     @Operation(summary = "게시글 작성")
     public Long updContent(@RequestBody BoardInsDto dto){
-
         return service.updContent(dto);
     }
 
-    @GetMapping("/{iuser}")
+    @GetMapping
     @Operation(summary = "내가 작성한글 보기- 마이페이지에서 사용")
     public List<BoardMyVo> selMyBoard() {
         System.out.println("유저 PK  : {}"+ FACADE.getLoginUserPk());
@@ -109,7 +108,10 @@ public class BoardController {
         return service.selBoard(dto);
     }
     @GetMapping("/boardDetail/{iboard}")
-    @Operation(summary = "게시글 디테일 보기")
+    @Operation(summary = "게시글 디테일 보기"
+            , description = "" +
+            "\"첫줄iuser 로그인한 유저\"두번째 유저 글쓴 유저pk"
+            )
     public BoardCmtDeVo deBoard(@PathVariable Long iboard){
         BoardDeDto dto = new BoardDeDto();
         dto.setIboard(iboard);
