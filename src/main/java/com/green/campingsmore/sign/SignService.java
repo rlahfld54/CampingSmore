@@ -1,11 +1,15 @@
 
 package com.green.campingsmore.sign;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.CommonRes;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.UserDetailsMapper;
 import com.green.campingsmore.config.security.model.*;
+import com.green.campingsmore.config.security.redis.RedisService;
+import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
 import com.green.campingsmore.sign.model.UpdatePwDto;
@@ -18,7 +22,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,14 +36,13 @@ public class SignService {
     private final UserDetailsMapper MAPPER;
     private final JwtTokenProvider JWT_PROVIDER;
     private final PasswordEncoder PW_ENCODER;
-    private final AuthenticationFacade facade;
+    private final RedisService REDIS_SERVICE;
+    private final ObjectMapper OBJECT_MAPPER;
+    private final AuthenticationFacade FACADE;
     private final MailApi mail;
 
-    @Value("${Naver.NAVER_ID}")
-    private String NAVER_ID;
-
     public void test() {
-        log.info("service-test-iuser : {}", facade.getLoginUserPk());
+        log.info("service-test-iuser : {}", FACADE.getLoginUserPk());
     }
 
     public SignUpResultDto signUp(SignUpDto signUpDto) {
@@ -48,10 +54,11 @@ public class SignService {
                 .name(signUpDto.getName())
                 .birth_date(signUpDto.getBirth_date())
                 .phone(signUpDto.getPhone())
+                .gender(signUpDto.getGender())
                 .user_address(signUpDto.getUser_address())
                 .role(String.format("ROLE_%s", signUpDto.getRole()))
                 .build();
-        int result = MAPPER.save(user);
+        int result = MAPPER.signUp(user);
         SignUpResultDto dto = new SignUpResultDto();
 
         if(result == 1) {
@@ -66,23 +73,45 @@ public class SignService {
 
     public SignInResultDto signIn(String id, String password, String ip) throws RuntimeException {
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
-        LoginDto loginDto = MAPPER.getByUid(id);
+        LoginDto user = MAPPER.getByUid(id);
 
         log.info("[getSignInResult] id: {}", id);
 
         log.info("[getSignInResult] 패스워드 비교 : {}",password);
-        log.info("[getSignInResult] UserEntity : {}",loginDto);
-        log.info("[getSignInResult] user.getUpw() : {}",loginDto.getUpw());
-        if(!PW_ENCODER.matches(password, loginDto.getUpw())) {
+        log.info("[getSignInResult] UserEntity : {}",user);
+        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
+        if(!PW_ENCODER.matches(password, user.getUpw())) {
             throw new RuntimeException("비밀번호 다름");
         }
         log.info("[getSignInResult] 패스워드 일치");
 
+        // RT가 이미 있을 경우
+        String redisKey = String.format("RT(%s):%s:%s", "Server", user.getIuser(), ip);
+        if(REDIS_SERVICE.getValues(redisKey) != null) {
+            REDIS_SERVICE.deleteValues(redisKey); // 삭제
+        }
+
         log.info("[getSignInResult] access_token 객체 생성");
-        String accessToken = JWT_PROVIDER.generateJwtToken(String.valueOf(loginDto.getIuser()), Collections.singletonList(loginDto.getRole()), JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
-        String refreshToken = JWT_PROVIDER.generateJwtToken(String.valueOf(loginDto.getIuser()), Collections.singletonList(loginDto.getRole()), JWT_PROVIDER.REFRESH_TOKEN_VALID_MS, JWT_PROVIDER.REFRESH_KEY);
+        String accessToken = JWT_PROVIDER.generateJwtToken(String.valueOf(user.getIuser()), Collections.singletonList(user.getRole()), JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
+        String refreshToken = JWT_PROVIDER.generateJwtToken(String.valueOf(user.getIuser()), Collections.singletonList(user.getRole()), JWT_PROVIDER.REFRESH_TOKEN_VALID_MS, JWT_PROVIDER.REFRESH_KEY);
+
+        // Redis에 RT 저장
+        RedisJwtVo redisJwtVo = RedisJwtVo.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        String value = null;
+        try {
+            value = OBJECT_MAPPER.writeValueAsString(redisJwtVo);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        REDIS_SERVICE.setValues(redisKey, value);
+
+
         UserTokenDto userTokenDto = new UserTokenDto();
-        userTokenDto.setIuser(loginDto.getIuser());
+        userTokenDto.setIuser(user.getIuser());
         userTokenDto.setIp(ip);
         userTokenDto.setAccessToken(accessToken);
         userTokenDto.setRefreshToken(refreshToken);
@@ -102,6 +131,29 @@ public class SignService {
         return dto;
     }
 
+
+    public void logout(HttpServletRequest req) {
+        String accessToken = JWT_PROVIDER.resolveToken(req, JWT_PROVIDER.TOKEN_TYPE);
+        Long iuser = FACADE.getLoginUserPk();
+        String ip = req.getRemoteAddr();
+
+        // Redis에 저장되어 있는 RT 삭제
+        String redisKey = String.format("RT(%s):%s:%s", "Server", iuser, ip);
+        String refreshTokenInRedis = REDIS_SERVICE.getValues(redisKey);
+        if (refreshTokenInRedis != null) {
+            REDIS_SERVICE.deleteValues(redisKey);
+        }
+        // Redis에 로그아웃 처리한 AT 저장
+        //long expiration = JWT_PROVIDER.getTokenExpirationTime(accessToken, JWT_PROVIDER.ACCESS_KEY) - new Date().getTime();
+        long expiration = JWT_PROVIDER.getTokenExpirationTime(accessToken, JWT_PROVIDER.ACCESS_KEY)
+                - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        log.info("date-getTime(): {}", new Date().getTime());
+        log.info("localDateTime-getTime(): {}", LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+
+        REDIS_SERVICE.setValuesWithTimeout(accessToken, "logout", expiration);  //남은시간 이후가 되면 삭제가 되도록 함.
+
+    }
+
     public SignInResultDto refreshToken(HttpServletRequest req, String refreshToken) throws RuntimeException {
         if(!(JWT_PROVIDER.isValidateToken(refreshToken, JWT_PROVIDER.REFRESH_KEY))) {
             return null;
@@ -110,35 +162,61 @@ public class SignService {
         String ip = req.getRemoteAddr(); // ip주소 얻어오기
         String accessToken = JWT_PROVIDER.resolveToken(req, JWT_PROVIDER.TOKEN_TYPE); // accessToken 얻어오기
         Claims claims = JWT_PROVIDER.getClaims(refreshToken, JWT_PROVIDER.REFRESH_KEY); // refreshToken 얻어오기
-        if(claims == null) {
+
+        try {
+            claims = JWT_PROVIDER.getClaims(refreshToken, JWT_PROVIDER.REFRESH_KEY);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (claims == null) {
             return null;
         }
+
         String strIuser = claims.getSubject();
         Long uid = Long.valueOf(strIuser);
-        List<String> roles = (List<String>)claims.get("roles");
 
-        UserTokenEntity p = UserTokenEntity.builder()
-                .iuser(uid)
-                .ip(ip)
-                .build();
-        UserTokenEntity selResult = MAPPER.selUserToken(p);
-        if(selResult == null || !(selResult.getAccess_token().equals(accessToken) && selResult.getRefresh_token().equals(refreshToken))) {
-            return null;
+        String redisKey = String.format("RT(%s):%s:%s", "Server", uid, ip);
+        String value = REDIS_SERVICE.getValues(redisKey);
+        if (value == null) { // Redis에 저장되어 있는 RT가 없을 경우
+            return null; // -> 재로그인 요청
         }
 
-        String reAccessToken = JWT_PROVIDER.generateJwtToken(strIuser, roles, JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
-        UserTokenDto userTokenDto = new UserTokenDto();
-        userTokenDto.setIuser(uid);
-        userTokenDto.setIp(ip);
-        userTokenDto.setAccessToken(accessToken);
-        userTokenDto.setRefreshToken(refreshToken);
+// 디비에 토큰 넣는 코드
+//        UserTokenDto userTokenDto = new UserTokenDto();
+//        userTokenDto.setIuser(uid);
+//        userTokenDto.setIp(ip);
+//        userTokenDto.setAccessToken(accessToken);
+//        userTokenDto.setRefreshToken(refreshToken);
+//
+//        MAPPER.updUserToken(userTokenDto);
 
-        MAPPER.updUserToken(userTokenDto);
+        try {
+            RedisJwtVo redisJwtVo = OBJECT_MAPPER.readValue(value, RedisJwtVo.class);
+            if(!redisJwtVo.getAccessToken().equals(accessToken)
+                    || !redisJwtVo.getRefreshToken().equals(refreshToken)) {
+                return null;
+            }
 
-        return SignInResultDto.builder()
-                .accessToken(reAccessToken)
-                .refreshToken(refreshToken)
-                .build();
+            List<String> roles = (List<String>)claims.get("roles");
+            String reAccessToken = JWT_PROVIDER.generateJwtToken(strIuser, roles, JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
+
+            //redis 업데이트
+            RedisJwtVo updateRedisJwtVo = RedisJwtVo.builder()
+                    .accessToken(reAccessToken)
+                    .refreshToken(redisJwtVo.getRefreshToken())
+                    .build();
+            String upateValue = OBJECT_MAPPER.writeValueAsString(updateRedisJwtVo);
+            REDIS_SERVICE.setValues(redisKey, upateValue);
+
+            return SignInResultDto.builder()
+                    .accessToken(reAccessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void setSuccessResult(SignUpResultDto result) {

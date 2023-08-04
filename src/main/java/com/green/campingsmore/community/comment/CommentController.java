@@ -40,6 +40,7 @@ public class CommentController {
 
     }
     @GetMapping("/{iboard}/cmt")
+    @Operation(summary = "게시글에 있는 댓글 보기")
     public CommentRes selComment(@PathVariable Long iboard,@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "15") @Min(value = 15) int row){
         CommentPageDto dto = new CommentPageDto();
         dto.setIboard(iboard);

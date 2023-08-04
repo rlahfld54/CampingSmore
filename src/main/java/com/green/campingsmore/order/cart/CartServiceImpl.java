@@ -37,13 +37,15 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Long delCartAll(List<Long> icart) {
+        Long count = 0L;
         try {
             for (Long aLong : icart) {
                 MAPPER.delCart(aLong);
+                count++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 1L;
+        return count;
     }
 }

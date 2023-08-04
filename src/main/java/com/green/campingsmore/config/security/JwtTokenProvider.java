@@ -26,7 +26,7 @@ public class JwtTokenProvider {
     public final Key ACCESS_KEY;
     public final Key REFRESH_KEY;
     public final String TOKEN_TYPE;
-    public final long ACCESS_TOKEN_VALID_MS = 3_600_000L; // 1000L * 60 * 60 -> 1시간
+    public final long ACCESS_TOKEN_VALID_MS = 200_000L; // 1000L * 60 * 60 -> 200초
     public final long REFRESH_TOKEN_VALID_MS = 1_296_000_000L; // 1000L * 60 * 60 * 24 * 15 -> 15일
 
 
@@ -100,13 +100,25 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
+    // Filter에서 사용
     public boolean isValidateToken(String token, Key key) {
         log.info("JwtTokenProvider - isValidateToken: 토큰 유효 체크 시작");
         try {
-            return !getClaims(token, key).getExpiration().before(new Date()); // 현재 시간보다 만료 전 > ture
+            return !getClaims(token, key).getExpiration().before(new Date());
         } catch (Exception e) {
             log.info("JwtTokenProvider - isValidateToken: 토큰 유효 체크 예외 발생");
             return false;
         }
+        // 지났으면 true > false;
+        // 안 지났으면 false > true;
+    }
+
+    public long getTokenExpirationTime(String token, Key key) {
+        try {
+            return getClaims(token, key).getExpiration().getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
     }
 }

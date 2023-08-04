@@ -7,11 +7,5 @@ import java.util.List;
 @Data
 public class SelPaymentDetailDto {
     private Long iorder;
-    private Long iuser;
-    private String address;
-    private String addressDetail;
-    private Long totalPrice;
-    private Long shippingPrice;
-    private String shippingMemo;
-    private List<PaymentDetailDto> itemList;
+    private List<PaymentDetailDto2> itemList;
 }
