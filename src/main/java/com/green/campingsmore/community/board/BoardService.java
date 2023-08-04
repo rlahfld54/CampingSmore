@@ -31,7 +31,7 @@ import static java.lang.Math.decrementExact;
 public class BoardService {
     private final BoardMapper mapper;
     private final CommentService commentService;
-    private final AuthenticationFacade facade;
+    private final AuthenticationFacade FACADE;
     private final int ROW = 15;
     private final int Page = 1;
 
@@ -91,10 +91,10 @@ public class BoardService {
 //    }
     public Long postboard() {
         BoardEntity entity = new BoardEntity();
+        entity.setIuser(FACADE.getLoginUserPk());
         entity.setIcategory(1L);
         entity.setTitle("");
         entity.setCtnt("");
-        entity.setIuser(1L);
         mapper.insBoard(entity);
         Long iboard = entity.getIboard();
         return iboard;
@@ -166,7 +166,7 @@ public class BoardService {
     public Long updContent(BoardInsDto dto){
         BoardEntity entity = new BoardEntity();
         entity.setIboard(dto.getIboard());
-        entity.setIuser(dto.getIuser());
+        entity.setIuser(FACADE.getLoginUserPk());
         entity.setTitle(dto.getTitle());
         entity.setCtnt(dto.getCtnt());
         entity.setIcategory(dto.getIcategory());
@@ -219,11 +219,13 @@ public class BoardService {
         }
 
     public List<BoardMyVo> selMyBoard(BoardMyDto dto) {
+        log.info("유저 PK  : {}", FACADE.getLoginUserPk());
         return mapper.selMyBoard(dto);
 
     }
 
     public Long delBoard(BoardDelDto dto) {
+        dto.setIuser(FACADE.getLoginUserPk());
         return mapper.delBoard(dto);
     }//게시글 삭제
 
@@ -281,7 +283,7 @@ public class BoardService {
         }
 
         CommentRes commentRes = commentService.selComment(dto1);
-        BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
+        BoardCmtDeVo result = BoardCmtDeVo.builder().iuser(FACADE.getLoginUserPk()).boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
                 .build();
         return result;
     }

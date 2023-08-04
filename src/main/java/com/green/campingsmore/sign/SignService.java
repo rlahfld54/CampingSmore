@@ -18,7 +18,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -141,6 +140,7 @@ public class SignService {
         String redisKey = String.format("RT(%s):%s:%s", "Server", iuser, ip);
         String refreshTokenInRedis = REDIS_SERVICE.getValues(redisKey);
         if (refreshTokenInRedis != null) {
+            System.out.println("Redis에 저장되어 있는 RT 삭제");
             REDIS_SERVICE.deleteValues(redisKey);
         }
         // Redis에 로그아웃 처리한 AT 저장
@@ -149,6 +149,7 @@ public class SignService {
                 - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         log.info("date-getTime(): {}", new Date().getTime());
         log.info("localDateTime-getTime(): {}", LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        log.info("expiration : {}", expiration);
 
         REDIS_SERVICE.setValuesWithTimeout(accessToken, "logout", expiration);  //남은시간 이후가 되면 삭제가 되도록 함.
 
@@ -178,7 +179,9 @@ public class SignService {
 
         String redisKey = String.format("RT(%s):%s:%s", "Server", uid, ip);
         String value = REDIS_SERVICE.getValues(redisKey);
+        System.out.println("Redis에 저장되어 있는 RT" + value);
         if (value == null) { // Redis에 저장되어 있는 RT가 없을 경우
+            log.info("재로그인 요청");
             return null; // -> 재로그인 요청
         }
 

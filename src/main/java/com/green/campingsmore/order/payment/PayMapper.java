@@ -15,4 +15,10 @@ public interface PayMapper {
     PaymentDetailDto selPaymentPageItem(Long iitem);
     Long delPaymentDetail(Long iorder, Long iitem);
     SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem);
+
+
+    Long insAdress(ShippingInsDto dto);
+    SelUserAdrressVo selUserAdress(Long iuser);
+    List<ShippingListSelVo> selAdressList(Long iuser);
+    ShippingListSelVo selOneAdress(SelUserAdressDto dto);
 }
