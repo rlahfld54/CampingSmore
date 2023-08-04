@@ -15,7 +15,11 @@ public interface ItemMapper {
     String selCate(String categoryName);
     Long selIcate(String categoryName);
 
+    // 아이템 상세페이지
     ItemSelDetailVo selDetail(Long iitem);
+    List<String> selDetailPic(Long iitem);
+
+    // 추천 아이템
     int insBestItem(ItemInsBest dto);
     List<ItemVo> selBestItem();
 
