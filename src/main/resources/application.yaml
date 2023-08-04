@@ -21,6 +21,10 @@ spring:
     url: jdbc:mariadb://192.168.0.144:3306/team_e
     username: team_e
     password: green502
+  data:
+    redis:
+      host: 192.168.0.144
+      port: 6379
 
 file:
   dir: /home/download/
@@ -28,13 +32,6 @@ file:
 springdoc:
   swagger-ui:
     path: /swagger.html
-
-#components:
-#  securitySchemes:
-#    bearerAuth:            # arbitrary name for the security scheme
-#      type: http
-#      scheme: bearer
-#      bearerFormat: JWT
 
 server:
   port: 8080
