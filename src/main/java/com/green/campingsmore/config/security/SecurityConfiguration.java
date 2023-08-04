@@ -47,7 +47,7 @@ public class SecurityConfiguration {
 //                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
 //                            .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
 //                            .requestMatchers("**exception**").permitAll()
-//                            .requestMatchers("/todo-api").hasAnyRole("USER", "ADMIN")
+//                            .requestMatchers("/api/cart").hasAnyRole("USER", "ADMIN")
 //                            .anyRequest().hasRole("ADMIN")
                 ) //사용 권한 체크
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세션 사용 X
