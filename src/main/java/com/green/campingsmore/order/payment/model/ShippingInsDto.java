@@ -6,7 +6,7 @@ import lombok.Data;
 public class ShippingInsDto {
     private Long iuser;
     private String address;
-    private String addressdetail;
+    private String addressDetail;
     private String name;
     private String phone;
 }

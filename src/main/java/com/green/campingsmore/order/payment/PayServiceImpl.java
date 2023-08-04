@@ -84,4 +84,24 @@ public class PayServiceImpl implements PayService {
     public SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem) {
         return MAPPER.SelDetailedItemPaymentInfo(iorder, iitem);
     }
+
+    @Override
+    public Long insAddress(ShippingInsDto dto) {
+        return MAPPER.insAddress(dto);
+    }
+
+    @Override
+    public SelUserAdrressVo selUserAddress(Long iuser) {
+        return MAPPER.selUserAddress(iuser);
+    }
+
+    @Override
+    public List<ShippingListSelVo> selAddressList(Long iuser) {
+        return MAPPER.selAddressList(iuser);
+    }
+
+    @Override
+    public ShippingListSelVo selOneAddress(SelUserAdressDto dto) {
+        return MAPPER.selOneAddress(dto);
+    }
 }

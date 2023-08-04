@@ -12,4 +12,10 @@ public interface PayService {
     List<PaymentDetailDto> selPaymentPageItemList(CartPKDto dto);
     Long delPaymentDetail(Long iorder, Long iitem);
     SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem);
+
+    //주소 관련
+    Long insAddress(ShippingInsDto dto);
+    SelUserAdrressVo selUserAddress(Long iuser);
+    List<ShippingListSelVo> selAddressList(Long iuser);
+    ShippingListSelVo selOneAddress(SelUserAdressDto dto);
 }

@@ -23,31 +23,6 @@
             #{item.totalPrice})
         </foreach>
     </insert>
-    <insert id="insAdress">
-        insert into shipping_address
-        set address=#{address}
-        ,address_detail=#{addressdetail}
-        ,name=#{name}
-        ,phone=#{phone}
-    </insert>
-    <select id="selUserAdress">
-        select user_address userAdress, user_address_detail userAdressDetail, name, phone
-        from user
-        where iuser=#{iuser} and del_yn = 1
-    </select>
-
-    <select id="selAdressList">
-        select address, address_detail addressDetail, name, phone
-        from shipping_address
-        where iuser=#{iuser}
-    </select>
-
-    <select id="selOneAdress">
-        select address, address_detail addressDetail, name, phone
-        from shipping_address
-        where iuser=#{iuser} and iaddress=#{iaddress}
-    </select>
-
 
     <select id="selPaymentComplete">
         SELECT address, address_detail addressDetail, shipping_memo shippingMemo, total_price totalPrice
@@ -59,7 +34,7 @@
 
     <resultMap id="paymentDetailAllList" type="SelPaymentDetailDto">
         <id property="iorder" column="iorder"/>
-        <collection property="itemList" column= "{iorder=iorder}" select="selPaymentDetailAll2"/>
+        <collection property="itemList" column="{iorder=iorder}" select="selPaymentDetailAll2"/>
     </resultMap>
 
     <select id="selPaymentDetailAll1" resultMap="paymentDetailAllList">
@@ -82,11 +57,11 @@
 
     <select id="selPaymentPageItemList">
         <foreach collection="list" item="item" index="index" separator="UNION">
-        SELECT A.iitem, B.name, B.price, A.quantity, B.pic
-        FROM cart A
-        INNER JOIN item B
-        ON A.iitem = B.iitem
-        WHERE A.icart = #{item}
+            SELECT A.iitem, B.name, B.price, A.quantity, B.pic
+            FROM cart A
+            INNER JOIN item B
+            ON A.iitem = B.iitem
+            WHERE A.icart = #{item}
         </foreach>
     </select>
 
@@ -116,4 +91,35 @@
         WHERE B.iorder = #{iorder}
         AND A.iitem = #{iitem}
     </select>
+
+
+    <insert id="insAddress">
+        INSERT INTO shipping_address
+        SET iuser = #{iuser}
+        ,address = #{address}
+        ,address_detail = #{addressDetail}
+        ,name = #{name}
+        ,phone = #{phone}
+    </insert>
+
+    <select id="selUserAddress">
+        SELECT user_address userAddress, user_address_detail userAddressDetail, name, phone
+        FROM user
+        WHERE iuser = #{iuser}
+        AND del_yn = 1
+    </select>
+
+    <select id="selAddressList">
+        SELECT address, address_detail addressDetail, name, phone
+        FROM shipping_address
+        WHERE iuser = #{iuser}
+    </select>
+
+    <select id="selOneAddress">
+        SELECT address, address_detail addressDetail, name, phone
+        FROM shipping_address
+        WHERE iuser = #{iuser}
+        AND iaddress = #{iaddress}
+    </select>
+
 </mapper>
