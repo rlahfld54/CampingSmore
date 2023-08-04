@@ -23,6 +23,16 @@
             #{item.totalPrice})
         </foreach>
     </insert>
+    <insert id="insAdress">
+        insert into shipping_address
+        set address=#{address}
+        ,address_detail=#{addressdetail}
+        ,name=#{name}
+        ,phone=#{phone}
+    </insert>
+    <select id="selUserAdress">
+        select user_address, user_address_detail, name
+    </select>
 
 
     <select id="selPaymentComplete">
