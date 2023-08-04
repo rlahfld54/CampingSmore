@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserDetailsMapper {
-    int save(SignUpDto dto);
+    int signUp(SignUpDto dto);
     LoginDto getByUid(String uid);
     int updUserToken(UserTokenDto dto);
     UserTokenEntity selUserToken(UserTokenEntity p);

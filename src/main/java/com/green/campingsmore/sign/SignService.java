@@ -48,10 +48,11 @@ public class SignService {
                 .name(signUpDto.getName())
                 .birth_date(signUpDto.getBirth_date())
                 .phone(signUpDto.getPhone())
+                .gender(signUpDto.getGender())
                 .user_address(signUpDto.getUser_address())
                 .role(String.format("ROLE_%s", signUpDto.getRole()))
                 .build();
-        int result = MAPPER.save(user);
+        int result = MAPPER.signUp(user);
         SignUpResultDto dto = new SignUpResultDto();
 
         if(result == 1) {
