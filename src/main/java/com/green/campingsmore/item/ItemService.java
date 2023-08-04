@@ -28,65 +28,41 @@ public class ItemService {
         this.REVIEWSERVICE = REVIEWSERVICE;
     }
 
-    public int insItem(String text) {
+    // 카테고리
+    public List<ItemSelCateVo> selCategory(){
 
-        String json = naverApi.search(text);
-
-        System.out.println("json!!!!");
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map = null;
-        ItemInsParam ipram = new ItemInsParam();
-
-
-        try {
-            map = mapper.readValue(json, Map.class);
-            List<LinkedHashMap<String, Object>> numList = (List<LinkedHashMap<String, Object>>) map.get("items");
-            System.out.println(numList);
-            for(LinkedHashMap<String, Object> item : numList) {
-
-                log.info("ipram.category2: {}",item.get("category2"));
-                String result = MAPPER.selCate((String)item.get("category2"));
-                log.info("cate : {}", MAPPER.selCate((String) item.get("category2")));
-
-
-                if (result == null) {
-                    MAPPER.insCate((String) item.get("category2"));
-                }
-                ipram.setIitemCategory(MAPPER.selIcate((String) item.get("category2")));
-                ipram.setName((String)item.get("title"));
-                ipram.setPrice(Integer.valueOf((String)item.get("lprice")));
-                ipram.setPic((String)item.get("image"));
-                log.info("ipram : {}",ipram);
-                MAPPER.insItem(ipram);
-
-                /*if (result.equals(item.get("category2"))) {
-                    ipram.setIitemCategory(cate.getIitemCategory());
-                    ipram.setName((String)item.get("title"));
-                    ipram.setPrice(Integer.valueOf((String)item.get("lprice")));
-                    ipram.setPic((String)item.get("image"));
-                    log.info("ipram : {}",ipram);
-                    MAPPER.insItem(ipram);
-                }*/
-
-            }
-            return 1;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+        return MAPPER.selCategory();
     }
 
-/*    public List<ItemVo> searchItem(ItemSearchDto dto) {
-        dto.setStartIdx((dto.getPage()-1) * dto.getRow());
-        log.info("res : {}", dto);
+    //아이템 추가
+    public int insItem(ItemInsDto dto, List<String> picUrl) {
 
+        log.info(" List<String> picUrl: {}", picUrl);
+        ItemEntity entity = new ItemEntity();
+        entity.setIitemCategory(dto.getIitemCategory());
+        entity.setName(dto.getName());
+        entity.setPic(dto.getPic());
+        entity.setPrice(dto.getPrice());
 
-     return MAPPER.searchItem(dto);
-    }*/
+        int result = MAPPER.insItem(entity);
+        if( result == 1 ) {
+
+            for (int i = 0; i < picUrl.size(); i++) {
+                ItemDetailInsDto picDto = new ItemDetailInsDto();
+                picDto.setIitem(entity.getIitem());
+
+                picDto.setPic(picUrl.get(i).toString());
+
+                MAPPER.insDetailPic(picDto);
+            }
+        }
+
+        return 1;
+    }
+
     public ItemSelDetailRes searchItem(ItemSearchDto2 dto) {
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         List<ItemVo> list = MAPPER.searchItem(dto);
-
 
     return ItemSelDetailRes.builder()
             .iitemCategory(dto.getIitemCategory())
@@ -99,34 +75,6 @@ public class ItemService {
             .build();
 }
 
-
-    // 카테고리
-    public List<ItemSelCateVo> selCategory(){
-
-    return MAPPER.selCategory();
-    }
-
-    //상세이미지 추가
-    public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
-        // 아이템 PK에 사진이 있으면 삭제
-        // 아이템 PK로 아이템 추가
-        MAPPER.delDetailPic(Long.valueOf(iitem));
-
-        ItemDetailInsDto dto = new ItemDetailInsDto();
-        dto.setIitem(iitem);
-        for (int i = 0; i < picUrl.size(); i++) {
-            log.info("picUrl.get(i): {}",picUrl.get(i));
-            dto.setPic(picUrl.get(i));
-            MAPPER.insDetailPic(dto);
-        }
-
-     return null;
-    }
-
-    public int insBestItem(ItemInsBest dto) {
-
-    return MAPPER.insBestItem(dto);
-    }
 
     // 아이템 상세
     public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
@@ -144,9 +92,42 @@ public class ItemService {
             .review(reviewList)
             .build();
     }
+
+    //상세이미지 추가
+    public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
+        // 아이템 PK에 사진이 있으면 삭제
+        // 아이템 PK로 아이템 추가
+        MAPPER.delDetailPic(iitem);
+
+        ItemDetailInsDto dto = new ItemDetailInsDto();
+        dto.setIitem(iitem);
+        for (int i = 0; i < picUrl.size(); i++) {
+            dto.setPic(picUrl.get(i));
+            MAPPER.insDetailPic(dto);
+        }
+
+        return null;
+    }
+
+    public int delDetail(Long iitem) {
+        MAPPER.delDetailPic(iitem);
+        MAPPER.delDetail(iitem);
+
+    return 1;
+    }
+
+    public int delDetailPic(Long iitem) {
+        return MAPPER.delDetailPic(iitem);
+    }
+
+
 /*    public ItemSelDetailVo selDetail(Long iitem) {
         return MAPPER.selDetail(iitem);
     }*/
+
+    public int insBestItem(ItemInsBest dto) {
+        return MAPPER.insBestItem(dto);
+    }
 
     public List<ItemVo> selBestItem() {
     return MAPPER.selBestItem();
