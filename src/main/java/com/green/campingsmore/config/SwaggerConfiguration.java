@@ -24,7 +24,7 @@ public class SwaggerConfiguration {
     public OpenAPI openAPI() {
         final Info info = new Info()
                 .version("v0.0.1")
-                .title("Camping 'Smore")
+                .title("Camping Smore")
                 .description("team_e");
 
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(HEADER_SCHEME_NAME);
