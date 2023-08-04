@@ -40,7 +40,7 @@
         ,icategory =#{icategory}
         ,ctnt = #{ctnt}
         ,iuser = #{iuser}
-        where iboard =#{iboard}
+        where iboard =#{iboard} and iuser=#{iuser}
     </update>
     <select id="selMyBoard">
         select icategory,title,created_at createdat,board_view boardview
@@ -50,7 +50,7 @@
     <update id="delBoard">
         update board
         set del_yn=0
-        where iboard=#{iboard}
+        where iuser=#{iuser} and iboard=#{iboard}
     </update>
     <select id="selBoardList">
         select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
@@ -90,7 +90,7 @@
         inner join board_category C
         on A.icategory = C.icategory
         where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1
-        order by A.iboard desc
+        order by A.icategory asc,A.iboard desc
         limit #{startIdx},#{row}
     </select>
 

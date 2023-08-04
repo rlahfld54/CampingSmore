@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class CommentUpdDto {
     private Long icomment;
-    private Long iuser;
     private String ctnt;
 
 }

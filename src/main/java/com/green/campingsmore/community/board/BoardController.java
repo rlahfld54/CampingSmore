@@ -45,13 +45,14 @@ public class BoardController {
         return service.postOnePic(iboard,pic);
     }
     @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "사진 여러개 업로드 할때 리스트로 url 반환")
+    @Operation(summary = "사진 여러개 업로드 할때 리스트로 url 반환 안쓸듯?")
     public List<String> uploadFiles(Long iboard,@RequestPart(required = false) List<MultipartFile> pics) throws Exception {
         return service.postPic(iboard,pics);
     }
     @PutMapping("/insertboard")
     @Operation(summary = "게시글 작성")
     public Long updContent(@RequestBody BoardInsDto dto){
+
         return service.updContent(dto);
     }
 
@@ -69,9 +70,12 @@ public class BoardController {
         return service.delWriteBoard(iboard);
     }
 
-    @PutMapping
+    @PutMapping("/{iboard}")
     @Operation(summary = "게시글 삭제 하기")
-    public Long delBoard(@RequestBody BoardDelDto dto) {
+    public Long delBoard(@PathVariable Long iboard) {
+        BoardDelDto dto = new BoardDelDto();
+        dto.setIuser(FACADE.getLoginUserPk());
+        dto.setIboard(iboard);
         return service.delBoard(dto);
     }
 
@@ -112,7 +116,7 @@ public class BoardController {
         return service.deBoard(dto);
     }
     @PutMapping(value = "/update",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "게시판 수정")
+    @Operation(summary = "게시판 수정x")
     public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
         return service.updBoard(pic, dto);
     }
