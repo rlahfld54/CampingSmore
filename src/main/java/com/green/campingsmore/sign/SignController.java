@@ -59,6 +59,7 @@ public class SignController {
                 .path("/")
                 .build();
 
+        log.info("// ResponseCookie :{}",responseCookie);
         log.info("// 로그아웃 완료!!!");
 
         return ResponseEntity
