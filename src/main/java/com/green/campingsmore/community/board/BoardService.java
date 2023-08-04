@@ -31,7 +31,7 @@ import static java.lang.Math.decrementExact;
 public class BoardService {
     private final BoardMapper mapper;
     private final CommentService commentService;
-    private final AuthenticationFacade facade;
+    private final AuthenticationFacade FACADE;
     private final int ROW = 15;
     private final int Page = 1;
 
@@ -219,6 +219,7 @@ public class BoardService {
         }
 
     public List<BoardMyVo> selMyBoard(BoardMyDto dto) {
+        log.info("유저 PK  : {}", FACADE.getLoginUserPk());
         return mapper.selMyBoard(dto);
 
     }
@@ -281,7 +282,7 @@ public class BoardService {
         }
 
         CommentRes commentRes = commentService.selComment(dto1);
-        BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
+        BoardCmtDeVo result = BoardCmtDeVo.builder().iuser(FACADE.getLoginUserPk()).boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
                 .build();
         return result;
     }

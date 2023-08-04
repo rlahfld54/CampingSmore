@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 public class BoardCmtDeVo {
+    private Long iuser;
     private BoardDeVo boardDeVo;
     private List<BoardPicVo> picList;
     private CommentRes commentList;

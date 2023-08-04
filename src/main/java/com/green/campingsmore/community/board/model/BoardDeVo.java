@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 @Getter
 public class BoardDeVo {
     private Long iboard;
+    private Long iuser;
+    private String name;
     private String category;
     private String title;
     private String ctnt;
-    private String name;
     private LocalDateTime createdat;
     private Long boardview;
 }

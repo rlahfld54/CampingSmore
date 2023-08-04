@@ -30,25 +30,27 @@ public class SecurityConfiguration {
                                     , "/swagger-ui/**"
                                     , "/v3/api-docs/**"
                                     , "/"
+                                    ,"/**"
                                     , "/index.html"
                                     , "/static/**"
 
                                     ,"/sign-api/sign-in"
                                     , "/sign-api/sign-up"
                                     , "/sign-api/logout"
+                                    , "/sign-api/search-pw"
+                                    , "/sign-api/search-id"
                                     , "/sign-api/exception"
                                     , "/sign-api/otp"
                                     , "/sign-api/otp-valid"
-
-                                    , "/view/**"
-                                    , "/"
-                                    ,"/**"
                             ).permitAll()
-//                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
-//                            .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-//                            .requestMatchers("**exception**").permitAll()
-//                            .requestMatchers("/api/cart").hasAnyRole("USER", "ADMIN")
-//                            .anyRequest().hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/community/**/**").permitAll()// api/community/**/**
+                            .requestMatchers(HttpMethod.GET, "/api/item/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/review/**").permitAll() // review/{item}/detail
+                            .requestMatchers(HttpMethod.GET, "/api/comment/**/**").permitAll() // comment/{iboard}/cmt
+                            .requestMatchers("**exception**").permitAll()
+                            .requestMatchers("/api/cart").hasAnyRole("USER", "ADMIN")
+                            .anyRequest().hasRole("ADMIN")
                 ) //사용 권한 체크
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세션 사용 X
         .httpBasic(http -> http.disable()) //UI 있는 시큐리티 설정을 비활성화

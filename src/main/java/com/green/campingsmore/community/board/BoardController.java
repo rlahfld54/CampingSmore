@@ -1,6 +1,7 @@
 package com.green.campingsmore.community.board;
 
 import com.green.campingsmore.community.board.model.*;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,12 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
-
 @Tag(name = "게시판")
 public class BoardController {
 
     private final BoardService service;
-
+    private final AuthenticationFacade FACADE;
 
 //    @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 //    @Operation(summary = "게시판 등록")
@@ -56,10 +56,11 @@ public class BoardController {
     }
 
     @GetMapping("/{iuser}")
-    @Operation(summary = "내가 작성한글 보기")
-    public List<BoardMyVo> selMyBoard(@PathVariable Long iuser) {
+    @Operation(summary = "내가 작성한글 보기- 마이페이지에서 사용")
+    public List<BoardMyVo> selMyBoard() {
+        System.out.println("유저 PK  : {}"+ FACADE.getLoginUserPk());
         BoardMyDto dto = new BoardMyDto();
-        dto.setIuser(iuser);
+        dto.setIuser(FACADE.getLoginUserPk());
         return service.selMyBoard(dto);
     }
     @DeleteMapping
@@ -85,7 +86,9 @@ public class BoardController {
 
     @GetMapping("/icategory")
     @Operation(summary = "카테고리별 게시글 리스트 보기")
-    public BoardRes categoryBoardList(@RequestParam Long icategory,@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "15") @Min(value = 15) int row) {
+    public BoardRes categoryBoardList(@RequestParam Long icategory
+            ,@RequestParam(defaultValue = "1") int page
+            , @RequestParam(defaultValue = "15") @Min(value = 15) int row) {
         BoardPageDto dto = new BoardPageDto();
         dto.setIcategory(icategory);
         dto.setPage(page);
@@ -101,7 +104,7 @@ public class BoardController {
         dto.setRow(row);
         return service.selBoard(dto);
     }
-    @GetMapping("/{iboard}/boardDetail")
+    @GetMapping("/boardDetail/{iboard}")
     @Operation(summary = "게시글 디테일 보기")
     public BoardCmtDeVo deBoard(@PathVariable Long iboard){
         BoardDeDto dto = new BoardDeDto();
