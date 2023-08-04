@@ -32,7 +32,7 @@ public class PayController {
             "\n" +
             "\n" +
             "<h3>   CODE 1 : DB 정보 저장 성공\n" +
-            "<h3>   CODE 2 : DB 정보 저장 실패\n"
+            "<h3>   CODE 0 : DB 정보 저장 실패\n"
     )
     private int postPayInfo(@RequestBody InsPayInfoDto dto) {
         return SERVICE.insPayInfo(dto);
