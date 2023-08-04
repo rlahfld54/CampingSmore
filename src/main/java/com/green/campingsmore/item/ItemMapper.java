@@ -20,6 +20,6 @@ public interface ItemMapper {
     List<ItemVo> selBestItem();
 
 
-    int delDetail(Long iitem);
-    int insDetail(ItemDetailInsDto dto);
+    int delDetailPic(Long iitem);
+    int insDetailPic(ItemDetailInsDto dto);
 }

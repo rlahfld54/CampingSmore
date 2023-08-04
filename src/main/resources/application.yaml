@@ -21,6 +21,7 @@ spring:
     url: jdbc:mariadb://192.168.0.144:3306/team_e
     username: team_e
     password: green502
+
 file:
   dir: /home/download/
 # swagger
@@ -66,3 +67,4 @@ spring:
       mode: always
       schema-locations: classpath:init/schema.sql
       data-locations: classpath:init/data.sql
+      encoding: UTF-8
