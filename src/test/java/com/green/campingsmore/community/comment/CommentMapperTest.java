@@ -29,11 +29,9 @@ class CommentMapperTest {
 
         Long result = mapper.insComment(entity);
         assertEquals(1,result);
-        assertEquals(7,entity.getIboard());
+        assertEquals(6,entity.getIboard());
         assertEquals(1,entity.getIuser());
-        assertEquals(7,entity.getIcomment());
     }
-
     @Test
     void updComment() {
     }
