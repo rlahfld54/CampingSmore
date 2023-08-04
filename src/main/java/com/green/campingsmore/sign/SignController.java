@@ -35,7 +35,7 @@ public class SignController {
                     "id:  아이디 \n\n " +
                     "password : 비밀번호 \n\n "
     )
-    public SignInResultDto signIn(HttpServletRequest req, @RequestParam String id, @RequestParam String password) throws RuntimeException {
+    public SignInResultDto signIn(HttpServletRequest req, @RequestParam String id, @RequestParam String password){
 
         String ip = req.getRemoteAddr();
         log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
