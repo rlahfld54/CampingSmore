@@ -58,11 +58,16 @@
 
 <!--  아이템 상세페이지  -->
     <select id="selDetail" resultType="ItemSelDetailVo">
-        SELECT  A.iitem,A.`name`, A.pic, A.`name`, A.price, A.created_at createdAt, A.info, GROUP_CONCAT(B.pic) picList
-        FROM item A, item_detail_pic B
-        WHERE A.iitem = #{iitem}
+        SELECT  iitem, `name`, pic, price, created_at createdAt, info
+        FROM item
+        WHERE iitem = #{iitem}
     </select>
-
+    <!--아이템 상세이미지-->
+    <select id="selDetailPic" resultType="String">
+        SELECT  pic detailPic
+        FROM item_detail_pic
+        WHERE iitem = #{iitem}
+    </select>
 
 
 <!-- 추천 아이템 추가 -->
@@ -72,7 +77,7 @@
         month_like = #{monthLike}
     </insert>
 
-<!--  추천 아이템 리스트  -->
+    <!--  추천 아이템 리스트  -->
     <select id="selBestItem" resultType="ItemVo">
         SELECT  A.iitem, A.`name`, A.pic, A.price, A.created_at createdAt
         FROM item A

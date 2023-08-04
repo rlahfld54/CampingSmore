@@ -8,10 +8,12 @@ import java.util.List;
 
 @Builder
 @Getter
-public class ItemSearchRes {
+public class ItemSelDetailRes {
+    private Long iitemCategory;
     private String text;
-    private int row;
+    private int sort;
     private int startIdx;
     private int page;
-    private List<ItemVo> list;
+    private int row;
+    private List<ItemVo> itemList;
 }

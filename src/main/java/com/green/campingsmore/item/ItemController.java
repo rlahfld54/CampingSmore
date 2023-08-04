@@ -65,7 +65,7 @@ public class ItemController {
             "\"cate\": [-] 카테고리(11: 축산물, 16: 수산물, 13: 소스/드레싱, 18: 밀키트, 17: 농산물),<br>" +
             "\"sort\": [1] 판매순 랭킹(0 : 최신순, 1: 오래된순, 2: 높은가격순, 3: 낮은가격순)  <br>"
     )
-    public List<ItemVo> getSearchItem(@RequestParam(value = "cate",required=false)Long cate,
+    public ItemSelDetailRes getSearchItem(@RequestParam(value = "cate",required=false)Long cate,
                                       @RequestParam(value = "text",required=false)String text,
                                       @RequestParam(defaultValue = "1")int page,
                                       @RequestParam(defaultValue = "21")int row,

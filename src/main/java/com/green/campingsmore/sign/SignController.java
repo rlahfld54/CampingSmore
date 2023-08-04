@@ -1,20 +1,19 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
-import com.green.campingsmore.config.security.AuthenticationFacade;
-import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
-import com.green.campingsmore.sign.model.UpdatePwDto;
 import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +46,25 @@ public class SignController {
         }
 
         return dto;
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃",
+            description = "Try it out -> Execute 눌러주세요 \n\n "
+    )
+    public ResponseEntity<?> logout(HttpServletRequest req) {
+        SERVICE.logout(req);
+        ResponseCookie responseCookie = ResponseCookie.from("refresh-token", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        log.info("// 로그아웃 완료!!!");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .build();
     }
 
     @PostMapping("/sign-up")

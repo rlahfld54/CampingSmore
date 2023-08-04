@@ -12,5 +12,5 @@ public class ItemSelDetailVo {
     private String pic;
     private int price;
     private LocalDateTime createdAt;
-    private String picList;
+    private List<String> picList;
 }
