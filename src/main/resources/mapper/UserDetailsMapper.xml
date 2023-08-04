@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.green.campingsmore.config.security.UserDetailsMapper">
-    <insert id="save">
+    <insert id="signUp">
         INSERT INTO user
         SET user_id = #{uid}
         , password = #{upw}
@@ -10,6 +10,7 @@
         , name = #{name}
         , birth_date = #{birth_date}
         , phone = #{phone}
+        , gender = #{gender}
         , user_address = #{user_address}
         , role = #{role}
     </insert>

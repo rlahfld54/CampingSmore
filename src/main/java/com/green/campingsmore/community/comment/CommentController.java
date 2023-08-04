@@ -24,11 +24,11 @@ public class CommentController {
     public Long insComment(@RequestBody CommentInsDto dto) {
         return service.insComment(dto);
     }
-    @PutMapping("/{icomment}")
+    @PutMapping
     @Operation(summary = "댓글 수정")
-    public Long updComment(@PathVariable Long icomment, @RequestBody CommentUpdDto dto){
+    public Long updComment(@RequestBody CommentUpdDto dto){
         CommentEntity entity = new CommentEntity();
-        entity.setIcomment(icomment);
+        entity.setIcomment(dto.getIcomment());
         entity.setIuser(dto.getIuser());
         entity.setCtnt(dto.getCtnt());
         return service.updComment(entity);
