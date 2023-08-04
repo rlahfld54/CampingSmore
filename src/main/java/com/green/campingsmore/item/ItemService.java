@@ -85,8 +85,6 @@ public class ItemService {
     }*/
     public ItemSelDetailRes searchItem(ItemSearchDto2 dto) {
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
-        log.info("res : {}", dto);
-
         List<ItemVo> list = MAPPER.searchItem(dto);
 
 
