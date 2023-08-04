@@ -83,12 +83,20 @@ public class ItemService {
 
      return MAPPER.searchItem(dto);
     }*/
-    public List<ItemVo> searchItem(ItemSearchDto2 dto) {
-    dto.setStartIdx((dto.getPage()-1) * dto.getRow());
-    log.info("res : {}", dto);
+    public ItemSelDetailRes searchItem(ItemSearchDto2 dto) {
+        dto.setStartIdx((dto.getPage()-1) * dto.getRow());
+        List<ItemVo> list = MAPPER.searchItem(dto);
 
 
-    return MAPPER.searchItem(dto);
+    return ItemSelDetailRes.builder()
+            .iitemCategory(dto.getIitemCategory())
+            .text(dto.getText())
+            .sort(dto.getSort())
+            .startIdx(dto.getStartIdx())
+            .page(dto.getPage())
+            .row(dto.getRow())
+            .itemList(list)
+            .build();
 }
 
 
@@ -120,9 +128,10 @@ public class ItemService {
     return MAPPER.insBestItem(dto);
     }
 
-    //
+    // 아이템 상세
     public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
         ItemSelDetailVo vo = MAPPER.selDetail(dto.getIitem());
+        vo.setPicList(MAPPER.selDetailPic(dto.getIitem()));
 
         ReviewPageDto reviewDto = new ReviewPageDto();
         reviewDto.setIitem(dto.getIitem());
