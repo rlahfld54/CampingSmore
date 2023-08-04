@@ -91,10 +91,10 @@ public class BoardService {
 //    }
     public Long postboard() {
         BoardEntity entity = new BoardEntity();
+        entity.setIuser(FACADE.getLoginUserPk());
         entity.setIcategory(1L);
         entity.setTitle("");
         entity.setCtnt("");
-        entity.setIuser(1L);
         mapper.insBoard(entity);
         Long iboard = entity.getIboard();
         return iboard;
@@ -166,7 +166,7 @@ public class BoardService {
     public Long updContent(BoardInsDto dto){
         BoardEntity entity = new BoardEntity();
         entity.setIboard(dto.getIboard());
-        entity.setIuser(dto.getIuser());
+        entity.setIuser(FACADE.getLoginUserPk());
         entity.setTitle(dto.getTitle());
         entity.setCtnt(dto.getCtnt());
         entity.setIcategory(dto.getIcategory());
@@ -225,6 +225,7 @@ public class BoardService {
     }
 
     public Long delBoard(BoardDelDto dto) {
+        dto.setIuser(FACADE.getLoginUserPk());
         return mapper.delBoard(dto);
     }//게시글 삭제
 

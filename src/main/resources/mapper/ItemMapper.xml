@@ -4,8 +4,27 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.item.ItemMapper">
 
+    <!--카테고리 추가-->
+    <insert id="insCate">
+        INSERT INTO item_category
+        SET name = #{categoryName}
+    </insert>
+
+    <!-- 카테고리 보기 -->
+    <select id="selCategory" resultType="ItemSelCateVo">
+        SELECT iitem_category iitemCategory, `name`
+        FROM item_category
+        order BY `name` DESC
+    </select>
+
+    <!-- 카테고리 리스트 -->
+    <select id="selIcate" resultType="Long">
+        SELECT iitem_category iitemCategory FROM item_category
+        WHERE name = #{categoryName}
+    </select>
+
 <!--  아이템 추가  -->
-    <insert id="insItem">
+    <insert id="insItem" useGeneratedKeys="true" keyProperty="iitem">
         INSERT INTO item
         SET iitem_category = #{iitemCategory},
         name = #{name},
@@ -13,15 +32,7 @@
         pic = #{pic}
     </insert>
 
-<!--카테고리 추가-->
-    <insert id="insCate">
-        INSERT INTO item_category
-        SET name = #{categoryName}
-    </insert>
-
-
-
-<!--아이템 검색 및 검색리스트-->
+    <!--아이템 검색 및 검색리스트-->
     <select id="searchItem" resultType="ItemVo">
         SELECT iitem, `name`, pic, price, created_at createdAt
         FROM item
@@ -49,12 +60,7 @@
         LIMIT ${startIdx}, ${row}
     </select>
 
-<!-- 카테고리 보기 -->
-    <select id="selCategory" resultType="ItemSelCateVo">
-        SELECT iitem_category iitemCategory, `name`
-        FROM item_category
-        order BY `name` DESC
-    </select>
+
 
 <!--  아이템 상세페이지  -->
     <select id="selDetail" resultType="ItemSelDetailVo">
@@ -68,6 +74,23 @@
         FROM item_detail_pic
         WHERE iitem = #{iitem}
     </select>
+
+    <delete id="delDetail">
+        DELETE FROM item
+        WHERE iitem = ${iitem}
+    </delete>
+
+    <!-- 아이템 상세페이지 변경 del->ins -->
+    <delete id="delDetailPic">
+        DELETE FROM item_detail_pic
+        WHERE iitem = #{iitem}
+    </delete>
+
+    <insert id="insDetailPic">
+        INSERT INTO item_detail_pic
+        SET iitem = #{iitem},
+        pic = #{pic}
+    </insert>
 
 
 <!-- 추천 아이템 추가 -->
@@ -86,27 +109,6 @@
         WHERE DATE_format(month_like, "%Y-%m") = DATE_format(NOW(),"%Y-%m")
         ORDER BY iitem;
     </select>
-
-
-
-
-<!-- 카테고리 -->
-    <select id="selIcate" resultType="Long">
-        SELECT iitem_category iitemCategory FROM item_category
-        WHERE name = #{categoryName}
-    </select>
-
-    <!-- 아이템 상세페이지 변경 del->ins -->
-    <delete id="delDetailPic">
-        DELETE FROM item_detail_pic
-        WHERE iitem = #{iitem}
-    </delete>
-
-    <insert id="insDetailPic">
-        INSERT INTO item_detail_pic
-        SET iitem = #{iitem},
-        pic = #{pic}
-    </insert>
 
 
 </mapper>
