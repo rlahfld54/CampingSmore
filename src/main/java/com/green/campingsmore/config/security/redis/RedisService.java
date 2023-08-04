@@ -18,6 +18,7 @@ public class RedisService {
 
     // 만료시간 설정 -> 자동 삭제
     public void setValuesWithTimeout(String key, String value, long timeout){
+        //refresh token Redis에 저장
         redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.MILLISECONDS);
     }
 
