@@ -33,7 +33,7 @@ public class ReviewController {
     }*/
 
     @GetMapping("/{iitem}/detail")
-    @Operation(summary = "리뷰 추가"
+    @Operation(summary = "리뷰 리스트"
             , description = "" +
             "\"iitem\": [-] 아이템 PK<br>" )
     public ReviewRes getReview(@PathVariable Long iitem,
