@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService SERVICE;
 
-/*    @PostMapping("/write")
+    @PostMapping
     @Operation(summary = "리뷰 추가"
             , description = "" +
             "\"iuser\": [-] 유저 PK,<br>" +
@@ -30,7 +32,7 @@ public class ReviewController {
             "\"pic\": [-] 사진 이미지<br>")
     public int postReview(@RequestBody ReviewInsDto dto) {
         return SERVICE.insReview(dto);
-    }*/
+    }
 
     @GetMapping("/{iitem}/detail")
     @Operation(summary = "리뷰 리스트"
