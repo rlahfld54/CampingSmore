@@ -19,6 +19,10 @@ class SignServiceTest {
     }
 
     @Test
+    void logout() {
+    }
+
+    @Test
     void refreshToken() {
     }
 
