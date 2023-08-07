@@ -21,7 +21,7 @@
         where icomment=#{icomment} and iuser=#{iuser}
     </update>
     <select id="selComment">
-        select A.iboard, B.name,A.ctnt,A.created_at createdAt
+        select A.icomment,A.iboard,A.iuser, B.name,A.ctnt,A.created_at createdAt
         from comment A
         inner join user B
         on A.iuser = B.iuser

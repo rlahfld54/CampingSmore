@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.campingsmore.admin.user.AdminUserMapper">
+    <select id="selectAllusers">
+        SELECT iuser,user_id,`name`,birth_date,phone,gender,role
+        FROM user
+    </select>
+</mapper>

@@ -51,12 +51,51 @@ class CommentMapperTest {
         assertEquals(1,entity.getIuser());
     }
 
+//    @Test
+//    void delComment() {
+//        CommentEntity entity = new CommentEntity();
+//        entity.setIuser(1L);
+//        entity.setIcomment(3L);
+//        entity.setIboard();
+//        Long delComment = mapper.delComment(entity);
+//
+//        assertEquals(3L,delComment);
+//
+//    }
+
     @Test
-    void delComment() {
+    void selComment() {
+        CommentPageDto dto = new CommentPageDto();
+        dto.setIboard(1L);
+        dto.setRow(15);
+        dto.setPage(1);
+        dto.setStartIdx(0);
+
+
+        List<CommentVo> list = mapper.selComment(dto);
+
+
+        assertEquals(4,list.size());
+        CommentVo item1 = list.get(0);
+
+        assertEquals(3L,item1.getIcomment());
+
+        assertNotNull(item1.getIboard());
+        assertEquals(1L,item1.getIboard());
+
+        assertNotNull(item1.getCtnt());
+        assertEquals("string",item1.getCtnt());
+
+
+        assertNotNull(item1.getCreatedAt());
+        assertEquals("2023-07-26T14:49:43",item1.getCreatedAt().toString());
+
     }
 
 
     @Test
     void maxComment() {
     }
+
+
 }
