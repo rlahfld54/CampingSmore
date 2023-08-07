@@ -17,9 +17,9 @@ public class PayServiceImpl implements PayService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public int insPayInfo(InsPayInfoDto dto) {
+    public int insPayInfo(InsPayInfoDto1 dto) {
 
-        InsPayInfoDto orderDto = new InsPayInfoDto();
+        InsPayInfoDto1 orderDto = new InsPayInfoDto1();
 
         try {
             orderDto.setIuser(dto.getIuser());
@@ -86,7 +86,7 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public Long insAddress(ShippingInsDto dto) {
+    public Long insAddress(ShippingInsDto1 dto) {
         return MAPPER.insAddress(dto);
     }
 

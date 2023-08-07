@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class CommentVo {
+    private Long icomment;
     public Long iboard;
+    private Long iuser;
     private String name;
     private String ctnt;
     private LocalDateTime createdAt;

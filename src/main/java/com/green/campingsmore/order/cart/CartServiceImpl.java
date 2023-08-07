@@ -1,6 +1,6 @@
 package com.green.campingsmore.order.cart;
 
-import com.green.campingsmore.order.cart.model.InsCartDto;
+import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.InsCartDto2;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class CartServiceImpl implements CartService {
     private final CartMapper MAPPER;
 
     @Override
-    public Long insCart(InsCartDto dto) {
+    public Long insCart(InsCartDto1 dto) {
         InsCartDto2 dto2 = new InsCartDto2();
         dto2.setIuser(dto.getIuser());
         dto2.setIitem(dto.getIitem());
