@@ -1,6 +1,7 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
@@ -35,8 +36,10 @@ public class SignController {
                     "id:  아이디 \n\n " +
                     "password : 비밀번호 \n\n "
     )
-    public SignInResultDto signIn(HttpServletRequest req, @RequestParam String id, @RequestParam String password){
-
+    public SignInResultDto signIn(HttpServletRequest req
+                                  , LoginDto loginDto){
+        String id = loginDto.getUid();
+        String password = loginDto.getUpw();
         String ip = req.getRemoteAddr();
         log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
 

@@ -14,9 +14,10 @@ import java.util.List;
 public class ReviewService {
     private final ReviewMapper MAPPER;
 
-    public int insReview(ReviewInsDto dto) {
+/*    public int insReview(ReviewInsDto dto) {
+
         return MAPPER.insReview(dto);
-    }
+    }*/
 
     public ReviewRes selReview(ReviewPageDto dto) {
         dto.setStartIdx((dto.getPage() - 1) * dto.getRow());
@@ -29,4 +30,6 @@ public class ReviewService {
                 .list(list)
                 .build();
     }
+
+
 }
