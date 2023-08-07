@@ -2,6 +2,7 @@ package com.green.campingsmore.order.cart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.MockMvcConfig;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -39,6 +41,8 @@ class CartControllerTest {
 
     @MockBean
     private CartService service;
+    @MockBean
+    private AuthenticationFacade facade;
 
     @Test
     @WithMockUser(username = "testUser", roles = "USER")
