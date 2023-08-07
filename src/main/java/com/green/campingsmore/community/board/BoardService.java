@@ -172,44 +172,44 @@ public class BoardService {
         entity.setIcategory(dto.getIcategory());
         return mapper.updBoardMain(entity);
     }
-    public Long updBoard(List<MultipartFile> pic, BoardUpdDto dto) {
-        BoardEntity entity = new BoardEntity();
-        entity.setIboard(dto.getIboard());
-        entity.setTitle(dto.getTitle());
-        entity.setCtnt(dto.getCtnt());
-        entity.setIuser(dto.getIuser());
-        Long result = mapper.updBoard(entity);
-        BoardPicEntity boardPicEntity = new BoardPicEntity();
-        boardPicEntity.setIboardpic(dto.getIboard());
-        mapper.delPic(boardPicEntity);
-        if (pic != null) {
-            String centerPath = String.format("boardPics/%d", entity.getIboard());
-            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
-            File file = new File(targetPath);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            List<BoardPicEntity> list = new ArrayList<>();
-
-            for (int i = 0; i < pic.size(); i++) {
-                String originFile = pic.get(i).getOriginalFilename();
-                String saveName = FileUtils.makeRandomFileNm(originFile);
-                File fileTarget = new File(targetPath + "/" + saveName);
-                try {
-                    pic.get(i).transferTo(fileTarget);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                BoardPicEntity picEntity = new BoardPicEntity();
-                picEntity.setIboard(entity.getIboard());
-                picEntity.setPic(saveName);
-                list.add(picEntity);
-                mapper.insBoardPic(list);
-            }
-        }
-
-        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
-    }
+//    public Long updBoard(List<MultipartFile> pic, BoardUpdDto dto) {
+//        BoardEntity entity = new BoardEntity();
+//        entity.setIboard(dto.getIboard());
+//        entity.setTitle(dto.getTitle());
+//        entity.setCtnt(dto.getCtnt());
+//        entity.setIuser(dto.getIuser());
+//        Long result = mapper.updBoard(entity);
+//        BoardPicEntity boardPicEntity = new BoardPicEntity();
+//        boardPicEntity.setIboardpic(dto.getIboard());
+//        mapper.delPic(boardPicEntity);
+//        if (pic != null) {
+//            String centerPath = String.format("boardPics/%d", entity.getIboard());
+//            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+//            File file = new File(targetPath);
+//            if (!file.exists()) {
+//                file.mkdirs();
+//            }
+//            List<BoardPicEntity> list = new ArrayList<>();
+//
+//            for (int i = 0; i < pic.size(); i++) {
+//                String originFile = pic.get(i).getOriginalFilename();
+//                String saveName = FileUtils.makeRandomFileNm(originFile);
+//                File fileTarget = new File(targetPath + "/" + saveName);
+//                try {
+//                    pic.get(i).transferTo(fileTarget);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                BoardPicEntity picEntity = new BoardPicEntity();
+//                picEntity.setIboard(entity.getIboard());
+//                picEntity.setPic(saveName);
+//                list.add(picEntity);
+//                mapper.insBoardPic(list);
+//            }
+//        }
+//
+//        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
+//    }
         public Long delWriteBoard(Long iboard){
             mapper.delPicBoard(iboard);
             String centerPath = String.format("boardPics/%d", iboard);

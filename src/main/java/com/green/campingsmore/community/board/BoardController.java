@@ -117,11 +117,11 @@ public class BoardController {
         dto.setIboard(iboard);
         return service.deBoard(dto);
     }
-    @PutMapping(value = "/update",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "게시판 수정x")
-    public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
-        return service.updBoard(pic, dto);
-    }
+//    @PutMapping(value = "/update",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @Operation(summary = "게시판 수정x")
+//    public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
+//        return service.updBoard(pic, dto);
+//    }
     @DeleteMapping("/{iboardpic}")
     @Operation(summary = "게시글 사진 pk값으로 삭제")
     public Long delOnePic(@PathVariable Long iboardpic){
