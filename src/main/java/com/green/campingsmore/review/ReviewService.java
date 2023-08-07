@@ -21,15 +21,15 @@ public class ReviewService {
 
 
 
-    public int insReview(ReviewInsDto dto ) {/*
+    public int insReview(ReviewInsDto dto ) {
         ReviewEntity entity = new ReviewEntity();
         entity.setIuser(dto.getIuser());
         entity.setIorder(dto.getIorder());
         entity.setIitem(dto.getIitem());
         entity.setReviewCtnt(dto.getReviewCtnt());
-        entity.setStarRating(dto.getStarRating());*/
+        entity.setStarRating(dto.getStarRating());
 
-        return MAPPER.insReview(dto);
+        return MAPPER.insReview(entity);
 
     }
 
