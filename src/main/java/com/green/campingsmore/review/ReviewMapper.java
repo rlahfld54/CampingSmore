@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
-    int insReview(ReviewInsDto dto);
+    int insReview(ReviewEntity entity);
     List<ReviewSelVo> selReview(ReviewPageDto dto);
 
 }
