@@ -45,7 +45,7 @@ class CartControllerTest {
     private AuthenticationFacade facade;
 
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(username = "user", roles = "USER")
     @DisplayName("CartController - 장바구니 정보 저장")
     void postCart() throws Exception {
         //given
@@ -78,15 +78,13 @@ class CartControllerTest {
     @DisplayName("CartController - 장바구니 정보 보여주기")
     void getCart() throws Exception{
         //given
-        Long mockIuser = 3L;
-
         List<SelCartVo> mockList = new ArrayList<>();
         mockList.add(new SelCartVo(1L, "양고기사진.jpg", "양고기 구이",  23000L, 5L));
         mockList.add(new SelCartVo(2L, "소고기사진.jpg", "소고기 전골",  30000L, 3L));
-        given(service.selCart(mockIuser)).willReturn(mockList);
+        given(service.selCart(anyLong())).willReturn(mockList);
 
         //when
-        ResultActions ra = mvc.perform(get("/api/cart/{mockIuser}", mockIuser));
+        ResultActions ra = mvc.perform(get("/api/cart"));
 
         // then
         ra.andExpect(status().isOk())
