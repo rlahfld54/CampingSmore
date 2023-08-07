@@ -7,6 +7,7 @@ import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
 import com.green.campingsmore.sign.model.UpdateUserInfoDto;
+import com.green.campingsmore.sign.model.UserLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +38,9 @@ public class SignController {
                     "password : 비밀번호 \n\n "
     )
     public SignInResultDto signIn(HttpServletRequest req
-                                  , LoginDto loginDto){
-        String id = loginDto.getUid();
-        String password = loginDto.getUpw();
+                                  ,@RequestBody UserLogin userLogin){
+        String id = userLogin.getUid();
+        String password = userLogin.getUpw();
         String ip = req.getRemoteAddr();
         log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
 

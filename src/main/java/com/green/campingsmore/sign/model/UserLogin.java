@@ -3,7 +3,7 @@ package com.green.campingsmore.sign.model;
 import lombok.Data;
 
 @Data
-public class LoginDto {
+public class UserLogin {
     private String uid;
-    private String password;
+    private String upw;
 }

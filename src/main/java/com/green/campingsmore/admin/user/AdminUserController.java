@@ -3,6 +3,7 @@ package com.green.campingsmore.admin.user;
 import com.green.campingsmore.CommonRes;
 import com.green.campingsmore.sign.SignService;
 import com.green.campingsmore.sign.model.SignInResultDto;
+import com.green.campingsmore.sign.model.UserLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,9 @@ public class AdminUserController {
                     "id:  아이디 \n\n " +
                     "password : 비밀번호 \n\n "
     )
-    public SignInResultDto signIn(HttpServletRequest req, @RequestParam String id, @RequestParam String password){
+    public SignInResultDto signIn(HttpServletRequest req, @RequestBody UserLogin userLogin){
+        String id = userLogin.getUid();
+        String password = userLogin.getUpw();
 
         String ip = req.getRemoteAddr();
         log.info("[signIn] 관리자 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
