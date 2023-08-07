@@ -2,7 +2,7 @@ package com.green.campingsmore.order.cart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.MockMvcConfig;
-import com.green.campingsmore.order.cart.model.InsCartDto;
+import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -34,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CartController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class CartControllerTest {
+
     @Autowired
     private MockMvc mvc;
 
@@ -49,7 +49,7 @@ class CartControllerTest {
         given(service.insCart(any())).willReturn(testResult);
 
         //when
-        InsCartDto item = new InsCartDto();
+        InsCartDto1 item = new InsCartDto1();
         item.setIuser(3L);
         item.setIitem(5L);
         item.setQuantity(10L);
