@@ -65,3 +65,5 @@ spring:
       schema-locations: classpath:init/schema.sql
       data-locations: classpath:init/data.sql
       encoding: UTF-8
+  jpa:
+    defer-datasource-initialization: true

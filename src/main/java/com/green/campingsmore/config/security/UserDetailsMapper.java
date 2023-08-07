@@ -13,7 +13,7 @@ public interface UserDetailsMapper {
     int signUp(SignUpDto dto);
     LoginDto getByUid(String uid);
     int updUserToken(UserTokenDto dto);
-    UserTokenEntity selUserToken(UserTokenEntity p);
+//    UserTokenEntity selUserToken(UserTokenEntity p);
     int delYnUser(int iuser);
     String searchID(String name,String phone,String birth);
     int updateUserInfo(UpdateUserInfoDto updateUserInfoDto);
