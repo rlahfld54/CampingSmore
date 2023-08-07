@@ -1,6 +1,8 @@
 package com.green.campingsmore.review.model;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class ReviewInsDto {

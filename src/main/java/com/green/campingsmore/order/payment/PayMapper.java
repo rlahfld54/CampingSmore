@@ -7,6 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface PayMapper {
+    //결제, 주문 관련
     int insPayInfo(InsPayInfoDto dto);
     int insPayDetailInfo(List<PayDetailInfoVo> list);
     PaymentCompleteDto selPaymentComplete(Long iorder);
@@ -16,9 +17,9 @@ public interface PayMapper {
     Long delPaymentDetail(Long iorder, Long iitem);
     SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem);
 
-
-    Long insAdress(ShippingInsDto dto);
-    SelUserAdrressVo selUserAdress(Long iuser);
-    List<ShippingListSelVo> selAdressList(Long iuser);
-    ShippingListSelVo selOneAdress(SelUserAdressDto dto);
+    //주소 관련
+    Long insAddress(ShippingInsDto dto);
+    SelUserAdrressVo selUserAddress(Long iuser);
+    List<ShippingListSelVo> selAddressList(Long iuser);
+    ShippingListSelVo selOneAddress(SelUserAdressDto dto);
 }

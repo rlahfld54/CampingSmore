@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class SelUserAdrressVo {
-    private String userAdress;
-    private String userAdressDetail;
+    private String userAddress;
+    private String userAddressDetail;
     private String name;
     private String phone;
 }

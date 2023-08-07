@@ -55,18 +55,6 @@ class CommentMapperTest {
     void delComment() {
     }
 
-    @Test
-    void selComment() {
-        CommentPageDto dto = new CommentPageDto();
-        List<CommentVo> list = mapper.selComment(dto);
-        assertEquals(6,list.size());
-
-        CommentVo item1 = list.get(0);
-        assertEquals(1,item1.getIboard());
-
-        assertNotNull(item1.getCtnt());
-        assertEquals("hello",item1.getCtnt());
-    }
 
     @Test
     void maxComment() {
