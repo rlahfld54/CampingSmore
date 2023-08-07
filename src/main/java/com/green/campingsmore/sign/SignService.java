@@ -121,6 +121,7 @@ public class SignService {
 
         log.info("[getSignInResult] SignInResultDto 객체 생성");
         SignInResultDto dto = SignInResultDto.builder()
+                                .iuser(Math.toIntExact(userTokenDto.getIuser()))
                                 .accessToken(accessToken)
                                 .refreshToken(refreshToken)
                                 .build();
