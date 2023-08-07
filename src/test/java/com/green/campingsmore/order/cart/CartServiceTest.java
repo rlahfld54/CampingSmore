@@ -1,6 +1,6 @@
 package com.green.campingsmore.order.cart;
 
-import com.green.campingsmore.order.cart.model.InsCartDto;
+import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class CartServiceTest {
         Long testResult = 1L;
         when(mapper.insCart(any())).thenReturn(testResult);
 
-        InsCartDto dto = new InsCartDto();
+        InsCartDto1 dto = new InsCartDto1();
         dto.setIuser(3L);
         dto.setIitem(5L);
         dto.setQuantity(10L);

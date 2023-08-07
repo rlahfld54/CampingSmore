@@ -6,7 +6,6 @@ import java.util.List;
 
 @Data
 public class InsPayInfoDto {
-    private Long iuser;
     private String address;
     private String addressDetail;
     private Long totalPrice;
