@@ -1,6 +1,7 @@
 package com.green.campingsmore.admin.user;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.admin.user.model.UserDto;
 import com.green.campingsmore.sign.SignService;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.UserLogin;
@@ -10,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,8 +49,8 @@ public class AdminUserController {
     @Operation(summary = "관리자 - 모든 유저 리스트 보기",
             description = "Try it out -> Execute 눌러주세요 \n\n "
     )
-    public void selectAllusers(){
-        SERVICE.selectAllusers();
+    public List<UserDto> selectAllusers(){
+        return SERVICE.selectAllusers();
     }
 
 

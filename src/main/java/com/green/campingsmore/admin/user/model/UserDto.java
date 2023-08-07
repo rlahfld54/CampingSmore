@@ -7,4 +7,10 @@ import lombok.Data;
 @Builder
 public class UserDto {
     private int iuser;
+    private String user_id;
+    private String name;
+    private String birth_date;
+    private String phone;
+    private String gender;
+    private String role;
 }
