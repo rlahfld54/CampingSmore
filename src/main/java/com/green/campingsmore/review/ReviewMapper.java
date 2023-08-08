@@ -9,5 +9,7 @@ import java.util.List;
 public interface ReviewMapper {
     int insReview(ReviewEntity entity);
     List<ReviewSelVo> selReview(ReviewPageDto dto);
+    int updReview(ReviewEntity entity);
+    int updReviewPic(ReviewEntity entity);
 
 }

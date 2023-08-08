@@ -8,7 +8,6 @@ import lombok.Getter;
 @Data
 @AllArgsConstructor
 public class ReviewInsDto {
-    private Long iuser;
     private Long iorder;
     private Long iitem;
     private String reviewCtnt;
