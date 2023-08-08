@@ -44,7 +44,6 @@ class CartServiceTest {
         assertEquals(testResult, result);
 
         verify(mapper).insCart(any());
-        //select 작성후 추가예정
     }
 
     @Test

@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `order_item` (
     `quantity` tinyint(2) unsigned NOT NULL DEFAULT 1,
     `total_price` bigint(20) unsigned NOT NULL,
     `refund` tinyint(1) NOT NULL DEFAULT 0 CHECK (`refund` in ('0','1','2')),
+    `del_yn` tinyint(1) NOT NULL DEFAULT 1,
     KEY `iorder` (`iorder`),
     KEY `iitem` (`iitem`),
     CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`iorder`) REFERENCES `order` (`iorder`),
