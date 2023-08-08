@@ -126,8 +126,18 @@
         WHERE iboard = #{iboard}
     </update>
     <delete id="delOnePic">
+        DELETE FROM board_image
+        WHERE iboardpic = #{iboardpic} AND
+        iboard IN (SELECT iboard FROM board WHERE iboard = #{iboard})
+    </delete>
+    <delete id="delBoardPic">
         DELETE
         FROM board_image
-        WHERE iboardpic = #{iboardpic}
+        where iboard = #{iboard};
     </delete>
+    <select id="selPicName">
+        SELECT SUBSTRING_INDEX(pic, '/', -1) AS result
+        FROM board_image
+        WHERE iboardpic = #{iboardpic};
+    </select>
 </mapper>
