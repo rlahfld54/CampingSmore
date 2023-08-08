@@ -20,8 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "회원")
 @RequestMapping("/sign-api")
 public class SignController {
@@ -62,8 +62,8 @@ public class SignController {
                 .path("/")
                 .build();
 
-        log.info("// ResponseCookie :{}",responseCookie);
-        log.info("// 로그아웃 완료!!!");
+        log.info("ResponseCookie :{}",responseCookie);
+        log.info("로그아웃 완료!!!");
 
         return ResponseEntity
                 .status(HttpStatus.OK)
