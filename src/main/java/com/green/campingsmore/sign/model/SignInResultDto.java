@@ -8,7 +8,6 @@ import lombok.ToString;
 @ToString
 @Getter
 public class SignInResultDto extends SignUpResultDto {
-    private int iuser;
     private String accessToken;
     private String refreshToken;
 }

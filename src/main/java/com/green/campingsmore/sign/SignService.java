@@ -107,21 +107,10 @@ public class SignService {
         }
         REDIS_SERVICE.setValues(redisKey, value);
 
-
-        UserTokenDto userTokenDto = new UserTokenDto();
-        userTokenDto.setIuser(user.getIuser());
-        userTokenDto.setIp(ip);
-        userTokenDto.setAccessToken(accessToken);
-        userTokenDto.setRefreshToken(refreshToken);
-
-        //이제 디비에 저장해야함 mapper 어쩌고
-        MAPPER.updUserToken(userTokenDto);
-
         log.info("[getSignInResult] SignInResultDto 객체 생성");
         SignInResultDto dto = SignInResultDto.builder()
-                                .iuser(Math.toIntExact(userTokenDto.getIuser()))
-                                .accessToken(accessToken)
-                                .refreshToken(refreshToken)
+                                .accessToken(redisJwtVo.getAccessToken())
+                                .refreshToken(redisJwtVo.getRefreshToken())
                                 .build();
 
         log.info("[getSignInResult] SignInResultDto 객체 값 주입");
