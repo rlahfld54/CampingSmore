@@ -97,7 +97,7 @@ public class PayController {
 
     ) //유저마이페이지에서 조회
     private SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@PathVariable Long iorder, @RequestParam Long iitem) {
-        return SERVICE.SelDetailedItemPaymentInfo(iorder, iitem);
+        return SERVICE.selDetailedItemPaymentInfo(iorder, iitem);
     }
 
     @PutMapping("/paymentList/{iorder}")
@@ -171,7 +171,7 @@ public class PayController {
                             "<h3> name : 수령인\n" +
                             "<h3> phone : 전화번호 (하이픈 '-'없이)\n"
     )
-    public SelUserAdrressVo selUserAddress() {
+    public SelUserAddressVo selUserAddress() {
         Long iuser = facade.getLoginUserPk();
         return SERVICE.selUserAddress(iuser);
     }
@@ -201,7 +201,7 @@ public class PayController {
                             "<h3> phone : 전화번호 (하이픈 '-'없이)\n"
     )
     public ShippingListSelVo selOneAddress(@PathVariable Long iaddress) {
-        SelUserAdressDto dto1 = new SelUserAdressDto();
+        SelUserAddressDto dto1 = new SelUserAddressDto();
         Long iuser = facade.getLoginUserPk();
         dto1.setIuser(iuser);
         dto1.setIaddress(iaddress);

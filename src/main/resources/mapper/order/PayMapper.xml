@@ -122,4 +122,16 @@
         AND iaddress = #{iaddress}
     </select>
 
+    <select id="paymentDetailNullCheck">
+        SELECT iorder
+        FROM order_item
+        WHERE iorder = #{iorder}
+    </select>
+
+    <update id="delOrder">
+        UPDATE order
+        SET
+        iorder = #{iorder}
+        AND del_yn = 0
+    </update>
 </mapper>
