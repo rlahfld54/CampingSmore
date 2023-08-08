@@ -18,6 +18,7 @@ public interface ItemMapper {
 
     // 아이템 추가
     int insItem(ItemEntity entity);
+    int selLastItem(ItemSearchDto2 dto);
     List<ItemVo> searchItem(ItemSearchDto2 dto);
     // 아이템 상세페이지
     ItemSelDetailVo selDetail(Long iitem);
