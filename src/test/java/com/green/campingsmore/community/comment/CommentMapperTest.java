@@ -1,16 +1,17 @@
 package com.green.campingsmore.community.comment;
 
-import com.green.campingsmore.community.comment.model.CommentEntity;
-import com.green.campingsmore.community.comment.model.CommentInsDto;
-import com.green.campingsmore.community.comment.model.CommentPageDto;
-import com.green.campingsmore.community.comment.model.CommentVo;
+import com.green.campingsmore.community.comment.model.*;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,11 +19,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CommentMapperTest {
+
     @Autowired
     private CommentMapper mapper;
 
+    @MockBean
+    private AuthenticationFacade FACADE;
+
 
     @Test
+    @WithMockUser(username = "1", roles = "USER")
+
     void insComment() {
         CommentEntity entity = new CommentEntity();
         entity.setIboard(9L);
@@ -51,17 +58,15 @@ class CommentMapperTest {
         assertEquals(1,entity.getIuser());
     }
 
-//    @Test
-//    void delComment() {
-//        CommentEntity entity = new CommentEntity();
-//        entity.setIuser(1L);
-//        entity.setIcomment(3L);
-//        entity.setIboard();
-//        Long delComment = mapper.delComment(entity);
-//
-//        assertEquals(3L,delComment);
-//
-//    }
+    @Test
+    @WithMockUser(username = "testUser", roles = "USER")
+    void delComment() {
+        CommentEntity entity = new CommentEntity();
+        entity.setIcomment(3L);
+        entity.setIuser(2L);
+        Long delComment = mapper.delComment(entity);
+        assertEquals(1L, delComment);
+    }
 
     @Test
     void selComment() {
@@ -71,9 +76,7 @@ class CommentMapperTest {
         dto.setPage(1);
         dto.setStartIdx(0);
 
-
         List<CommentVo> list = mapper.selComment(dto);
-
 
         assertEquals(4,list.size());
         CommentVo item1 = list.get(0);
@@ -95,7 +98,13 @@ class CommentMapperTest {
 
     @Test
     void maxComment() {
+        CommentPageDto dto = new CommentPageDto();
+        dto.setStartIdx(0);
+        dto.setIboard(1L);
+        dto.setPage(1);
+        dto.setRow(15);
+        Long result = mapper.maxComment(dto);
+
+        assertEquals(6L,result);
     }
-
-
 }

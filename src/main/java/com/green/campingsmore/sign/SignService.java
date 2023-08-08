@@ -10,10 +10,7 @@ import com.green.campingsmore.config.security.UserDetailsMapper;
 import com.green.campingsmore.config.security.model.*;
 import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
-import com.green.campingsmore.sign.model.SignInResultDto;
-import com.green.campingsmore.sign.model.SignUpResultDto;
-import com.green.campingsmore.sign.model.UpdatePwDto;
-import com.green.campingsmore.sign.model.UpdateUserInfoDto;
+import com.green.campingsmore.sign.model.*;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +68,7 @@ public class SignService {
         return dto;
     }
 
+    // 로그인
     public SignInResultDto signIn(String id, String password, String ip) throws RuntimeException {
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
         LoginDto user = MAPPER.getByUid(id);
@@ -109,20 +107,10 @@ public class SignService {
         }
         REDIS_SERVICE.setValues(redisKey, value);
 
-
-        UserTokenDto userTokenDto = new UserTokenDto();
-        userTokenDto.setIuser(user.getIuser());
-        userTokenDto.setIp(ip);
-        userTokenDto.setAccessToken(accessToken);
-        userTokenDto.setRefreshToken(refreshToken);
-
-        //이제 디비에 저장해야함 mapper 어쩌고
-        MAPPER.updUserToken(userTokenDto);
-
         log.info("[getSignInResult] SignInResultDto 객체 생성");
         SignInResultDto dto = SignInResultDto.builder()
-                                .accessToken(accessToken)
-                                .refreshToken(refreshToken)
+                                .accessToken(redisJwtVo.getAccessToken())
+                                .refreshToken(redisJwtVo.getRefreshToken())
                                 .build();
 
         log.info("[getSignInResult] SignInResultDto 객체 값 주입");
@@ -271,6 +259,10 @@ public class SignService {
         return MAPPER.searchPW(updatePwDto);
     }
 
+
+    public UserInfo getmyInfo(){
+        return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
+    }
 
 }
 

@@ -375,9 +375,7 @@ VALUES (1, '1', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy
         '2023-07-27 14:29:21', 1),
        (4, '4', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy0CSNm', 'dlawjdghbn@naver.com', '임정호',
         '1998-06-05', '01092158817', 0, '경기 가평군 가평읍 자라섬로 60', NULL, 'ROLE_USER', NULL, '2023-07-24 15:53:48',
-        '2023-07-27 14:29:18', 1),
-       (7, 'rlahfld54', '{bcrypt}$2a$10$Spe8qrrpDoq5dJ6WwmJZBOe.p7jzntEpAhcY76N0QauVIEXPvak/W', 'string', 'string',
-        'string', 'string', 0, 'string', NULL, 'ROLE_USER', NULL, '2023-07-28 18:05:24', '2023-07-28 18:06:03', 1);
+        '2023-07-27 14:29:18', 1);
 
 INSERT IGNORE  `user_token` (`iuser`, `ip`, `access_token`, `refresh_token`, `created_at`, `updated_at`)
 VALUES (7, '0:0:0:0:0:0:0:1',

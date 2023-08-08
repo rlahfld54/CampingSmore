@@ -2,6 +2,7 @@ package com.green.campingsmore.order.cart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.MockMvcConfig;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -39,9 +41,11 @@ class CartControllerTest {
 
     @MockBean
     private CartService service;
+    @MockBean
+    private AuthenticationFacade facade;
 
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(username = "user", roles = "USER")
     @DisplayName("CartController - 장바구니 정보 저장")
     void postCart() throws Exception {
         //given
@@ -74,15 +78,13 @@ class CartControllerTest {
     @DisplayName("CartController - 장바구니 정보 보여주기")
     void getCart() throws Exception{
         //given
-        Long mockIuser = 3L;
-
         List<SelCartVo> mockList = new ArrayList<>();
         mockList.add(new SelCartVo(1L, "양고기사진.jpg", "양고기 구이",  23000L, 5L));
         mockList.add(new SelCartVo(2L, "소고기사진.jpg", "소고기 전골",  30000L, 3L));
-        given(service.selCart(mockIuser)).willReturn(mockList);
+        given(service.selCart(anyLong())).willReturn(mockList);
 
         //when
-        ResultActions ra = mvc.perform(get("/api/cart/{mockIuser}", mockIuser));
+        ResultActions ra = mvc.perform(get("/api/cart"));
 
         // then
         ra.andExpect(status().isOk())

@@ -1,13 +1,12 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.admin.user.model.UserDto;
 import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
-import com.green.campingsmore.sign.model.SignInResultDto;
-import com.green.campingsmore.sign.model.SignUpResultDto;
-import com.green.campingsmore.sign.model.UpdateUserInfoDto;
-import com.green.campingsmore.sign.model.UserLogin;
+import com.green.campingsmore.config.security.redis.RedisService;
+import com.green.campingsmore.sign.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +41,7 @@ public class SignController {
         String id = userLogin.getUid();
         String password = userLogin.getUpw();
         String ip = req.getRemoteAddr();
-        log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
+        log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}",id, password, ip);
 
         SignInResultDto dto = SERVICE.signIn(id, password, ip);
         if (dto.getCode() == CommonRes.SUCCESS.getCode()) {
@@ -124,7 +123,15 @@ public class SignController {
     }
 
 
-    @PostMapping("/updateUserInfo")
+    @GetMapping("/myinfo")
+    @Operation(summary = "로그인 했을때 , 본인 회원 정보 출력",
+            description = "Try it out -> Execute 눌러주세요 \n\n ")
+    public UserInfo getmyInfo(){
+        return SERVICE.getmyInfo();
+    }
+
+
+    @PostMapping("/update-info")
     @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+

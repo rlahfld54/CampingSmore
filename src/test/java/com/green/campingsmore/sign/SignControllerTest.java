@@ -1,8 +1,7 @@
 package com.green.campingsmore.sign;
 
 import com.green.campingsmore.MockMvcConfig;
-import com.green.campingsmore.order.cart.CartController;
-import com.green.campingsmore.order.cart.CartService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,7 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcConfig
 @WebMvcTest(SignController.class)
@@ -23,8 +24,14 @@ class SignControllerTest {
     @MockBean
     private SignService service;
 
-    @Test
-    void signIn() {
+    @Test // 로그인
+    @DisplayName("로그인")
+    void signIn() throws Exception {
+//        mvc.perform(
+//                get("/sign-in")
+//
+//                )
+//                .andExpect(status().isOk());
     }
 
     @Test

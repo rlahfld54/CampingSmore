@@ -38,6 +38,11 @@
         WHERE iuser = #{iuser} AND ip = #{ip}
     </select>
 
+    <select id="getmyInfo">
+        SELECT iuser,user_id,`name`,email,birth_date,phone,gender,user_address,user_address_detail,role
+        FROM user WHERE iuser = #{iuser};
+    </select>
+
     <update id="delYnUser">
         UPDATE user
         SET del_yn = 0

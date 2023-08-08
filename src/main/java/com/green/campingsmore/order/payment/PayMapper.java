@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface PayMapper {
     //결제, 주문 관련
-    int insPayInfo(InsPayInfoDto1 dto);
-    int insPayDetailInfo(List<PayDetailInfoVo> list);
+    Long insPayInfo(InsPayInfoDto1 dto);
+    Long insPayDetailInfo(List<PayDetailInfoVo> list);
     PaymentCompleteDto selPaymentComplete(Long iorder);
     List<SelPaymentDetailDto> selPaymentDetailAll1(Long iuser);
     List<PaymentDetailDto> selPaymentPageItemList(List<Long> list);
