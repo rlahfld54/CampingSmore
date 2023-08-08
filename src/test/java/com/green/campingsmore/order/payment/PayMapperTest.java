@@ -1,9 +1,7 @@
 package com.green.campingsmore.order.payment;
 
 import com.green.campingsmore.order.cart.CartMapper;
-import com.green.campingsmore.order.payment.model.InsPayInfoDto1;
-import com.green.campingsmore.order.payment.model.PayDetailInfoVo;
-import com.green.campingsmore.order.payment.model.PaymentCompleteDto;
+import com.green.campingsmore.order.payment.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,6 +69,15 @@ class PayMapperTest {
 
     @Test
     void selPaymentDetailAll1() {
+        Long iuser = 1L;
+        List<SelPaymentDetailDto> itemList1 = mapper.selPaymentDetailAll1(iuser);
+        for (SelPaymentDetailDto item1 : itemList1) {
+            List<PaymentDetailDto2> itemList2 = item1.getItemList();
+            for (PaymentDetailDto2 item2 : itemList2) {
+
+            }
+        }
+
     }
 
     @Test
