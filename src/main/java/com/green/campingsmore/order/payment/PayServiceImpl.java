@@ -76,13 +76,26 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public Long delPaymentDetail(Long iorder, Long iitem) {
-        return MAPPER.delPaymentDetail(iorder, iitem);
+
+        try {
+            Long result1 = MAPPER.delPaymentDetail(iorder, iitem);
+            List<Long> result2 = MAPPER.paymentDetailNullCheck(iorder);
+
+            if (result1 == 1L && result2 == null) {
+                MAPPER.delOrder(iorder);
+                return 1L;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
     }
 
     @Override
-    public SelDetailedItemPaymentInfoVo SelDetailedItemPaymentInfo(Long iorder, Long iitem) {
-        return MAPPER.SelDetailedItemPaymentInfo(iorder, iitem);
+    public SelDetailedItemPaymentInfoVo selDetailedItemPaymentInfo(Long iorder, Long iitem) {
+        return MAPPER.selDetailedItemPaymentInfo(iorder, iitem);
     }
 
     @Override
@@ -91,7 +104,7 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public SelUserAdrressVo selUserAddress(Long iuser) {
+    public SelUserAddressVo selUserAddress(Long iuser) {
         return MAPPER.selUserAddress(iuser);
     }
 
@@ -101,7 +114,7 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public ShippingListSelVo selOneAddress(SelUserAdressDto dto) {
+    public ShippingListSelVo selOneAddress(SelUserAddressDto dto) {
         return MAPPER.selOneAddress(dto);
     }
 }

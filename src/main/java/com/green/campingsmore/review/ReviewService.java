@@ -75,12 +75,19 @@ public class ReviewService {
 
     public ReviewRes selReview(ReviewPageDto dto) {
         dto.setStartIdx((dto.getPage() - 1) * dto.getRow());
+        int count = MAPPER.selLastReview(dto.getIitem());
+        int maxPage = (int)Math.ceil((double) count /dto.getRow());
+        int isMore = maxPage > dto.getPage() ? 1 : 0;
+
+
         List<ReviewSelVo> list = MAPPER.selReview(dto);
         return ReviewRes.builder()
                 .iitem(dto.getIitem())
+                .maxPage(maxPage)
+                .startIdx(dto.getStartIdx())
+                .isMore(isMore)
                 .page(dto.getPage())
                 .row(dto.getRow())
-                .startIdx(dto.getStartIdx())
                 .list(list)
                 .build();
     }

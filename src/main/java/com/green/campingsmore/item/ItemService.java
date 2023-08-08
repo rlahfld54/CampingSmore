@@ -63,12 +63,17 @@ public class ItemService {
     public ItemSelDetailRes searchItem(ItemSearchDto2 dto) {
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         List<ItemVo> list = MAPPER.searchItem(dto);
+        int count = MAPPER.selLastItem(dto);
+        int maxPage = (int)Math.ceil((double) count /dto.getRow());
+        int isMore = maxPage > dto.getPage() ? 1 : 0;
 
     return ItemSelDetailRes.builder()
             .iitemCategory(dto.getIitemCategory())
             .text(dto.getText())
             .sort(dto.getSort())
+            .maxPage(maxPage)
             .startIdx(dto.getStartIdx())
+            .isMore(isMore)
             .page(dto.getPage())
             .row(dto.getRow())
             .itemList(list)

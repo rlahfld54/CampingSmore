@@ -70,6 +70,5 @@ public class CartController {
     )
     private Long delCartAll(@RequestParam List<Long> icart) {
         return SERVICE.delCartAll(icart);
-//
     }
 }

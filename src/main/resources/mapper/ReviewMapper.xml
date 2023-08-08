@@ -13,6 +13,12 @@
         star_rating = #{starRating}
     </insert>
 
+    <select id="selLastReview">
+        SELECT count(ireview)
+        FROM review
+        WHERE iitem = iitem
+    </select>
+
     <select id="selReview" resultType="ReviewSelVo">
         SELECT ireview, `name`, review_ctnt reviewCtnt, star_rating starRating, review_like reviewLike
         FROM review A
