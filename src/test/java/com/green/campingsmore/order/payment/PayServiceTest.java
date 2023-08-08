@@ -152,18 +152,65 @@ class PayServiceTest {
 
         assertEquals(result.getPrice(), item1.getPrice());
         assertEquals(result.getQuantity(), 1L);
-        assertEquals(result.getIitem(),item1.getIitem());
-        assertEquals(result.getPic(),item1.getPic());
-        assertEquals(result.getTotalPrice(),70000L);
-        assertEquals(result.getName(),item1.getName());
+        assertEquals(result.getIitem(), item1.getIitem());
+        assertEquals(result.getPic(), item1.getPic());
+        assertEquals(result.getTotalPrice(), 70000L);
+        assertEquals(result.getName(), item1.getName());
 
         then(mapper).should(times(1)).selPaymentPageItem(any());
     }
 
     @Test
-
+    @DisplayName("PayService - 장바구니 결제 버튼 -> 체크된 장바구니 아이템 정보들을 결제 페이지에서 보여주기")
     void selPaymentPageItemList() {
+        CartPKDto testDto = new CartPKDto();
+        List<Long> icart = new ArrayList<>();
+        icart.add(1L);
+        icart.add(2L);
+        testDto.setIcart(icart);
 
+        List<PaymentDetailDto> itemList = new ArrayList<>();
+        PaymentDetailDto item1 = new PaymentDetailDto();
+        item1.setIitem(1L);
+        item1.setPic("테스트지겹다.jpg");
+        item1.setName("괴기괴기");
+        item1.setPrice(50000L);
+        item1.setQuantity(1L);
+
+        PaymentDetailDto item2 = new PaymentDetailDto();
+        item2.setIitem(2L);
+        item2.setPic("맛있는 과자.jpg");
+        item2.setName("새우깡");
+        item2.setPrice(10000L);
+        item2.setQuantity(2L);
+
+        itemList.add(item1);
+        itemList.add(item2);
+
+        given(mapper.selPaymentPageItemList(any())).willReturn(itemList);
+
+        List<PaymentDetailDto> result = mapper.selPaymentPageItemList(icart);
+
+        assertEquals(result.get(0).getPrice(), item1.getPrice());
+        assertEquals(result.get(0).getQuantity(), item1.getQuantity());
+        assertEquals(result.get(0).getPic(), item1.getPic());
+        assertEquals(result.get(0).getName(), item1.getName());
+
+        assertEquals(result.get(1).getPrice(), item2.getPrice());
+        assertEquals(result.get(1).getQuantity(), item2.getQuantity());
+        assertEquals(result.get(1).getPic(), item2.getPic());
+        assertEquals(result.get(1).getName(), item2.getName());
+
+        for (PaymentDetailDto item : result) {
+            Long price = item.getPrice();
+            Long quantity = item.getQuantity();
+            Long totalPrice = price * quantity;
+            item.setTotalPrice(totalPrice);
+        }
+        assertEquals(result.get(0).getTotalPrice(), 50000L);
+        assertEquals(result.get(1).getTotalPrice(), 20000L);
+
+        then(mapper).should(times(1)).selPaymentPageItemList(any());
     }
 
     @Test
@@ -175,7 +222,7 @@ class PayServiceTest {
 
         List<Long> testResult2 = null;
 
-        given(mapper.delPaymentDetail(any(),any())).willReturn(testResult1);
+        given(mapper.delPaymentDetail(any(), any())).willReturn(testResult1);
         given(mapper.paymentDetailNullCheck(any())).willReturn(testResult2);
         given(mapper.delOrder(any())).willReturn(1L);
 
@@ -190,7 +237,7 @@ class PayServiceTest {
 
         assertEquals(result1, testResult1);
 
-        then(mapper).should(times(1)).delPaymentDetail(any(),any());
+        then(mapper).should(times(1)).delPaymentDetail(any(), any());
         then(mapper).should(times(1)).paymentDetailNullCheck(any());
         then(mapper).should(times(1)).delOrder(any());
     }
@@ -213,7 +260,7 @@ class PayServiceTest {
         item.setShippingPrice(3000L);
         item.setShippingMemo("빨리 배송해줘요");
 
-        when(mapper.selDetailedItemPaymentInfo(any(),any())).thenReturn(item);
+        when(mapper.selDetailedItemPaymentInfo(any(), any())).thenReturn(item);
 
         SelDetailedItemPaymentInfoVo result = mapper.selDetailedItemPaymentInfo(testIorder, testIitem);
 
@@ -228,7 +275,7 @@ class PayServiceTest {
         assertEquals(result.getShippingPrice(), item.getShippingPrice());
         assertEquals(result.getShippingMemo(), item.getShippingMemo());
 
-        then(mapper).should(times(1)).selDetailedItemPaymentInfo(any(),any());
+        then(mapper).should(times(1)).selDetailedItemPaymentInfo(any(), any());
     }
 
     @Test
@@ -271,18 +318,48 @@ class PayServiceTest {
         then(mapper).should(times(1)).selUserAddress(any());
     }
 
-//    @Test
-//    @DisplayName("PayService - 등록된 배송지 리스트 출력")
-//    void selAddressList() {
-//        Long testUser = 1L;
-//        ShippingListSelVo item = new ShippingListSelVo
-//                ("주소주소", "상세주소주소", "신형주", "01066229988");
-//
-//        List<ShippingListSelVo>
-//    }
+    @Test
+    @DisplayName("PayService - 등록된 배송지 리스트 출력")
+    void selAddressList() {
+        Long testUser = 1L;
+        ShippingListSelVo item = new ShippingListSelVo
+                ("주소주소", "상세주소주소", "신형주", "01066229988");
+
+        List<ShippingListSelVo> itemList = new ArrayList<>();
+        itemList.add(item);
+
+        given(mapper.selAddressList(any())).willReturn(itemList);
+
+        List<ShippingListSelVo> result = mapper.selAddressList(testUser);
+
+        assertEquals(result.size(), 1);
+        assertEquals(result.get(0).getAddress(), item.getAddress());
+        assertEquals(result.get(0).getAddressDetail(), item.getAddressDetail());
+        assertEquals(result.get(0).getPhone(), item.getPhone());
+        assertEquals(result.get(0).getName(), item.getName());
+
+        then(mapper).should(times(1)).selAddressList(any());
+    }
 
     @Test
+    @DisplayName("PayService - 등록된 배송지 중 하나 출력")
     void selOneAddress() {
+        SelUserAddressDto testDto = new SelUserAddressDto();
+        testDto.setIaddress(1L);
+        testDto.setIuser(1L);
 
+        ShippingListSelVo item = new ShippingListSelVo
+                ("주소주소", "상세주소주소", "신형주", "01066229988");
+
+        given(mapper.selOneAddress(any())).willReturn(item);
+
+        ShippingListSelVo result = mapper.selOneAddress(testDto);
+
+        assertEquals(result.getAddress(), item.getAddress());
+        assertEquals(result.getAddressDetail(), item.getAddressDetail());
+        assertEquals(result.getPhone(), item.getPhone());
+        assertEquals(result.getName(), item.getName());
+
+        then(mapper).should(times(1)).selOneAddress(any());
     }
 }

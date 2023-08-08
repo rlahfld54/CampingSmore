@@ -78,7 +78,7 @@
         AND iitem = #{iitem}
     </update>
 
-    <select id="SelDetailedItemPaymentInfo">
+    <select id="selDetailedItemPaymentInfo">
         SELECT A.iitem, C.name, A.price, A.quantity,
         A.total_price totalPrice, C.pic, B.created_at paymentDate,
         B.address, B.address_detail addressDetail,
