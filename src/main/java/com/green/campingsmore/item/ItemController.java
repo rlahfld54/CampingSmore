@@ -57,6 +57,14 @@ public class ItemController {
         dto.setSort(sort);
         return SERVICE.searchItem(dto);
     }
+    
+    @DeleteMapping("/{iitem}")
+    @Operation(summary = "아이템 삭제 - 관리자 페이지"
+            , description = "" +
+            "\"iitem\": [-] 아이템 PK<br>")
+    public int delItem(@PathVariable Long iitem) {
+        return SERVICE.delItem(iitem);
+    }
 
 
     @GetMapping("/detail")
@@ -83,14 +91,6 @@ public class ItemController {
     public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem,
                                                @RequestParam List<String> picUrl) {
         return SERVICE.insDetailPic(iitem, picUrl);
-    }
-
-    @DeleteMapping("/detail/delete")
-    @Operation(summary = "아이템 삭제 - 관리자페이지"
-            , description = "" +
-            "\"iitem\": [-] 아이템 PK<br>")
-    public int delDetail(@RequestParam Long iitem) {
-        return SERVICE.delDetail(iitem);
     }
 
     @DeleteMapping("/detail/deletepic")

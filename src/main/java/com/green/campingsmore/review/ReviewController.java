@@ -73,6 +73,14 @@ public class ReviewController {
         return SERVICE.updReview(dto, pic);
     }
 
+    @DeleteMapping
+    @Operation(summary = "리뷰 삭제"
+            , description = "" +
+            "\"ireview\": [-] 리뷰 PK<br>" )
+    public int delReview(@RequestParam Long ireview) {
+        return SERVICE.delReview(ireview);
+    }
+
 /*    @PutMapping(value = "리뷰 사진 수정",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 사진 수정"
             , description = "" +

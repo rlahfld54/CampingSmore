@@ -72,6 +72,12 @@
         </if>
         LIMIT ${startIdx}, ${row}
     </select>
+<!--  아이템 삭제  -->
+    <update id="delItem">
+        UPDATE item
+        SET del_yn = 0
+        WHERE iitem = #{iitem}
+    </update>
 
 
 
@@ -88,10 +94,7 @@
         WHERE iitem = #{iitem}
     </select>
 
-    <delete id="delDetail">
-        DELETE FROM item
-        WHERE iitem = ${iitem}
-    </delete>
+
 
     <!-- 아이템 상세페이지 변경 del->ins -->
     <delete id="delDetailPic">

@@ -20,10 +20,11 @@ public interface ItemMapper {
     int insItem(ItemEntity entity);
     int selLastItem(ItemSearchDto2 dto);
     List<ItemVo> searchItem(ItemSearchDto2 dto);
+    // 아이템 삭제
+    int delItem(Long item);
     // 아이템 상세페이지
     ItemSelDetailVo selDetail(Long iitem);
     List<String> selDetailPic(Long iitem);
-    int delDetail(Long iitem);
     // 아이템 상세페이지 변경 del->ins
     int delDetailPic(Long iitem);
     int insDetailPic(ItemDetailInsDto dto);
@@ -31,4 +32,5 @@ public interface ItemMapper {
     // 추천 아이템
     int insBestItem(ItemInsBest dto);
     List<ItemVo> selBestItem();
+
 }

@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.review.ReviewMapper">
 
+<!--  리뷰 추가  -->
     <insert id="insReview" useGeneratedKeys="true" keyProperty="ireview">
         INSERT INTO review
         SET iuser = #{iuser},
@@ -13,33 +14,54 @@
         star_rating = #{starRating}
     </insert>
 
+    <select id="selReviewOrder" resultType="int">
+        SELECT A.del_yn
+        FROM `order` A
+        INNER JOIN order_item B
+        ON A.iorder = B.iorder
+        WHERE A.iorder = #{iorder} AND A.iuser = #{iuser} AND B.iitem = #{iitem}
+    </select>
+
+<!--  리스트 개수  -->
     <select id="selLastReview">
         SELECT count(ireview)
         FROM review
         WHERE iitem = iitem
+        AND del_yn = 1;
     </select>
 
+<!--  리뷰 리스트  -->
     <select id="selReview" resultType="ReviewSelVo">
         SELECT ireview, `name`, review_ctnt reviewCtnt, star_rating starRating, review_like reviewLike
         FROM review A
         INNER JOIN `user` B
         ON A.iuser = B.iuser
         WHERE iitem = #{iitem}
+        AND del_yn = 1;
         LIMIT #{startIdx}, #{row}
     </select>
 
+<!--  리뷰 수정  -->
     <update id="updReview">
         UPDATE review
         SET review_ctnt = #{reviewCtnt},
         star_rating = #{starRating}
         WHERE ireview = #{ireview} AND iuser = #{iuser}
     </update>
-
+    <!--  리뷰 사진 업로드  -->
     <update id="updReviewPic">
         UPDATE review
         SET pic = #{pic}
         WHERE ireview = #{ireview}
     </update>
+
+<!--  리뷰 삭제  -->
+    <update id="delReview">
+        UPDATE review
+        SET del_yn = 0
+        WHERE ireview = #{ireview} AND iuser = #{iuser}
+    </update>
+
 
 
 </mapper>

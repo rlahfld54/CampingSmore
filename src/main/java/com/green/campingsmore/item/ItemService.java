@@ -80,6 +80,11 @@ public class ItemService {
             .build();
 }
 
+    //아이템 삭제
+    public int delItem(Long iitem) {
+        return MAPPER.delItem(iitem);
+    }
+
 
     // 아이템 상세
     public ItemDetailReviewVo selDetail(ItemSelDetailDto dto) {
@@ -114,12 +119,7 @@ public class ItemService {
         return null;
     }
 
-    public int delDetail(Long iitem) {
-        MAPPER.delDetailPic(iitem);
-        MAPPER.delDetail(iitem);
 
-    return 1;
-    }
 
     public int delDetailPic(Long iitem) {
         return MAPPER.delDetailPic(iitem);
