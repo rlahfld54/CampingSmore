@@ -18,8 +18,8 @@ public interface ItemMapper {
 
     // 아이템 추가
     int insItem(ItemEntity entity);
-    int selLastItem(ItemSearchDto2 dto);
-    List<ItemVo> searchItem(ItemSearchDto2 dto);
+    int selLastItem(ItemSearchDto dto);
+    List<ItemVo> searchItem(ItemSearchDto dto);
     // 아이템 삭제
     int delItem(Long item);
     // 아이템 상세페이지

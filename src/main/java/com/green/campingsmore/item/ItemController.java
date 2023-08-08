@@ -49,7 +49,7 @@ public class ItemController {
                                           @RequestParam(defaultValue = "1")int page,
                                           @RequestParam(defaultValue = "15")int row,
                                           @RequestParam(defaultValue = "0")int sort) {
-        ItemSearchDto2 dto = new ItemSearchDto2();
+        ItemSearchDto dto = new ItemSearchDto();
         dto.setText(text);
         dto.setPage(page);
         dto.setRow(row);
