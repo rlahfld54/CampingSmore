@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.campingsmore.review.ReviewMapper">
 
-    <insert id="insReview">
+    <insert id="insReview" useGeneratedKeys="true" keyProperty="ireview">
         INSERT INTO review
         SET iuser = #{iuser},
         iorder = #{iorder},
@@ -12,6 +12,12 @@
         review_ctnt = #{reviewCtnt},
         star_rating = #{starRating}
     </insert>
+
+    <select id="selLastReview">
+        SELECT count(ireview)
+        FROM review
+        WHERE iitem = iitem
+    </select>
 
     <select id="selReview" resultType="ReviewSelVo">
         SELECT ireview, `name`, review_ctnt reviewCtnt, star_rating starRating, review_like reviewLike
@@ -22,7 +28,18 @@
         LIMIT #{startIdx}, #{row}
     </select>
 
+    <update id="updReview">
+        UPDATE review
+        SET review_ctnt = #{reviewCtnt},
+        star_rating = #{starRating}
+        WHERE ireview = #{ireview} AND iuser = #{iuser}
+    </update>
 
+    <update id="updReviewPic">
+        UPDATE review
+        SET pic = #{pic}
+        WHERE ireview = #{ireview}
+    </update>
 
 
 </mapper>

@@ -14,7 +14,8 @@
     </select>
 
     <select id="getReviewlist">
-        SELECT * FROM review
+        SELECT ireview,iuser,iorder,iitem,review_ctnt reviewCtnt,pic,star_rating starRating,created_at createdAt,updated_at updatedAt,review_like reviewLike
+        FROM review
         WHERE iuser = #{iuser};
     </select>
 

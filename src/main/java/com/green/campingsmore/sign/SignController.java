@@ -20,13 +20,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "회원")
 @RequestMapping("/sign-api")
 public class SignController {
     private final SignService SERVICE;
-    private final RedisService redisService;
 
     //ApiParam은 문서 자동화를 위한 Swagger에서 쓰이는 어노테이션이고
     //RequestParam은 http 로부터 요청 온 정보를 받아오기 위한 스프링 어노테이션이다.
@@ -47,8 +46,6 @@ public class SignController {
         SignInResultDto dto = SERVICE.signIn(id, password, ip);
         if (dto.getCode() == CommonRes.SUCCESS.getCode()) {
             log.info("[signIn] 정상적으로 로그인 되었습니다. id: {}, token: {}", id, dto.getAccessToken());
-            String PK = redisService.getValues(dto.getAccessToken());
-            System.out.println("PK : "+PK); // null??
         }
 
         return dto;
@@ -65,8 +62,8 @@ public class SignController {
                 .path("/")
                 .build();
 
-        log.info("// ResponseCookie :{}",responseCookie);
-        log.info("// 로그아웃 완료!!!");
+        log.info("ResponseCookie :{}",responseCookie);
+        log.info("로그아웃 완료!!!");
 
         return ResponseEntity
                 .status(HttpStatus.OK)
