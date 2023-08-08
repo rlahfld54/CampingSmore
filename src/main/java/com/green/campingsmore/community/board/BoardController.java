@@ -50,7 +50,7 @@ public class BoardController {
         return service.postPic(iboard,pics);
     }
     @PostMapping("/board")
-    @Operation(summary = "게시글 작성")
+    @Operation(summary = "게시글 작성/수정")
     public Long updContent(@RequestBody BoardInsDto dto){
         return service.updContent(dto);
     }
@@ -122,9 +122,9 @@ public class BoardController {
 //    public Long updBoard(@RequestPart BoardUpdDto dto,@RequestPart(required = false) List<MultipartFile> pic){
 //        return service.updBoard(pic, dto);
 //    }
-    @DeleteMapping("/{iboardpic}")
+    @DeleteMapping("/delPic")
     @Operation(summary = "게시글 사진 pk값으로 삭제")
-    public Long delOnePic(@PathVariable Long iboardpic){
-        return service.delOnePic(iboardpic);
+    public Long delOnePic(@RequestBody BoardPicDelDto dto){
+        return service.delOnePic(dto);
     }
 }
