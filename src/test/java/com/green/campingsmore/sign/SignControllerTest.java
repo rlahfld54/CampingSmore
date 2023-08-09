@@ -161,7 +161,22 @@ class SignControllerTest {
     }
 
     @Test
-    void searchID() {
+    void searchID() throws Exception {
+        String name = "황주은";
+        String phone = "01025521549";
+        String birth = "1998-06-12";
+
+        given(service.searchID(name, phone, birth)).willReturn("아이디 찾기");
+
+        mvc.perform(
+                get("/sign-api/search-id")
+                        .param("name",name)
+                        .param("phone",phone)
+                        .param("birth",birth)
+        ).andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).searchID(name, phone, birth);
     }
 
     @Test
