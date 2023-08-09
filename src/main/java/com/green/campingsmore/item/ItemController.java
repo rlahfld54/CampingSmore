@@ -66,18 +66,18 @@ public class ItemController {
     }
 
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{iitem}")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>"+
             "\"page\": [-] 리스트 페이지,<br>" +
             "\"row\": [고정] 아이템 개수<br>" )
-    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
+    public ItemDetailReviewVo getItemDetail(@PathVariable Long iitem,
                                             @RequestParam(defaultValue = "1")int page,
                                             @RequestParam(defaultValue = "5")int row){
         ItemSelDetailDto dto = new ItemSelDetailDto();
-        dto.setPage(page);
         dto.setIitem(iitem);
+        dto.setPage(page);
         dto.setRow(row);
         return SERVICE.selDetail(dto);
     }

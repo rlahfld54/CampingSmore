@@ -90,6 +90,7 @@ public class ReviewService {
 
 
         List<ReviewSelVo> list = MAPPER.selReview(dto);
+        log.info("list:{}",list);
         return ReviewRes.builder()
                 .iitem(dto.getIitem())
                 .maxPage(maxPage)

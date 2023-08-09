@@ -36,8 +36,8 @@
         FROM review A
         INNER JOIN `user` B
         ON A.iuser = B.iuser
-        WHERE iitem = #{iitem}
-        AND del_yn = 1;
+        WHERE A.iitem = #{iitem}
+        AND A.del_yn = 1
         LIMIT #{startIdx}, #{row}
     </select>
 
