@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -69,7 +68,9 @@ public class SignService {
     }
 
     // 로그인
-    public SignInResultDto signIn(String id, String password, String ip) throws RuntimeException {
+    public SignInResultDto signIn(UserLogin userLogin, String ip) throws RuntimeException {
+        String id = userLogin.getUid();
+        String password = userLogin.getUpw();
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
         LoginDto user = MAPPER.getByUid(id);
 

@@ -1,6 +1,5 @@
 package com.green.campingsmore.config.security;
 
-import com.green.campingsmore.community.comment.CommentMapper;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -34,29 +33,5 @@ class UserDetailsMapperTest {
         int result = mapper.signUp(dto);
 
         assertEquals(1,result);
-    }
-
-    @Test
-    void getByUid() {
-    }
-
-    @Test
-    void updUserToken() {
-    }
-
-    @Test
-    void delYnUser() {
-    }
-
-    @Test
-    void searchID() {
-    }
-
-    @Test
-    void updateUserInfo() {
-    }
-
-    @Test
-    void searchPW() {
     }
 }

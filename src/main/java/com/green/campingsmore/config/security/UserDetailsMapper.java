@@ -13,7 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserDetailsMapper {
     int signUp(SignUpDto dto);
     LoginDto getByUid(String uid);
-    int updUserToken(UserTokenDto dto);
     int delYnUser(int iuser);
     String searchID(String name,String phone,String birth);
     int updateUserInfo(UpdateUserInfoDto updateUserInfoDto);

@@ -19,8 +19,4 @@
         WHERE iuser = #{iuser};
     </select>
 
-<!--    <select id="getOrderlist">-->
-<!--        SELECT * FROM order-->
-<!--        WHERE iuser = #{iuser};-->
-<!--    </select>-->
 </mapper>

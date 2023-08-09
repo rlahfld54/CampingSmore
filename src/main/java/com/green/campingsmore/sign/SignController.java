@@ -1,11 +1,7 @@
 package com.green.campingsmore.sign;
 
-import com.green.campingsmore.CommonRes;
-import com.green.campingsmore.admin.user.model.UserDto;
-import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
-import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.sign.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,12 +39,7 @@ public class SignController {
         String ip = req.getRemoteAddr();
         log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}",id, password, ip);
 
-        SignInResultDto dto = SERVICE.signIn(id, password, ip);
-        if (dto.getCode() == CommonRes.SUCCESS.getCode()) {
-            log.info("[signIn] 정상적으로 로그인 되었습니다. id: {}, token: {}", id, dto.getAccessToken());
-        }
-
-        return dto;
+        return SERVICE.signIn(userLogin,ip);
     }
 
     @PostMapping("/logout")
@@ -118,8 +109,8 @@ public class SignController {
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "iuser:  iuser PK \n\n "
     )
-    public void deleteUser(@RequestParam int iuser) {
-        SERVICE.deleteUser(iuser);
+    public int deleteUser(@RequestParam int iuser) {
+        return SERVICE.deleteUser(iuser);
     }
 
 
@@ -153,7 +144,7 @@ public class SignController {
         return SERVICE.updateUserInfo(updateUserInfoDto);
     }
 
-    @PostMapping("/search-pw")
+    @GetMapping("/search-pw")
     @Operation(summary = "비밀번호 찾기 - 이메일로 임시 비밀번호 제공",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                         "user_id :  아이디 \n\n "+
