@@ -10,5 +10,7 @@ import java.util.List;
 public interface CartMapper {
     List<SelCartVo> selCart(Long iuser);
     Long insCart(InsCartDto2 dto);
+    Long plusCart(Long iuser, Long quantity, Long iitem);
+    Long checkCartUser(Long iuser, Long iitem);
     Long delCart(Long icart);
 }

@@ -21,7 +21,12 @@ public class CartServiceImpl implements CartService {
         dto2.setIuser(dto.getIuser());
         dto2.setIitem(dto.getIitem());
         dto2.setQuantity(dto.getQuantity());
-        return MAPPER.insCart(dto2);
+        Long userExistCheck = MAPPER.checkCartUser(dto2.getIuser(), dto2.getIitem());
+        if (userExistCheck == null) {
+            return MAPPER.insCart(dto2);
+        } else {
+            return MAPPER.plusCart(dto2.getIuser(), dto2.getQuantity(), dto2.getIitem());
+        }
     }
 
     @Override
