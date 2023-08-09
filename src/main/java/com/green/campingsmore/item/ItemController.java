@@ -72,7 +72,13 @@ public class ItemController {
             "\"iitem\": [-] 아이템 PK,<br>"+
             "\"page\": [-] 리스트 페이지,<br>" +
             "\"row\": [고정] 아이템 개수<br>" )
-    public ItemDetailReviewVo getItemDetail(@RequestBody ItemSelDetailDto dto){
+    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
+                                            @RequestParam(defaultValue = "1")int page,
+                                            @RequestParam(defaultValue = "5")int row){
+        ItemSelDetailDto dto = new ItemSelDetailDto();
+        dto.setPage(page);
+        dto.setIitem(iitem);
+        dto.setRow(row);
         return SERVICE.selDetail(dto);
     }
 
