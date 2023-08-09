@@ -17,7 +17,7 @@ public interface ItemMapper {
     Long selIcate(String categoryName);
 
     // 아이템 추가
-    int insItem(ItemEntity entity);
+    Long insItem(ItemEntity entity);
     int selLastItem(ItemSearchDto dto);
     List<ItemVo> searchItem(ItemSearchDto dto);
     // 아이템 삭제
@@ -27,7 +27,7 @@ public interface ItemMapper {
     List<String> selDetailPic(Long iitem);
     // 아이템 상세페이지 변경 del->ins
     int delDetailPic(Long iitem);
-    int insDetailPic(ItemDetailInsDto dto);
+    int insDetailPic(ItemInsDetailDto dto);
 
     // 추천 아이템
     int insBestItem(ItemInsBest dto);

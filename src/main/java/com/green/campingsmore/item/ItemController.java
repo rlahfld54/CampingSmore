@@ -30,9 +30,8 @@ public class ItemController {
             "\"pic\": [-]  아이템 썸네일 pic url,<br>" +
             "\"price\": [-] 아이템 가격,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public int postItem(@RequestBody ItemInsDto dto,
-                        @RequestParam List<String> picUrl) {
-        return SERVICE.insItem(dto,picUrl);
+    public Long postItem(@RequestBody ItemInsDto dto) {
+        return SERVICE.insItem(dto);
     }
 
     @GetMapping("/search")
@@ -73,13 +72,7 @@ public class ItemController {
             "\"iitem\": [-] 아이템 PK,<br>"+
             "\"page\": [-] 리스트 페이지,<br>" +
             "\"row\": [고정] 아이템 개수<br>" )
-    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
-                                            @RequestParam(defaultValue = "1")int page,
-                                            @RequestParam(defaultValue = "5")int row){
-        ItemSelDetailDto dto = new ItemSelDetailDto();
-        dto.setPage(page);
-        dto.setIitem(iitem);
-        dto.setRow(row);
+    public ItemDetailReviewVo getItemDetail(@RequestBody ItemSelDetailDto dto){
         return SERVICE.selDetail(dto);
     }
 
@@ -88,9 +81,8 @@ public class ItemController {
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem,
-                                               @RequestParam List<String> picUrl) {
-        return SERVICE.insDetailPic(iitem, picUrl);
+    public List<ItemInsDetailDto> insDetailPic(@RequestBody ItemInsDetailPicDto dto) {
+        return SERVICE.insDetailPic(dto);
     }
 
     @DeleteMapping("/detail/deletepic")

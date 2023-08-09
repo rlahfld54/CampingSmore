@@ -32,29 +32,30 @@ public class ItemService {
     }
 
     //아이템 추가
-    public int insItem(ItemInsDto dto, List<String> picUrl) {
+    public Long insItem(ItemInsDto dto) {
 
-        log.info(" List<String> picUrl: {}", picUrl);
+        log.info(" List<String> picUrl: {}", dto.getPicUrl());
         ItemEntity entity = new ItemEntity();
         entity.setIitemCategory(dto.getIitemCategory());
         entity.setName(dto.getName());
         entity.setPic(dto.getPic());
         entity.setPrice(dto.getPrice());
 
-        int result = MAPPER.insItem(entity);
-        if( result == 1 ) {
+        Long result = MAPPER.insItem(entity);
+        if( result == 1L) {
 
-            for (int i = 0; i < picUrl.size(); i++) {
-                ItemDetailInsDto picDto = new ItemDetailInsDto();
+            for (int i = 0; i < dto.getPicUrl().size(); i++) {
+                ItemInsDetailDto picDto = new ItemInsDetailDto();
                 picDto.setIitem(entity.getIitem());
 
-                picDto.setPic(picUrl.get(i).toString());
+                picDto.setPic(dto.getPicUrl().get(i).toString());
 
                 MAPPER.insDetailPic(picDto);
             }
+            return entity.getIitem();
         }
 
-        return 1;
+        return 0L;
     }
 
     public ItemSelDetailRes searchItem(ItemSearchDto dto) {
@@ -101,16 +102,16 @@ public class ItemService {
     }
 
     //상세이미지 추가
-    public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
+    public List<ItemInsDetailDto> insDetailPic(ItemInsDetailPicDto dto) {
         // 아이템 PK에 사진이 있으면 삭제
         // 아이템 PK로 아이템 추가
-        MAPPER.delDetailPic(iitem);
+        MAPPER.delDetailPic(dto.getIitem());
 
-        ItemDetailInsDto dto = new ItemDetailInsDto();
-        dto.setIitem(iitem);
-        for (int i = 0; i < picUrl.size(); i++) {
-            dto.setPic(picUrl.get(i));
-            MAPPER.insDetailPic(dto);
+        ItemInsDetailDto dto2 = new ItemInsDetailDto();
+        dto.setIitem(dto.getIitem());
+        for (int i = 0; i < dto.getPicUrl().size(); i++) {
+            dto2.setPic(dto.getPicUrl().get(i));
+            MAPPER.insDetailPic(dto2);
         }
 
         return null;

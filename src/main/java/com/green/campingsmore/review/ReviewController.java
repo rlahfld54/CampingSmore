@@ -40,7 +40,7 @@ public class ReviewController {
             "\"reviewCtnt\": [-] 리뷰 내용,<br>" +
             "\"starRating\": [-] 별점,<br>" +
             "\"pic\": [-] 사진 이미지<br>")
-    public String postReview( ReviewInsDto dto,
+    public String postReview(@RequestPart ReviewInsDto dto,
                            @RequestPart(required = false) MultipartFile pic) {
         return SERVICE.insReview(dto, pic);
     }
@@ -59,7 +59,7 @@ public class ReviewController {
         return SERVICE.selReview(dto);
     }
 
-    @PutMapping(value = "리뷰 수정",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 수정"
             , description = "" +
             "\"iuser\": [-] 유저 PK,<br>" +
@@ -68,7 +68,7 @@ public class ReviewController {
             "\"reviewCtnt\": [-] 리뷰 내용,<br>" +
             "\"starRating\": [-] 별점,<br>" +
             "\"pic\": [-] 사진 이미지<br>")
-    public String updReview(ReviewUpdDto dto,
+    public String updReview(@RequestPart ReviewUpdDto dto,
                              @RequestPart(required = false) MultipartFile pic) {
         return SERVICE.updReview(dto, pic);
     }
