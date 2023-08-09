@@ -90,7 +90,6 @@ public class ReviewService {
 
 
         List<ReviewSelVo> list = MAPPER.selReview(dto);
-        log.info("list:{}",list);
         return ReviewRes.builder()
                 .iitem(dto.getIitem())
                 .maxPage(maxPage)
@@ -103,7 +102,6 @@ public class ReviewService {
     }
 
     public String updReview(ReviewUpdDto dto, MultipartFile pic) {
-        log.info("ReviewUpdDto dto : {}",dto);
 
         ReviewEntity entity = new ReviewEntity();
         entity.setIuser(FACADE.getLoginUserPk());
