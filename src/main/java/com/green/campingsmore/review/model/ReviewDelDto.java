@@ -3,8 +3,7 @@ package com.green.campingsmore.review.model;
 import lombok.Data;
 
 @Data
-public class ReviewPicDto {
-    private Long iuser;
+public class ReviewDelDto {
     private Long ireview;
-    private String pic;
+    private Long iuser;
 }

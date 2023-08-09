@@ -1,7 +1,5 @@
 package com.green.campingsmore.item;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.dataset.NaverApi;
 import com.green.campingsmore.item.model.*;
 import com.green.campingsmore.review.ReviewService;
@@ -11,9 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+
 @Slf4j
 @Service
 public class ItemService {
@@ -35,45 +32,56 @@ public class ItemService {
     }
 
     //아이템 추가
-    public int insItem(ItemInsDto dto, List<String> picUrl) {
+    public Long insItem(ItemInsDto dto) {
 
-        log.info(" List<String> picUrl: {}", picUrl);
+        log.info(" List<String> picUrl: {}", dto.getPicUrl());
         ItemEntity entity = new ItemEntity();
         entity.setIitemCategory(dto.getIitemCategory());
         entity.setName(dto.getName());
         entity.setPic(dto.getPic());
         entity.setPrice(dto.getPrice());
 
-        int result = MAPPER.insItem(entity);
-        if( result == 1 ) {
+        Long result = MAPPER.insItem(entity);
+        if( result == 1L) {
 
-            for (int i = 0; i < picUrl.size(); i++) {
-                ItemDetailInsDto picDto = new ItemDetailInsDto();
+            for (int i = 0; i < dto.getPicUrl().size(); i++) {
+                ItemInsDetailDto picDto = new ItemInsDetailDto();
                 picDto.setIitem(entity.getIitem());
 
-                picDto.setPic(picUrl.get(i).toString());
+                picDto.setPic(dto.getPicUrl().get(i).toString());
 
                 MAPPER.insDetailPic(picDto);
             }
+            return entity.getIitem();
         }
 
-        return 1;
+        return 0L;
     }
 
-    public ItemSelDetailRes searchItem(ItemSearchDto2 dto) {
+    public ItemSelDetailRes searchItem(ItemSearchDto dto) {
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         List<ItemVo> list = MAPPER.searchItem(dto);
+        int count = MAPPER.selLastItem(dto);
+        int maxPage = (int)Math.ceil((double) count /dto.getRow());
+        int isMore = maxPage > dto.getPage() ? 1 : 0;
 
     return ItemSelDetailRes.builder()
             .iitemCategory(dto.getIitemCategory())
             .text(dto.getText())
             .sort(dto.getSort())
+            .maxPage(maxPage)
             .startIdx(dto.getStartIdx())
+            .isMore(isMore)
             .page(dto.getPage())
             .row(dto.getRow())
             .itemList(list)
             .build();
 }
+
+    //아이템 삭제
+    public int delItem(Long iitem) {
+        return MAPPER.delItem(iitem);
+    }
 
 
     // 아이템 상세
@@ -94,27 +102,22 @@ public class ItemService {
     }
 
     //상세이미지 추가
-    public List<ItemDetailInsDto> insDetailPic(Long iitem, List<String> picUrl) {
+    public List<ItemInsDetailDto> insDetailPic(ItemInsDetailPicDto dto) {
         // 아이템 PK에 사진이 있으면 삭제
         // 아이템 PK로 아이템 추가
-        MAPPER.delDetailPic(iitem);
+        MAPPER.delDetailPic(dto.getIitem());
 
-        ItemDetailInsDto dto = new ItemDetailInsDto();
-        dto.setIitem(iitem);
-        for (int i = 0; i < picUrl.size(); i++) {
-            dto.setPic(picUrl.get(i));
-            MAPPER.insDetailPic(dto);
+        ItemInsDetailDto dto2 = new ItemInsDetailDto();
+        dto.setIitem(dto.getIitem());
+        for (int i = 0; i < dto.getPicUrl().size(); i++) {
+            dto2.setPic(dto.getPicUrl().get(i));
+            MAPPER.insDetailPic(dto2);
         }
 
         return null;
     }
 
-    public int delDetail(Long iitem) {
-        MAPPER.delDetailPic(iitem);
-        MAPPER.delDetail(iitem);
 
-    return 1;
-    }
 
     public int delDetailPic(Long iitem) {
         return MAPPER.delDetailPic(iitem);

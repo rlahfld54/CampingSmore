@@ -78,7 +78,7 @@
         AND iitem = #{iitem}
     </update>
 
-    <select id="SelDetailedItemPaymentInfo">
+    <select id="selDetailedItemPaymentInfo">
         SELECT A.iitem, C.name, A.price, A.quantity,
         A.total_price totalPrice, C.pic, B.created_at paymentDate,
         B.address, B.address_detail addressDetail,
@@ -122,4 +122,16 @@
         AND iaddress = #{iaddress}
     </select>
 
+    <select id="paymentDetailNullCheck">
+        SELECT iorder
+        FROM order_item
+        WHERE iorder = #{iorder}
+    </select>
+
+    <update id="delOrder">
+        UPDATE order
+        SET
+        iorder = #{iorder}
+        AND del_yn = 0
+    </update>
 </mapper>

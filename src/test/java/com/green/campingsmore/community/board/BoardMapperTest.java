@@ -90,14 +90,14 @@ class BoardMapperTest {
     @Test
     void selBoardList() {
         BoardPageDto dto = new BoardPageDto();
-        dto.setRow(23);
+        dto.setRow(50);
         dto.setStartIdx(0);
         dto.setPage(1);
         dto.setIcategory(1L);
         dto.setTitle("123");
         dto.setMaxpage(1);
         List<BoardListVo> list = mapper.selBoardList(dto);
-        assertEquals(23,list.size());
+        assertEquals(24,list.size());
 
     }
 
@@ -109,18 +109,57 @@ class BoardMapperTest {
 
     @Test
     void categoryBoardList() {
+        BoardPageDto dto = new BoardPageDto();
+        dto.setMaxpage(20);
+        dto.setRow(50);
+        dto.setStartIdx(0);
+        dto.setPage(1);
+        dto.setIcategory(1L);
+        List<BoardListVo> list = mapper.categoryBoardList(dto);
+        assertEquals(24,list.size());
+
+        BoardListVo vo = list.get(0);
+
+        assertEquals(1L,vo.getIcategory());
+
     }
 
     @Test
     void selBoard() {
+        BoardSelPageDto dto = new BoardSelPageDto();
+        dto.setMaxpage(3);
+        dto.setRow(50);
+        dto.setTitle("123");
+        dto.setPage(1);
+        dto.setStartIdx(0);
+        List<BoardSelVo> list = mapper.selBoard(dto);
+        assertEquals(23,list.size());
+        BoardSelVo item = list.get(0);
+        assertEquals("123",item.getTitle());
     }
 
     @Test
     void maxSelBoard() {
+        BoardSelPageDto dto = new BoardSelPageDto();
+        dto.setTitle("123");
+        dto.setRow(50);
+        dto.setMaxpage(1);
+        dto.setStartIdx(1);
+        dto.setPage(1);
+        Long result = mapper.maxSelBoard(dto);
+        assertEquals(23,result);
     }
 
     @Test
     void deBoard() {
+        BoardDeDto dto = new BoardDeDto();
+        dto.setIboard(1L);
+        BoardDeVo result = mapper.deBoard(dto);
+
+        assertEquals(1L,result.getIuser());
+        assertEquals("중고거래",result.getCategory());
+        assertEquals("123",result.getTitle());
+        assertEquals("123",result.getCtnt());
     }
 
     @Test
@@ -129,10 +168,19 @@ class BoardMapperTest {
 
     @Test
     void viewBoard() {
+//        BoardDeDto dto = new BoardDeDto();
+//        dto.setIboard(1L);
+//        Long result = mapper.viewBoard(dto);
+//
+//        assertEquals(1L,result);
     }
 
     @Test
     void delWriteBoard() {
+        Long iboard = 2L;
+        Long result = mapper.delWriteBoard(iboard);
+
+        assertEquals(1L,result);
     }
 
     @Test

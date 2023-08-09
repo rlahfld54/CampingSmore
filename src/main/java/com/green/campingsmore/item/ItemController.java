@@ -30,9 +30,8 @@ public class ItemController {
             "\"pic\": [-]  아이템 썸네일 pic url,<br>" +
             "\"price\": [-] 아이템 가격,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public int postItem(@RequestBody ItemInsDto dto,
-                        @RequestParam List<String> picUrl) {
-        return SERVICE.insItem(dto,picUrl);
+    public Long postItem(@RequestBody ItemInsDto dto) {
+        return SERVICE.insItem(dto);
     }
 
     @GetMapping("/search")
@@ -49,7 +48,7 @@ public class ItemController {
                                           @RequestParam(defaultValue = "1")int page,
                                           @RequestParam(defaultValue = "15")int row,
                                           @RequestParam(defaultValue = "0")int sort) {
-        ItemSearchDto2 dto = new ItemSearchDto2();
+        ItemSearchDto dto = new ItemSearchDto();
         dto.setText(text);
         dto.setPage(page);
         dto.setRow(row);
@@ -57,20 +56,28 @@ public class ItemController {
         dto.setSort(sort);
         return SERVICE.searchItem(dto);
     }
+    
+    @DeleteMapping("/{iitem}")
+    @Operation(summary = "아이템 삭제 - 관리자 페이지"
+            , description = "" +
+            "\"iitem\": [-] 아이템 PK<br>")
+    public int delItem(@PathVariable Long iitem) {
+        return SERVICE.delItem(iitem);
+    }
 
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{iitem}")
     @Operation(summary = "아이템 상세페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>"+
             "\"page\": [-] 리스트 페이지,<br>" +
             "\"row\": [고정] 아이템 개수<br>" )
-    public ItemDetailReviewVo getItemDetail(@RequestParam Long iitem,
+    public ItemDetailReviewVo getItemDetail(@PathVariable Long iitem,
                                             @RequestParam(defaultValue = "1")int page,
                                             @RequestParam(defaultValue = "5")int row){
         ItemSelDetailDto dto = new ItemSelDetailDto();
-        dto.setPage(page);
         dto.setIitem(iitem);
+        dto.setPage(page);
         dto.setRow(row);
         return SERVICE.selDetail(dto);
     }
@@ -80,17 +87,8 @@ public class ItemController {
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"picUrl\": [-] 사진 이미지 url<br>")
-    public List<ItemDetailInsDto> insDetailPic(@RequestParam Long iitem,
-                                               @RequestParam List<String> picUrl) {
-        return SERVICE.insDetailPic(iitem, picUrl);
-    }
-
-    @DeleteMapping("/detail/delete")
-    @Operation(summary = "아이템 삭제 - 관리자페이지"
-            , description = "" +
-            "\"iitem\": [-] 아이템 PK<br>")
-    public int delDetail(@RequestParam Long iitem) {
-        return SERVICE.delDetail(iitem);
+    public List<ItemInsDetailDto> insDetailPic(@RequestBody ItemInsDetailPicDto dto) {
+        return SERVICE.insDetailPic(dto);
     }
 
     @DeleteMapping("/detail/deletepic")

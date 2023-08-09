@@ -31,6 +31,19 @@
         price = #{price},
         pic = #{pic}
     </insert>
+    <select id="selLastItem" resultType="int">
+        SELECT count(iitem)
+        FROM item
+        <where>
+            <if test = "iitemCategory != null">
+                and iitem_category = #{iitemCategory}
+            </if>
+            <if test = "text != null">
+                and `name` LIKE CONCAT('%',#{text},'%')
+            </if>
+            AND del_yn = 1
+        </where>
+    </select>
 
     <!--아이템 검색 및 검색리스트-->
     <select id="searchItem" resultType="ItemVo">
@@ -59,6 +72,12 @@
         </if>
         LIMIT ${startIdx}, ${row}
     </select>
+<!--  아이템 삭제  -->
+    <update id="delItem">
+        UPDATE item
+        SET del_yn = 0
+        WHERE iitem = #{iitem}
+    </update>
 
 
 
@@ -75,10 +94,7 @@
         WHERE iitem = #{iitem}
     </select>
 
-    <delete id="delDetail">
-        DELETE FROM item
-        WHERE iitem = ${iitem}
-    </delete>
+
 
     <!-- 아이템 상세페이지 변경 del->ins -->
     <delete id="delDetailPic">

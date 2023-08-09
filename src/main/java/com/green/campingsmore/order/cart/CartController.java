@@ -1,6 +1,7 @@
 package com.green.campingsmore.order.cart;
 
 import com.green.campingsmore.config.security.AuthenticationFacade;
+import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.cart.model.InsCartDto2;
@@ -8,6 +9,7 @@ import com.green.campingsmore.order.cart.model.SelCartVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,6 @@ import java.util.List;
 public class CartController {
 
     private final CartService SERVICE;
-    private final AuthenticationFacade facade;
 
     @GetMapping
     @Operation(
@@ -31,9 +32,8 @@ public class CartController {
             "<h3>price : 아이템 가격\n" +
             "<h3>quantity : 아이템 수량\n"
     )
-    private List<SelCartVo> getCart() {
-        Long iuser = facade.getLoginUserPk();
-        return SERVICE.selCart(iuser);
+    private List<SelCartVo> getCart(@AuthenticationPrincipal MyUserDetails user) {
+        return SERVICE.selCart(user.getIuser());
     }
 
     @PostMapping
@@ -44,11 +44,12 @@ public class CartController {
                     "<h3>==========================\n" +
                     "<h3>CODE 1 : 저장 성공\n"
     )
-    private Long postCart(@RequestBody InsCartDto dto) {
+    private Long postCart(@AuthenticationPrincipal MyUserDetails user,
+                          @RequestBody InsCartDto dto) {
         InsCartDto1 dto1 = new InsCartDto1();
         dto1.setQuantity(dto.getQuantity());
         dto1.setIitem(dto.getIitem());
-        dto1.setIuser(facade.getLoginUserPk());
+        dto1.setIuser(user.getIuser());
         return SERVICE.insCart(dto1);
     }
 
@@ -58,7 +59,8 @@ public class CartController {
                     "<h3>==========================\n" +
                     "<h3>CODE 1 : 삭제성공\n"
     )
-    private Long delCart(@PathVariable Long icart) {
+    private Long delCart(@AuthenticationPrincipal MyUserDetails user,
+                         @PathVariable Long icart) {
         return SERVICE.delCart(icart);
     }
 
@@ -68,8 +70,8 @@ public class CartController {
                     "<h3>==========================\n" +
                     "<h3>CODE number : number 갯수만큼 삭제성공\n"
     )
-    private Long delCartAll(@RequestParam List<Long> icart) {
+    private Long delCartAll(@AuthenticationPrincipal MyUserDetails user,
+                            @RequestParam List<Long> icart) {
         return SERVICE.delCartAll(icart);
-//
     }
 }

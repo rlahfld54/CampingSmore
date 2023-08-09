@@ -31,6 +31,15 @@ public class ReviewService {
         entity.setReviewCtnt(dto.getReviewCtnt());
         entity.setStarRating(dto.getStarRating());
 
+        try {
+            int result = MAPPER.selReviewOrder(entity.getIorder(), entity.getIuser(), entity.getIitem());
+            if (result == 0) {
+                return "리뷰를 작성 할 수 없습니다";
+            }
+        } catch (Exception e) {
+            return "리뷰를 작성 에러";
+        }
+
 
         MAPPER.insReview(entity);
         if (pic != null) {
@@ -57,8 +66,8 @@ public class ReviewService {
 
             entity.setPic(savedFilePath);
             try {
-                int result = MAPPER.updReviewPic(entity);
-                if(result == Integer.parseInt(temp)) {
+                int result1 = MAPPER.updReviewPic(entity);
+                if(result1 == Integer.parseInt(temp)) {
                     throw new Exception("사진을 등록할 수 없습니다.");
                 }
             }catch (Exception e) {
@@ -75,18 +84,24 @@ public class ReviewService {
 
     public ReviewRes selReview(ReviewPageDto dto) {
         dto.setStartIdx((dto.getPage() - 1) * dto.getRow());
+        int count = MAPPER.selLastReview(dto.getIitem());
+        int maxPage = (int)Math.ceil((double) count /dto.getRow());
+        int isMore = maxPage > dto.getPage() ? 1 : 0;
+
+
         List<ReviewSelVo> list = MAPPER.selReview(dto);
         return ReviewRes.builder()
                 .iitem(dto.getIitem())
+                .maxPage(maxPage)
+                .startIdx(dto.getStartIdx())
+                .isMore(isMore)
                 .page(dto.getPage())
                 .row(dto.getRow())
-                .startIdx(dto.getStartIdx())
                 .list(list)
                 .build();
     }
 
     public String updReview(ReviewUpdDto dto, MultipartFile pic) {
-        log.info("ReviewUpdDto dto : {}",dto);
 
         ReviewEntity entity = new ReviewEntity();
         entity.setIuser(FACADE.getLoginUserPk());
@@ -111,7 +126,6 @@ public class ReviewService {
                 for (int i = 0; i < deleteFolderList.length; i++  ) {
                     deleteFolderList[i].delete();
                 }
-                dic.mkdirs();
             } else if (!dic.exists()) {
                 dic.mkdirs();
             }
@@ -141,6 +155,19 @@ public class ReviewService {
         }
 
         return "1";
+    }
+
+    public int delReview(Long ireview) {
+        ReviewDelDto dto = new ReviewDelDto();
+        dto.setIreview(ireview);
+        dto.setIuser(FACADE.getLoginUserPk());
+        try {
+            int result = MAPPER.delReview(dto);
+            return result;
+        } catch (Exception e) {
+            return 0;
+        }
+
     }
 
 /*

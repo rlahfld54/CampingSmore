@@ -8,8 +8,12 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
     int insReview(ReviewEntity entity);
+    int selReviewOrder(Long iorder, Long iuser, Long iitem);
+    int selLastReview(Long iitem);
     List<ReviewSelVo> selReview(ReviewPageDto dto);
     int updReview(ReviewEntity entity);
     int updReviewPic(ReviewEntity entity);
+    int delReview(ReviewDelDto dto);
+
 
 }

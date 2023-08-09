@@ -42,7 +42,7 @@ public class BoardService {
 //        log.info("service-test-iuser : {}", facade.getLoginUserPk());
 //    }
 
-//    @Transactional(rollbackFor = Exception.class)
+    //    @Transactional(rollbackFor = Exception.class)
 //    public Long postBoard(BoardInsDto dto, List<MultipartFile> pics) throws Exception {
 //        BoardEntity entity = new BoardEntity();
 //        entity.setIcategory(1L);
@@ -99,8 +99,9 @@ public class BoardService {
         Long iboard = entity.getIboard();
         return iboard;
     }
+
     @Transactional(rollbackFor = Exception.class)
-    public List<String> postPic(Long iboard,List<MultipartFile> pics) throws Exception {
+    public List<String> postPic(Long iboard, List<MultipartFile> pics) throws Exception {
         List<String> fileUrls = new ArrayList<>();
         if (pics != null) {
             BoardEntity entity = new BoardEntity();
@@ -163,7 +164,8 @@ public class BoardService {
         }
         return null;
     }
-    public Long updContent(BoardInsDto dto){
+
+    public Long updContent(BoardInsDto dto) {
         BoardEntity entity = new BoardEntity();
         entity.setIboard(dto.getIboard());
         entity.setIuser(FACADE.getLoginUserPk());
@@ -207,16 +209,16 @@ public class BoardService {
 //                mapper.insBoardPic(list);
 //            }
 //        }
-//
-//        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
-//    }
-        public Long delWriteBoard(Long iboard){
-            mapper.delPicBoard(iboard);
-            String centerPath = String.format("boardPics/%d", iboard);
-            FileUtils.delFolder(fileDir+centerPath);
 
-            return mapper.delWriteBoard(iboard);
-        }
+    //        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
+//    }
+    public Long delWriteBoard(Long iboard) {
+        mapper.delPicBoard(iboard);
+        String centerPath = String.format("boardPics/%d", iboard);
+        FileUtils.delFolder(fileDir + centerPath);
+
+        return mapper.delWriteBoard(iboard);
+    }
 
     public List<BoardMyVo> selMyBoard(BoardMyDto dto) {
         log.info("유저 PK  : {}", FACADE.getLoginUserPk());
@@ -226,8 +228,12 @@ public class BoardService {
 
     public Long delBoard(BoardDelDto dto) {
         dto.setIuser(FACADE.getLoginUserPk());
+        mapper.delBoardPic(dto.getIboard());
+        String centerPath = String.format("boardPics/%d", dto.getIboard());
+        FileUtils.delFolder(fileDir + centerPath);
         return mapper.delBoard(dto);
     }//게시글 삭제
+
 
     public BoardRes selBoardList(BoardPageDto dto) {
         int num = dto.getPage() - 1;
@@ -287,7 +293,24 @@ public class BoardService {
                 .build();
         return result;
     }
-    public Long delOnePic(Long iboardpic){
-        return mapper.delOnePic(iboardpic);
+
+    public Long delOnePic(BoardPicDelDto dto) {
+        String centerPath = String.format("boardPics/%d", dto.getIboard());
+        String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+        File file = new File(targetPath);
+        if (file.exists()) {
+            File[] deleteFolderList = file.listFiles();
+            String result = mapper.selPicName(dto.getIboardpic());
+            for (File deleteFile : deleteFolderList) {
+                if (deleteFile.getName().equals(result)) {
+                    deleteFile.delete();
+                }
+            }
+            File[] re = file.listFiles();
+            if (re != null&& re.length==0){
+                FileUtils.delFolder(fileDir + centerPath);
+            }
+        }
+        return mapper.delOnePic(dto);
     }
 }

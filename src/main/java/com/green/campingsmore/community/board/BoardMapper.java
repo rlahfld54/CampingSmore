@@ -3,6 +3,7 @@ package com.green.campingsmore.community.board;
 import com.green.campingsmore.community.board.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.io.File;
 import java.util.List;
 
 @Mapper
@@ -25,5 +26,7 @@ public interface BoardMapper {
     Long delWriteBoard(Long iboard);//작성중인 글 내용 삭제
     Long delPicBoard(Long iboard); // 작성중인 사진 삭제
     Long insBoardOnePic(BoardPicEntity pic); // 사진 한장 업로드
-    Long delOnePic(Long iboardpic); // 사진 한장 삭제
+    Long delOnePic(BoardPicDelDto dto); // 사진 한장 삭제
+    Long delBoardPic(Long iboard);
+    String selPicName(Long iboardPic);
 }
