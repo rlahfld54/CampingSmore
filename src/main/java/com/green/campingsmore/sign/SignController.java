@@ -144,7 +144,7 @@ public class SignController {
         return SERVICE.updateUserInfo(updateUserInfoDto);
     }
 
-    @PostMapping("/search-pw")
+    @GetMapping("/search-pw")
     @Operation(summary = "비밀번호 찾기 - 이메일로 임시 비밀번호 제공",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                         "user_id :  아이디 \n\n "+
