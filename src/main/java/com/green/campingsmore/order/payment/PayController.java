@@ -1,10 +1,12 @@
 package com.green.campingsmore.order.payment;
 
 import com.green.campingsmore.config.security.AuthenticationFacade;
+import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.order.payment.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.List;
 public class PayController {
 
     private final PayService SERVICE;
-    private final AuthenticationFacade facade;
 
     @PostMapping
     @Operation(summary = "결제 정보 저장하기",
@@ -34,9 +35,10 @@ public class PayController {
                     "<h3>   CODE 1 : DB 정보 저장 성공\n" +
                     "<h3>   CODE 0 : DB 정보 저장 실패\n"
     )
-    private int postPayInfo(@RequestBody InsPayInfoDto dto) {
+    private Long postPayInfo(@AuthenticationPrincipal MyUserDetails user,
+                             @RequestBody InsPayInfoDto dto) {
         InsPayInfoDto1 dto1 = new InsPayInfoDto1();
-        dto1.setIuser(facade.getLoginUserPk());
+        dto1.setIuser(user.getIuser());
         dto1.setAddress(dto.getAddress());
         dto1.setAddressDetail(dto.getAddressDetail());
         dto1.setTotalPrice(dto.getTotalPrice());
@@ -73,8 +75,8 @@ public class PayController {
                     "<h3>   └paymentDate : 결제일\n"
     )
     //유저마이페이지에서 조회
-    private List<SelPaymentDetailDto> getPaymentList() {
-        Long iuser = facade.getLoginUserPk();
+    private List<SelPaymentDetailDto> getPaymentList(@AuthenticationPrincipal MyUserDetails user) {
+        Long iuser = user.getIuser();
         return SERVICE.selPaymentDetailAll(iuser);
     }
 
@@ -96,7 +98,8 @@ public class PayController {
                     "<h3> shippingMemo : 배송 메모\n"
 
     ) //유저마이페이지에서 조회
-    private SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@PathVariable Long iorder, @RequestParam Long iitem) {
+    private SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@AuthenticationPrincipal MyUserDetails user,
+                                                                    @PathVariable Long iorder, @RequestParam Long iitem) {
         return SERVICE.selDetailedItemPaymentInfo(iorder, iitem);
     }
 
@@ -122,7 +125,8 @@ public class PayController {
                     "<h3> totalPrice : 아이템 총 가격\n" +
                     "<h3> Pic : 이미지\n"
     )
-    private List<PaymentDetailDto> getPaymentItemList(@RequestBody CartPKDto dto) {
+    private List<PaymentDetailDto> getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
+                                                      @RequestBody CartPKDto dto) {
         return SERVICE.selPaymentPageItemList(dto);
     }
 
@@ -138,7 +142,8 @@ public class PayController {
                             "<h3> quantity : 아이템 수량\n" +
                             "<h3> totalPrice : 아이템 총 가격\n" +
                             "<h3> Pic : 이미지\n")
-    private PaymentDetailDto getPaymentItemList(@PathVariable Long iitem, @RequestParam Long quantity) {
+    private PaymentDetailDto getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
+                                                @PathVariable Long iitem, @RequestParam Long quantity) {
         return SERVICE.selPaymentPageItem(iitem, quantity);
     }
 
@@ -152,13 +157,14 @@ public class PayController {
                     "<h3>-----------------------------------\n" +
                     "CODE 1 : 등록 성공\n"
     )
-    public Long insAddress(ShippingInsDto dto) {
+    public Long insAddress(@AuthenticationPrincipal MyUserDetails user,
+                           @RequestBody ShippingInsDto dto) {
         ShippingInsDto1 dto1 = new ShippingInsDto1();
         dto1.setAddress(dto.getAddress());
         dto1.setName(dto.getName());
         dto1.setAddressDetail(dto.getAddressDetail());
         dto1.setPhone(dto.getPhone());
-        dto1.setIuser(facade.getLoginUserPk());
+        dto1.setIuser(user.getIuser());
         return SERVICE.insAddress(dto1);
     }
 
@@ -171,8 +177,8 @@ public class PayController {
                             "<h3> name : 수령인\n" +
                             "<h3> phone : 전화번호 (하이픈 '-'없이)\n"
     )
-    public SelUserAddressVo selUserAddress() {
-        Long iuser = facade.getLoginUserPk();
+    public SelUserAddressVo selUserAddress(@AuthenticationPrincipal MyUserDetails user) {
+        Long iuser = user.getIuser();
         return SERVICE.selUserAddress(iuser);
     }
 
@@ -185,8 +191,8 @@ public class PayController {
                             "<h3> name : 수령인\n" +
                             "<h3> phone : 전화번호 (하이픈 '-'없이)\n"
     )
-    public List<ShippingListSelVo> selAddressList() {
-        Long iuser = facade.getLoginUserPk();
+    public List<ShippingListSelVo> selAddressList(@AuthenticationPrincipal MyUserDetails user) {
+        Long iuser = user.getIuser();
         return SERVICE.selAddressList(iuser);
     }
 
@@ -200,9 +206,10 @@ public class PayController {
                             "<h3> name : 수령인\n" +
                             "<h3> phone : 전화번호 (하이픈 '-'없이)\n"
     )
-    public ShippingListSelVo selOneAddress(@PathVariable Long iaddress) {
+    public ShippingListSelVo selOneAddress(@AuthenticationPrincipal MyUserDetails user,
+                                           @PathVariable Long iaddress) {
         SelUserAddressDto dto1 = new SelUserAddressDto();
-        Long iuser = facade.getLoginUserPk();
+        Long iuser = user.getIuser();
         dto1.setIuser(iuser);
         dto1.setIaddress(iaddress);
         return SERVICE.selOneAddress(dto1);

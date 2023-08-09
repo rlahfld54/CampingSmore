@@ -17,7 +17,7 @@ public class PayServiceImpl implements PayService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public int insPayInfo(InsPayInfoDto1 dto) {
+    public Long insPayInfo(InsPayInfoDto1 dto) {
 
         InsPayInfoDto1 orderDto = new InsPayInfoDto1();
 
@@ -33,9 +33,9 @@ public class PayServiceImpl implements PayService {
             MAPPER.insPayDetailInfo(purchaseList);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return 0L;
         }
-        return 1;
+        return 1L;
     }
 
     @Override

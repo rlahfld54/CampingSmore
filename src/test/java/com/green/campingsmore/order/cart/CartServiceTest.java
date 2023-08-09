@@ -1,6 +1,7 @@
 package com.green.campingsmore.order.cart;
 
 import com.green.campingsmore.order.cart.model.InsCartDto1;
+import com.green.campingsmore.order.cart.model.InsCartDto2;
 import com.green.campingsmore.order.cart.model.SelCartVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,15 +34,24 @@ class CartServiceTest {
     @DisplayName("CartService - 장바구니 정보 저장")
     void insCart() {
         Long testResult = 1L;
-        when(mapper.insCart(any())).thenReturn(testResult);
+        Long testIuser = 3L;
 
-        InsCartDto1 dto = new InsCartDto1();
+        when(mapper.insCart(any())).thenReturn(testResult);
+        when(mapper.checkCartUser(any(), any())).thenReturn(testIuser);
+        when(mapper.plusCart(any(),any(),any())).thenReturn(testResult);
+
+        InsCartDto2 dto = new InsCartDto2();
         dto.setIuser(3L);
         dto.setIitem(5L);
         dto.setQuantity(10L);
 
-        Long result = service.insCart(dto);
-        assertEquals(testResult, result);
+        Long result1 = mapper.insCart(dto);
+        Long result2 = mapper.checkCartUser(dto.getIuser(), dto.getIitem());
+        Long result3 = mapper.plusCart(dto.getIuser(), dto.getQuantity(), dto.getIitem());
+
+        assertEquals(testResult, result1);
+        assertEquals(testIuser, result2);
+        assertEquals(testResult, result3);
 
         verify(mapper).insCart(any());
     }

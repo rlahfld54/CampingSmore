@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PayService {
     //결제 관련
-    int insPayInfo(InsPayInfoDto1 dto);
+    Long insPayInfo(InsPayInfoDto1 dto);
     PaymentCompleteDto selPaymentComplete(Long iorder);
     List<SelPaymentDetailDto> selPaymentDetailAll(Long iuser);
     PaymentDetailDto selPaymentPageItem(Long iitem, Long quantity);
