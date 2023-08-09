@@ -1,46 +1,119 @@
 package com.green.campingsmore.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.campingsmore.MockMvcConfig;
+import com.green.campingsmore.config.security.JwtTokenProvider;
+import com.green.campingsmore.config.security.SecurityConfiguration;
+import com.green.campingsmore.config.security.UserDetailsMapper;
+import com.green.campingsmore.config.security.model.LoginDto;
+import com.green.campingsmore.config.security.model.MyUserDetails;
+import com.green.campingsmore.config.security.redis.RedisService;
+import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
+import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.UserLogin;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static reactor.core.publisher.Mono.when;
+import static org.mockito.BDDMockito.given;
 
-@MockMvcConfig
-@WebMvcTest(SignController.class)
-@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(controllers = SignController.class)
+@Import({SecurityConfiguration.class, JwtTokenProvider.class})
 class SignControllerTest {
+//    시큐리티 테스트 할때는
+//    JWT 필터를 거치지 않고 바로 컨트롤러로 간다.
 
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
+    @MockBean
     private SignService service;
 
-//    @Test // 로그인
-//    @DisplayName("로그인")
-//    void signIn() throws Exception {
-//        mvc.perform(post("/sign-in")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @MockBean
+    private RedisService redisService;
+
+    @MockBean
+    private JwtTokenProvider JWT_PROVIDER;
+
+    @BeforeEach
+    void beforeEach() {
+        UserDetails user = createUserDetails();
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
+
+    }
+
+    private UserDetails createUserDetails() {
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+        //roles.add("ROLE_ADMIN");
+        Long IUSER = 7L; //  "rlahfld54" , iuser : 7
+
+        UserDetails userDetails = MyUserDetails.builder()
+                .iuser(IUSER)
+                .uid("rlahfld54")
+                .upw("0000")
+                .roles(roles)
+                .build();
+        return userDetails;
+    }
+
+
+    @Test // 로그인
+    void signIn() throws Exception {
+        UserLogin userLogin = new UserLogin();
+        userLogin.setUid("rlahfld54");
+        userLogin.setUpw("0000");
+
+        // jackson objectmapper 객체 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        String user_info = objectMapper.writeValueAsString(userLogin);
+        System.out.println("user_info : " + user_info);
+
+        String accessToken = JWT_PROVIDER.generateJwtToken("7", Collections.singletonList("ROLE_USER"), JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
+        String refreshToken = JWT_PROVIDER.generateJwtToken("7", Collections.singletonList("ROLE_USER"), JWT_PROVIDER.REFRESH_TOKEN_VALID_MS, JWT_PROVIDER.REFRESH_KEY);
+
+        RedisJwtVo redisJwtVo = RedisJwtVo.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        SignInResultDto result = SignInResultDto.builder()
+                .accessToken(redisJwtVo.getAccessToken())
+                .refreshToken(redisJwtVo.getRefreshToken())
+                .build();
+
+        given(service.signIn(userLogin,"127.0.0.1")).willReturn(result);
+
+        mvc.perform(
+                post("/sign-api/sign-in")
+                        .content(user_info)
+                        .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).signIn(userLogin,"127.0.0.1");
+
+    }
 
     @Test
     void logout() {
@@ -59,7 +132,20 @@ class SignControllerTest {
     }
 
     @Test
-    void deleteUser() {
+    void deleteUser() throws Exception {
+        int iuser = 7;
+
+        given(service.deleteUser(iuser)).willReturn(1);
+
+        mvc.perform(delete("/sign-api/delete-user").param("iuser", String.valueOf(iuser)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).deleteUser(iuser);
+    }
+
+    @Test
+    void getmyInfo() {
     }
 
     @Test

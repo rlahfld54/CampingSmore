@@ -24,7 +24,4 @@ public class WishListService {
         return MAPPER.getReviewlist(iuser);
     }
 
-//    public List<ReviewEntity> getOrderlist(int iuser){
-//        return MAPPER.getReviewlist(iuser);
-//    }
 }
