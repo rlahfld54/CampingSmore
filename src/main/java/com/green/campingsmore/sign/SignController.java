@@ -1,11 +1,7 @@
 package com.green.campingsmore.sign;
 
-import com.green.campingsmore.CommonRes;
-import com.green.campingsmore.admin.user.model.UserDto;
-import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
-import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.sign.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -86,12 +82,12 @@ public class SignController {
         return dto;
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     @Operation(summary = "리프레쉬 토큰",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "refreshToken :  리프레쉬 토큰 \n\n "
     )
-    public ResponseEntity<SignUpResultDto> refreshToken(HttpServletRequest req, @RequestParam String refreshToken) {
+    public ResponseEntity<SignUpResultDto> refreshToken(HttpServletRequest req, @RequestBody String refreshToken) {
         SignUpResultDto dto = SERVICE.refreshToken(req, refreshToken);
         return dto == null ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null) : ResponseEntity.ok(dto);
     }
@@ -148,7 +144,7 @@ public class SignController {
         return SERVICE.updateUserInfo(updateUserInfoDto);
     }
 
-    @PostMapping("/search-pw")
+    @GetMapping("/search-pw")
     @Operation(summary = "비밀번호 찾기 - 이메일로 임시 비밀번호 제공",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                         "user_id :  아이디 \n\n "+

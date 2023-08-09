@@ -3,12 +3,12 @@ package com.green.campingsmore.sign;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.SecurityConfiguration;
-import com.green.campingsmore.config.security.UserDetailsMapper;
-import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.MyUserDetails;
+import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
 import com.green.campingsmore.sign.model.SignInResultDto;
+import com.green.campingsmore.sign.model.SignUpResultDto;
 import com.green.campingsmore.sign.model.UserLogin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -119,8 +118,41 @@ class SignControllerTest {
     void logout() {
     }
 
-    @Test
-    void signUp() {
+    @Test // 회원가입
+    void signUp() throws Exception {
+        SignUpDto signUpDto = SignUpDto.builder()
+                .uid("rlahfld54")
+                .upw("0000")
+                .email("rlahfld54@naver.com")
+                .name("황주은")
+                .birth_date("1998-06-12")
+                .phone("01025521549")
+                .gender(1)
+                .user_address("대구광역시")
+                .role("ROLE_USER")
+                .build();
+
+        // jackson objectmapper 객체 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        String signup = objectMapper.writeValueAsString(signUpDto);
+        System.out.println("signup : " + signup);
+
+        SignUpResultDto result = new SignUpResultDto();
+        result.setSuccess(true);
+        result.setCode(0);
+        result.setMsg("성공~!!!");
+
+        given(service.signUp(signUpDto)).willReturn(result);
+
+        mvc.perform(
+                post("/sign-api/sign-up")
+                        .content(signup)
+                        .contentType("application/json")
+        )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).signUp(signUpDto);
     }
 
     @Test
@@ -128,7 +160,22 @@ class SignControllerTest {
     }
 
     @Test
-    void searchID() {
+    void searchID() throws Exception {
+        String name = "황주은";
+        String phone = "01025521549";
+        String birth = "1998-06-12";
+
+        given(service.searchID(name, phone, birth)).willReturn("아이디 찾기");
+
+        mvc.perform(
+                get("/sign-api/search-id")
+                        .param("name",name)
+                        .param("phone",phone)
+                        .param("birth",birth)
+        ).andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).searchID(name, phone, birth);
     }
 
     @Test
@@ -153,6 +200,22 @@ class SignControllerTest {
     }
 
     @Test
-    void searchPW() {
+    void searchPW() throws Exception {
+//        String id = "rlahfld54";
+//        String name = "황주은";
+//        String email = "rlahfld54@gmail.com";
+//
+//
+//        given(service.searchPW(id,name,email)).willReturn(7);
+//
+//        mvc.perform(
+//                        post("/sign-api/search-pw")
+//                                .param("id",id)
+//                                .param("name",name)
+//                                .param("email",email)
+//                ).andExpect(status().isOk())
+//                .andDo(print());
+//
+//        verify(service).searchPW(id,name,email);
     }
 }

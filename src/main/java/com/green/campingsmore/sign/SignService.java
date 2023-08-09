@@ -176,15 +176,6 @@ public class SignService {
             return null; // -> 재로그인 요청
         }
 
-// 디비에 토큰 넣는 코드
-//        UserTokenDto userTokenDto = new UserTokenDto();
-//        userTokenDto.setIuser(uid);
-//        userTokenDto.setIp(ip);
-//        userTokenDto.setAccessToken(accessToken);
-//        userTokenDto.setRefreshToken(refreshToken);
-//
-//        MAPPER.updUserToken(userTokenDto);
-
         try {
             RedisJwtVo redisJwtVo = OBJECT_MAPPER.readValue(value, RedisJwtVo.class);
             if(!redisJwtVo.getAccessToken().equals(accessToken)
