@@ -2,9 +2,10 @@ package com.green.campingsmore.order.cart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.MockMvcConfig;
-import com.green.campingsmore.config.security.AuthenticationFacade;
-import com.green.campingsmore.order.cart.model.InsCartDto1;
+import com.green.campingsmore.config.security.model.MyUserDetails;
+import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.SelCartVo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,15 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @MockMvcConfig
 @WebMvcTest(CartController.class)
@@ -41,11 +43,30 @@ class CartControllerTest {
 
     @MockBean
     private CartService service;
-    @MockBean
-    private AuthenticationFacade facade;
+
+    @BeforeEach
+    void beforeEach() {
+
+        UserDetails user = createUserDetails();
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
+
+    }
+
+    private UserDetails createUserDetails() {
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+
+        UserDetails userDetails = MyUserDetails.builder()
+                .iuser(10L)
+                .name("김철수")
+                .roles(roles)
+                .build();
+        return userDetails;
+    }
 
     @Test
-    @WithMockUser(username = "user", roles = "USER")
     @DisplayName("CartController - 장바구니 정보 저장")
     void postCart() throws Exception {
         //given
@@ -53,8 +74,7 @@ class CartControllerTest {
         given(service.insCart(any())).willReturn(testResult);
 
         //when
-        InsCartDto1 item = new InsCartDto1();
-        item.setIuser(3L);
+        InsCartDto item = new InsCartDto();
         item.setIitem(5L);
         item.setQuantity(10L);
 

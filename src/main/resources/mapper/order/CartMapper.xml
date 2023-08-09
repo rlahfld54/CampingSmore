@@ -20,6 +20,19 @@
         , quantity = #{quantity}
         </if>
     </insert>
+    <update id="plusCart">
+        UPDATE cart
+        SET
+        quantity = quantity + #{quantity}
+        WHERE iuser = #{iuser}
+        AND iitem = #{iitem}
+    </update>
+    <select id="checkCartUser">
+        SELECT DISTINCT iuser
+        FROM CART
+        WHERE iuser = #{iuser}
+        AND iitem = #{iitem}
+    </select>
 
     <delete id="delCart">
         DELETE FROM cart
