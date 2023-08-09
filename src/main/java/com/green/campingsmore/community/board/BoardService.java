@@ -306,9 +306,10 @@ public class BoardService {
                     deleteFile.delete();
                 }
             }
-            log.info("result:{}", result);
-        } else {
-            FileUtils.delFolder(fileDir + centerPath);
+            File[] re = file.listFiles();
+            if (re != null&& re.length==0){
+                FileUtils.delFolder(fileDir + centerPath);
+            }
         }
         return mapper.delOnePic(dto);
     }

@@ -17,18 +17,20 @@ public interface ItemMapper {
     Long selIcate(String categoryName);
 
     // 아이템 추가
-    int insItem(ItemEntity entity);
-    int selLastItem(ItemSearchDto2 dto);
-    List<ItemVo> searchItem(ItemSearchDto2 dto);
+    Long insItem(ItemEntity entity);
+    int selLastItem(ItemSearchDto dto);
+    List<ItemVo> searchItem(ItemSearchDto dto);
+    // 아이템 삭제
+    int delItem(Long item);
     // 아이템 상세페이지
     ItemSelDetailVo selDetail(Long iitem);
     List<String> selDetailPic(Long iitem);
-    int delDetail(Long iitem);
     // 아이템 상세페이지 변경 del->ins
     int delDetailPic(Long iitem);
-    int insDetailPic(ItemDetailInsDto dto);
+    int insDetailPic(ItemInsDetailDto dto);
 
     // 추천 아이템
     int insBestItem(ItemInsBest dto);
     List<ItemVo> selBestItem();
+
 }

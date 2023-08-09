@@ -2,8 +2,9 @@ package com.green.campingsmore.item.model;
 
 import lombok.Data;
 
+import java.util.List;
 @Data
-public class ItemDetailInsDto {
+public class ItemInsDetailPicDto {
     private Long iitem;
-    private String pic;
+    private List<String> picUrl;
 }
