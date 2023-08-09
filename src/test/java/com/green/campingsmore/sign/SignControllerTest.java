@@ -1,6 +1,5 @@
 package com.green.campingsmore.sign;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.SecurityConfiguration;
@@ -201,6 +200,22 @@ class SignControllerTest {
     }
 
     @Test
-    void searchPW() {
+    void searchPW() throws Exception {
+//        String id = "rlahfld54";
+//        String name = "황주은";
+//        String email = "rlahfld54@gmail.com";
+//
+//
+//        given(service.searchPW(id,name,email)).willReturn(7);
+//
+//        mvc.perform(
+//                        post("/sign-api/search-pw")
+//                                .param("id",id)
+//                                .param("name",name)
+//                                .param("email",email)
+//                ).andExpect(status().isOk())
+//                .andDo(print());
+//
+//        verify(service).searchPW(id,name,email);
     }
 }

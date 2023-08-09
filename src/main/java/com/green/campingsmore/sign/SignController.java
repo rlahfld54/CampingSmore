@@ -82,12 +82,12 @@ public class SignController {
         return dto;
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     @Operation(summary = "리프레쉬 토큰",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "refreshToken :  리프레쉬 토큰 \n\n "
     )
-    public ResponseEntity<SignUpResultDto> refreshToken(HttpServletRequest req, @RequestParam String refreshToken) {
+    public ResponseEntity<SignUpResultDto> refreshToken(HttpServletRequest req, @RequestBody String refreshToken) {
         SignUpResultDto dto = SERVICE.refreshToken(req, refreshToken);
         return dto == null ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null) : ResponseEntity.ok(dto);
     }
