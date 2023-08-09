@@ -12,6 +12,8 @@ import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.InsCartDto1;
 import com.green.campingsmore.order.payment.model.InsPayInfoDto;
 import com.green.campingsmore.order.payment.model.PayDetailInfoVo;
+import com.green.campingsmore.order.payment.model.ShippingInsDto;
+import com.green.campingsmore.order.payment.model.ShippingInsDto1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -121,6 +123,11 @@ class PayControllerTest {
         Long testResult = 1L;
         given(service.insAddress(any())).willReturn(testResult);
 
+        ShippingInsDto1 dto = new ShippingInsDto1();
+        dto.setAddress("주소주소주소");
+        dto.setAddressDetail("상세주소주소");
+        dto.setName("신형주");
+        dto.setPhone("01022228888");
 
     }
 
