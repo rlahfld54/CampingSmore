@@ -152,6 +152,7 @@ CREATE TABLE IF NOT EXISTS `review` (
     `created_at` datetime NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
     `review_like` int(10) unsigned DEFAULT NULL,
+    `del_yn` tinyint(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (`ireview`),
     KEY `iuser` (`iuser`),
     KEY `iorder` (`iorder`),
