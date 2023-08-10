@@ -46,7 +46,7 @@ public class BoardController {
     }
     @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "사진 여러개 업로드 할때 리스트로 url 반환")
-    public List<String> uploadFiles(Long iboard,@RequestPart(required = false) List<MultipartFile> pics) throws Exception {
+    public List<String> uploadFiles(@RequestPart Long iboard,@RequestPart(required = false) List<MultipartFile> pics) throws Exception {
         return service.postPic(iboard,pics);
     }
     @PostMapping("/board")

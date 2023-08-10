@@ -287,11 +287,9 @@ VALUES (1, '1', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy
         '2023-07-27 14:29:21', 1),
        (4, '4', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy0CSNm', 'dlawjdghbn@naver.com', '임정호',
         '1998-06-05', '01092158817', 0, '경기 가평군 가평읍 자라섬로 60', NULL, 'ROLE_USER', NULL, '2023-07-24 15:53:48',
-        '2023-07-27 14:29:18', 1);
+        '2023-07-27 14:29:18', 1),
+    (7, '7', '{bcrypt}$2a$10$aPFGifea7LEEOhWlUQA/vOxaUxPVWxFwrYm9qa0FAZB1IH0Vrm97C', 'rlahfld54@naver.com', '황주은',
+    '1998-06-12', '01025521549', 1, '경기 남양주시 화도읍 북한강로 1630-18', NULL, 'ROLE_USER', 'qwer.jpg',
+    '2023-07-24 15:53:48', '2023-07-27 14:29:23', 1);
 
-INSERT IGNORE  `user_token` (`iuser`, `ip`, `access_token`, `refresh_token`, `created_at`, `updated_at`)
-VALUES (7, '0:0:0:0:0:0:0:1',
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MDkzODI0NCwiZXhwIjoxNjkwOTQxODQ0fQ.wafZKIKtuEJlOqGXi41hDnfpWU2v40wRziGiHAD_Tak',
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MDkzODI0NCwiZXhwIjoxNjkyMjM0MjQ0fQ.xUDZz3CzCeg0duDocYIA-kvF6JdooTS9jul_SgInsAA',
-        '2023-07-28 18:05:38', '2023-08-02 10:04:00');
     SET foreign_key_checks = 1;
