@@ -59,7 +59,23 @@ class BoardMapperTest {
     }
 
     @Test
-    void insBoardPic() {//나중에
+    void insBoardPic() {
+        List<BoardPicEntity> list = new ArrayList<>();
+
+        BoardPicEntity entity1 = new BoardPicEntity();
+        entity1.setIboard(17L);
+        entity1.setPic("asdf.jpg");
+
+        BoardPicEntity entity2 = new BoardPicEntity();
+        entity2.setIboard(17L);
+        entity2.setPic("asdf1.jpg");
+
+        list.add(entity1);
+        list.add(entity2);
+
+        Long result = mapper.insBoardPic(list);
+
+        assertEquals(2L, result);
     }
 
     @Test
@@ -164,15 +180,25 @@ class BoardMapperTest {
 
     @Test
     void picBoard() {
+        BoardDeDto dto = new BoardDeDto();
+        dto.setIboard(17L);
+
+        List<BoardPicVo> list = mapper.picBoard(dto);
+        assertEquals(3,list.size());
+        BoardPicVo item1 = list.get(0);
+        assertEquals(17L, item1.getIboard());
+        assertEquals("333844fe-6c82-4d0a-87ec-fc2510af978b.jpeg",item1.getPic());
+
     }
 
     @Test
     void viewBoard() {
-//        BoardDeDto dto = new BoardDeDto();
-//        dto.setIboard(1L);
-//        Long result = mapper.viewBoard(dto);
-//
-//        assertEquals(1L,result);
+
+        BoardDeDto dto = new BoardDeDto();
+        dto.setIboard(1L);
+        Long result = mapper.viewBoard(dto);
+
+        assertEquals(1L,result);
     }
 
     @Test
@@ -185,13 +211,40 @@ class BoardMapperTest {
 
     @Test
     void delPicBoard() {
+        Long iboard = 17L;
+        Long result = mapper.delPicBoard(iboard);
+
+        assertEquals(3L,result);
+
     }
 
     @Test
     void insBoardOnePic() {
+        BoardPicEntity entity = new BoardPicEntity();
+        entity.setPic("asdf.jpg");
+        entity.setIboard(17L);
+        Long result = mapper.insBoardOnePic(entity);
+
+        BoardPicEntity entity1 = new BoardPicEntity();
+        entity1.setPic("asdf.jpg");
+        entity1.setIboard(17L);
+        Long result1 = mapper.insBoardOnePic(entity1);
+
+//        assertEquals(17L,entity.getIboard());
+//        assertEquals(41L,entity.getIboardpic());
+//        assertEquals("asdf.jpg",entity.getPic());
+        assertEquals(1L,result);
+        assertEquals(1L,result1);
     }
 
     @Test
     void delOnePic() {
+        BoardPicDelDto dto = new BoardPicDelDto();
+        dto.setIboard(17L);
+        dto.setIboardpic(1L);
+
+        Long result = mapper.delOnePic(dto);
+        assertEquals(1L,result);
+
     }
 }

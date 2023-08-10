@@ -180,7 +180,7 @@ VALUES (1, 11, '양의나라 유기농 양고기 양갈비 양꼬치 프렌치�
 	(71, 18, '[충북 괴산] 진한 국물의 깊은맛 흑염소 탕 염소탕 보양식 전골 밀키트', 16000, NULL, 'https://shopping-phinf.pstatic.net/main_8567013/85670139222.jpg', '2023-07-26 18:32:27', '2023-08-04 17:01:04', 1),
 	(72, 18, '바로 끓여먹는 해신탕 당일출고 국내산 A급 생닭 해물보양식 복날 몸보신 삼계탕 초복 말복', 29800, NULL, 'https://shopping-phinf.pstatic.net/main_8273689/82736895920.5.jpg', '2023-07-26 18:32:27', '2023-07-26 18:32:27', 1),
 	(73, 18, '고양옥 염소홍탕 염소탕 보양식 몸보신 밀키트 여름 캠핑 요리 음식 염소전골 흑염소 진액', 13000, NULL, 'https://shopping-phinf.pstatic.net/main_8341575/83415753763.14.jpg', '2023-07-26 18:32:27', '2023-08-04 17:01:08', 1),
-	(74, 18, '프레시지 밀푀유나베 밀키트 2인분 850g', 13900, NULL, 'https://shopping-phinf.pstatic.net/main_3652015/36520154622.20221214170558.jpg', '2023-07-26 18:32:27', '2023-08-04 17:00:51', 1),
+	(74, 18, '프레시지 밀푀유나베 밀키트 2인분 850g', 13900, NULL, 'https://shopping-phinf.pstatic.net/main_3652015/36520154622.20221214170558.jpg', '2023-07-26 18:32:27', '2023-08-04 17:00:51', 1);
 
 
 INSERT IGNORE  `item_category` (`iitem_category`, `name`)
@@ -252,7 +252,7 @@ VALUES (6, 1, 'https://shop-phinf.pstatic.net/20230707_82/1688717233690Q4wyF_JPE
 	(69, 28, 'https://shop-phinf.pstatic.net/20200713_59/1594569207430KaPyY_JPEG/%EB%AA%85%EC%A0%95%EC%96%B4%EA%B0%80_%EB%A9%94%EC%9D%B8_43.jpg?type=w860', '2023-08-03 16:03:11'),
 	(70, 2, 'https://shop-phinf.pstatic.net/20230707_82/1688717233690Q4wyF_JPEG/2023-07-05-%ED%86%B5%ED%95%A9(%EB%A0%88%EC%8A%A4%ED%84%B0%ED%99%94)_00-B(%EB%A9%94%EC%9D%B8%EC%BB%B7)-White.jpg?type=w860\r\n', '2023-08-03 16:38:46'),
 	(71, 2, 'https://shop-phinf.pstatic.net/20230707_82/1688717233690Q4wyF_JPEG/2023-07-05-%ED%86%B5%ED%95%A9(%EB%A0%88%EC%8A%A4%ED%84%B0%ED%99%94)_00-B(%EB%A9%94%EC%9D%B8%EC%BB%B7)-White.jpg?type=w860\r\n', '2023-08-03 16:40:14'),
-	(72, 3, 'https://shop-phinf.pstatic.net/20230727_267/1690420081407BxGDX_JPEG/%EC%88%84%EB%8D%94%EB%9E%99_03.jpg?type=w860\r\n		  ', '2023-08-03 16:40:14'),
+	(72, 3, 'https://shop-phinf.pstatic.net/20230727_267/1690420081407BxGDX_JPEG/%EC%88%84%EB%8D%94%EB%9E%99_03.jpg?type=w860\r\n		  ', '2023-08-03 16:40:14');
 
 
 INSERT IGNORE  `order` (`iorder`, `iuser`, `address`, `address_detail`, `total_price`, `shipping_price`, `shipping_memo`,
@@ -260,15 +260,15 @@ INSERT IGNORE  `order` (`iorder`, `iuser`, `address`, `address_detail`, `total_p
 VALUES (1, 1, '서울특별시 마포구 상암동 495-81', NULL, 40000, 3000, '맛있는고기', '2023-07-25 17:53:13', '2023-07-26 19:42:59', 1),
        (2, 1, '무슨무슨주소', NULL, 40000, 3000, NULL, '2023-07-26 20:01:29', '2023-07-26 20:01:29', 1),
        (3, 2, '무슨무슨주소', NULL, 40000, 3000, '배송배송', '2023-07-26 20:35:37', '2023-07-26 20:35:37', 1),
-       (6, 1, '무슨무슨주소', NULL, 401000, 3000, '친절한배송', '2023-07-28 13:04:42', '2023-07-28 13:04:42', 1);
+       (6, 1, '무슨무슨주소', NULL, 401000, 3000, '친절한배송', '2023-07-28 13:04:42', '2023-07-28 13:04:42', 1),
 (11, 1, 'string', NULL, 2, 4, NULL, '2023-08-07 14:52:51', '2023-08-07 14:52:51', 1),
 	(12, 3, 'string', NULL, 0, 0, NULL, '2023-08-08 18:01:02', '2023-08-08 18:01:02', 1);
 
-INSERT IGNORE  `order_item` (`iorder`, `iitem`, `price`, `quantity`, `total_price`, `refund`)
-VALUES (1, 1, 30000, 1, 30000, 0),
-       (1, 2, 5000, 2, 10000, 0),
-       (2, 4, 39800, 2, 79600, 0);
-(11, 10, 50000, 22, 333, 0, 1),
+INSERT IGNORE  `order_item` (`iorder`, `iitem`, `price`, `quantity`, `total_price`, `refund`, `del_yn`)
+VALUES (1, 1, 30000, 1, 30000, 0, 1),
+       (1, 2, 5000, 2, 10000, 0, 1),
+       (2, 4, 39800, 2, 79600, 0, 1),
+    (11, 10, 50000, 22, 333, 0, 1),
 	(12, 1, 16500, 0, 0, 0, 1);
 
 INSERT IGNORE  `shipping_address` (`iaddress`, `iuser`, `address`, `address_detail`, `name`, `phone`)
@@ -287,11 +287,9 @@ VALUES (1, '1', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy
         '2023-07-27 14:29:21', 1),
        (4, '4', '{bcrypt}$2a$10$jEI8vsdhg8Fb6cB8mmdhh.X/v4kvXxcoh5T2TEww1wYQ.PBy0CSNm', 'dlawjdghbn@naver.com', '임정호',
         '1998-06-05', '01092158817', 0, '경기 가평군 가평읍 자라섬로 60', NULL, 'ROLE_USER', NULL, '2023-07-24 15:53:48',
-        '2023-07-27 14:29:18', 1);
+        '2023-07-27 14:29:18', 1),
+    (7, '7', '{bcrypt}$2a$10$aPFGifea7LEEOhWlUQA/vOxaUxPVWxFwrYm9qa0FAZB1IH0Vrm97C', 'rlahfld54@naver.com', '황주은',
+    '1998-06-12', '01025521549', 1, '경기 남양주시 화도읍 북한강로 1630-18', NULL, 'ROLE_USER', 'qwer.jpg',
+    '2023-07-24 15:53:48', '2023-07-27 14:29:23', 1);
 
-INSERT IGNORE  `user_token` (`iuser`, `ip`, `access_token`, `refresh_token`, `created_at`, `updated_at`)
-VALUES (7, '0:0:0:0:0:0:0:1',
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MDkzODI0NCwiZXhwIjoxNjkwOTQxODQ0fQ.wafZKIKtuEJlOqGXi41hDnfpWU2v40wRziGiHAD_Tak',
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MDkzODI0NCwiZXhwIjoxNjkyMjM0MjQ0fQ.xUDZz3CzCeg0duDocYIA-kvF6JdooTS9jul_SgInsAA',
-        '2023-07-28 18:05:38', '2023-08-02 10:04:00');
     SET foreign_key_checks = 1;
