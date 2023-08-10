@@ -2,8 +2,6 @@ package com.green.campingsmore.config.security;
 
 import com.green.campingsmore.config.security.model.LoginDto;
 import com.green.campingsmore.config.security.model.SignUpDto;
-import com.green.campingsmore.config.security.model.UserTokenDto;
-import com.green.campingsmore.config.security.model.UserTokenEntity;
 import com.green.campingsmore.sign.model.UpdatePwDto;
 import com.green.campingsmore.sign.model.UpdateUserInfoDto;
 import com.green.campingsmore.sign.model.UserInfo;
