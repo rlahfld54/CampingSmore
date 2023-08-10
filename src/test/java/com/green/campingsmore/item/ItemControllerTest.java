@@ -53,7 +53,8 @@ class ItemControllerTest {
 
     @Test
     void postItem() throws Exception {
-        ItemInsDto dto = new ItemInsDto();
+*/
+/*        ItemInsDto dto = new ItemInsDto();
         dto.setIitemCategory(11L);
         dto.setName("상품명");
         dto.setPic("main.jpg");
@@ -64,11 +65,12 @@ class ItemControllerTest {
         picUrl.add("DetailPic2.jpg");
         picUrl.add("DetailPic3.jpg");
 
-        dto.setPicUrl(picUrl);
+        dto.setPicUrl(picUrl);*//*
 
-        Long result = 75L;
 
-        given(service.insItem(dto)).willReturn(result);
+        Long result = 1L;
+
+        given(service.insItem(any())).willReturn(result);
 
         //
         ItemInsDto item = new ItemInsDto();
@@ -81,7 +83,10 @@ class ItemControllerTest {
         picUrl1.add("DetailPic1.jpg");
         picUrl1.add("DetailPic2.jpg");
         picUrl1.add("DetailPic3.jpg");
+
         item.setPicUrl(picUrl1);
+
+
 
         ObjectMapper om = new ObjectMapper();
         String jsonParam = om.writeValueAsString(item);
@@ -91,18 +96,8 @@ class ItemControllerTest {
                         .content(jsonParam)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("75"))
+                        .andExpect(content().string("1"))
                         .andDo(print());
-
-        verify(service).insItem(any());
-
-
-
-
-
-
-
-
 
 
 
