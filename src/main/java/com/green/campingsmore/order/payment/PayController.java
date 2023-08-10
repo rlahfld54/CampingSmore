@@ -35,7 +35,7 @@ public class PayController {
                     "<h3>   CODE 1 : DB 정보 저장 성공\n" +
                     "<h3>   CODE 0 : DB 정보 저장 실패\n"
     )
-    private Long postPayInfo(@AuthenticationPrincipal MyUserDetails user,
+    public Long postPayInfo(@AuthenticationPrincipal MyUserDetails user,
                              @RequestBody InsPayInfoDto dto) {
         InsPayInfoDto1 dto1 = new InsPayInfoDto1();
         dto1.setIuser(user.getIuser());
@@ -59,7 +59,7 @@ public class PayController {
 
 
     )    //유저 결제시 띄움(결제창에서 바로 띄움)
-    private PaymentCompleteDto getPaymentComplete(@PathVariable Long iorder) {
+    public PaymentCompleteDto getPaymentComplete(@PathVariable Long iorder) {
         return SERVICE.selPaymentComplete(iorder);
     }
 
@@ -75,7 +75,7 @@ public class PayController {
                     "<h3>   └paymentDate : 결제일\n"
     )
     //유저마이페이지에서 조회
-    private List<SelPaymentDetailDto> getPaymentList(@AuthenticationPrincipal MyUserDetails user) {
+    public List<SelPaymentDetailDto> getPaymentList(@AuthenticationPrincipal MyUserDetails user) {
         Long iuser = user.getIuser();
         return SERVICE.selPaymentDetailAll(iuser);
     }
@@ -98,7 +98,7 @@ public class PayController {
                     "<h3> shippingMemo : 배송 메모\n"
 
     ) //유저마이페이지에서 조회
-    private SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@AuthenticationPrincipal MyUserDetails user,
+    public SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@AuthenticationPrincipal MyUserDetails user,
                                                                     @PathVariable Long iorder, @RequestParam Long iitem) {
         return SERVICE.selDetailedItemPaymentInfo(iorder, iitem);
     }
@@ -108,7 +108,7 @@ public class PayController {
             description = "<h3> iorder : 결제내역 PK\n" +
                     "<h3> iitem : 아이템 PK\n"
     ) //유저마이페이지에서 조회
-    private Long delPaymentDetail(@PathVariable Long iorder, @RequestParam Long iitem) {
+    public Long delPaymentDetail(@PathVariable Long iorder, @RequestParam Long iitem) {
         return SERVICE.delPaymentDetail(iorder, iitem);
     }
 
@@ -125,7 +125,7 @@ public class PayController {
                     "<h3> totalPrice : 아이템 총 가격\n" +
                     "<h3> Pic : 이미지\n"
     )
-    private List<PaymentDetailDto> getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
+    public List<PaymentDetailDto> getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
                                                       @RequestBody CartPKDto dto) {
         return SERVICE.selPaymentPageItemList(dto);
     }
@@ -142,7 +142,7 @@ public class PayController {
                             "<h3> quantity : 아이템 수량\n" +
                             "<h3> totalPrice : 아이템 총 가격\n" +
                             "<h3> Pic : 이미지\n")
-    private PaymentDetailDto getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
+    public PaymentDetailDto getPaymentItem(@AuthenticationPrincipal MyUserDetails user,
                                                 @PathVariable Long iitem, @RequestParam Long quantity) {
         return SERVICE.selPaymentPageItem(iitem, quantity);
     }

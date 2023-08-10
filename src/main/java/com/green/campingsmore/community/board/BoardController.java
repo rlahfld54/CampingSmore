@@ -90,7 +90,7 @@ public class BoardController {
     @GetMapping("/icategory")
     @Operation(summary = "카테고리별 게시글 리스트 보기")
     public BoardRes categoryBoardList(@RequestParam Long icategory
-            ,@RequestParam(defaultValue = "1") int page
+            ,@RequestParam(defaultValue = "1",required = false) int page
             , @RequestParam(defaultValue = "15") @Min(value = 15) int row) {
         BoardPageDto dto = new BoardPageDto();
         dto.setIcategory(icategory);
@@ -123,7 +123,7 @@ public class BoardController {
 //        return service.updBoard(pic, dto);
 //    }
     @DeleteMapping("/delPic")
-    @Operation(summary = "게시글 사진 pk값으로 삭제")
+    @Operation(summary = "게시글 사진 pk값으로 삭제 폴더에 사진없으면 폴더도 자동삭제")
     public Long delOnePic(@RequestBody BoardPicDelDto dto){
         return service.delOnePic(dto);
     }
