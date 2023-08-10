@@ -152,7 +152,7 @@ public class SignService {
         }
 
         String ip = req.getRemoteAddr(); // ip주소 얻어오기
-        String accessToken = JWT_PROVIDER.resolveToken(req, JWT_PROVIDER.TOKEN_TYPE); // accessToken 얻어오기
+        String accessToken = JWT_PROVIDER.resolveToken(req, JWT_PROVIDER.TOKEN_TYPE);// accessToken 얻어오기
         Claims claims = JWT_PROVIDER.getClaims(refreshToken, JWT_PROVIDER.REFRESH_KEY); // refreshToken 얻어오기
 
         try {

@@ -8,10 +8,8 @@ import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
-import com.green.campingsmore.sign.model.SignInResultDto;
-import com.green.campingsmore.sign.model.SignUpResultDto;
-import com.green.campingsmore.sign.model.UserInfo;
-import com.green.campingsmore.sign.model.UserLogin;
+import com.green.campingsmore.sign.model.*;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -186,6 +184,32 @@ class SignControllerTest {
 
     @Test
     void refreshToken() throws Exception{
+        UserRefreshToken userRefreshToken = new UserRefreshToken();
+        userRefreshToken.setRefreshToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4");
+        String refreshToken = userRefreshToken.getRefreshToken();
+//        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkxNzI1OTAzfQ.vZDiU7mmT9dPyEAcDg8c3Sbox0PolJljjSdgeoRIA54";
+
+        String refresh = "{"+"\"refreshToken\":"+"\"" + refreshToken + "\""+"}";
+        System.out.println(refresh);
+
+        SignInResultDto signInResultDto = SignInResultDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refresh)
+                .build();
+
+        given(service.refreshToken(request,refreshToken)).willReturn(signInResultDto);
+
+        mvc.perform(
+                post("/sign-api/refresh-token")
+                        .content(refresh)
+                        .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service.refreshToken(request,refreshToken));
+
     }
 
     @Test
