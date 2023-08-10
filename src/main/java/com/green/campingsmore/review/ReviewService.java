@@ -31,53 +31,56 @@ public class ReviewService {
         entity.setReviewCtnt(dto.getReviewCtnt());
         entity.setStarRating(dto.getStarRating());
 
+/*        int result = MAPPER.selReviewOrder(entity.getIorder(), entity.getIuser(), entity.getIitem());
+        log.info("entity: {}",entity);
+        log.info("result: {}",result);*/
+
         try {
-            int result = MAPPER.selReviewOrder(entity.getIorder(), entity.getIuser(), entity.getIitem());
-            if (result == 0) {
-                return "리뷰를 작성 할 수 없습니다";
-            }
-        } catch (Exception e) {
-            return "리뷰를 작성 에러";
-        }
+            MAPPER.selReviewOrder(entity);
+        } catch (Exception e1) {
+            return "리뷰를 작성 할 수 없습니다";
+        } try {
+            MAPPER.insReview(entity);
+        }catch (Exception e2) {
+            return "리뷰 작성 에러";
+        } try {
+            if (pic != null) {
 
+                String temp = "0";
+                String centerPath = String.format("user/%d/review/%d", entity.getIuser(),entity.getIreview());
+                String dicPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
 
-        MAPPER.insReview(entity);
-        if (pic != null) {
-
-            String temp = "0";
-            String centerPath = String.format("user/%d/review/%d", entity.getIuser(),entity.getIreview());
-            String dicPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
-
-            File dic = new File(dicPath);
-            if (!dic.exists()) {
-                dic.mkdirs();
-            }
-
-            String originFileName = pic.getOriginalFilename();
-            String savedFileName = FileUtils.makeRandomFileNm(originFileName);
-            String savedFilePath = String.format("%s/%s", centerPath, savedFileName);
-            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), savedFilePath);
-            File target = new File(targetPath);
-            try {
-                pic.transferTo(target);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            entity.setPic(savedFilePath);
-            try {
-                int result1 = MAPPER.updReviewPic(entity);
-                if(result1 == Integer.parseInt(temp)) {
-                    throw new Exception("사진을 등록할 수 없습니다.");
+                File dic = new File(dicPath);
+                if (!dic.exists()) {
+                    dic.mkdirs();
                 }
-            }catch (Exception e) {
-                target.delete();
-                return  "업로드 취소";
-            }
-            return "이미지 추가 업로드 완료";
-        }
 
-        return "업로드 완료";
+                String originFileName = pic.getOriginalFilename();
+                String savedFileName = FileUtils.makeRandomFileNm(originFileName);
+                String savedFilePath = String.format("%s/%s", centerPath, savedFileName);
+                String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), savedFilePath);
+                File target = new File(targetPath);
+                try {
+                    pic.transferTo(target);
+                }catch (Exception e) {
+                    return "사진등록 실패";
+                }
+
+                entity.setPic(savedFilePath);
+                try {
+                    int result1 = MAPPER.updReviewPic(entity);
+                    if(result1 == Integer.parseInt(temp)) {
+                        throw new Exception("사진을 등록할 수 없습니다.");
+                    }
+                }catch (Exception e) {
+                    target.delete();
+                    return  "업로드 취소";
+                }
+            }
+            return "업로드 완료";
+        } catch (Exception e3) {
+            return "사진 업로드 에러";
+        }
     }
 
 
