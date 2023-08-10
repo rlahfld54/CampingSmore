@@ -1,6 +1,7 @@
 package com.green.campingsmore.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.SecurityConfiguration;
 import com.green.campingsmore.config.security.model.MyUserDetails;
@@ -9,7 +10,9 @@ import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
 import com.green.campingsmore.sign.model.SignInResultDto;
 import com.green.campingsmore.sign.model.SignUpResultDto;
+import com.green.campingsmore.sign.model.UserInfo;
 import com.green.campingsmore.sign.model.UserLogin;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +48,9 @@ class SignControllerTest {
     private MockMvc mvc;
 
     @MockBean
+    private HttpServletRequest request;
+
+    @MockBean
     private SignService service;
 
     @MockBean
@@ -50,6 +58,9 @@ class SignControllerTest {
 
     @MockBean
     private JwtTokenProvider JWT_PROVIDER;
+
+    @MockBean
+    private AuthenticationFacade FACADE;
 
     @BeforeEach
     void beforeEach() {
@@ -114,8 +125,26 @@ class SignControllerTest {
 
     }
 
-    @Test
+    @Test // 로그아웃
     void logout() {
+        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
+        Long iuser = FACADE.getLoginUserPk();
+        String ip = request.getRemoteAddr();
+
+        // Redis에 저장되어 있는 RT 삭제
+        String redisKey = String.format("RT(%s):%s:%s", "Server", iuser, ip);
+        String refreshTokenInRedis = redisService.getValues(redisKey);
+
+        redisService.getValues(redisKey);
+        if (refreshTokenInRedis != null) {
+            System.out.println("Redis에 저장되어 있는 RT 삭제");
+            redisService.deleteValues(redisKey);
+        }
+
+        // Redis에 로그아웃 처리한 AT 저장
+        long expiration = JWT_PROVIDER.getTokenExpirationTime(accessToken, JWT_PROVIDER.ACCESS_KEY)
+                - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        redisService.setValuesWithTimeout(accessToken, "logout", expiration);
     }
 
     @Test // 회원가입
@@ -156,7 +185,7 @@ class SignControllerTest {
     }
 
     @Test
-    void refreshToken() {
+    void refreshToken() throws Exception{
     }
 
     @Test
@@ -192,11 +221,13 @@ class SignControllerTest {
     }
 
     @Test
-    void getmyInfo() {
+    void getmyInfo() throws Exception{
     }
 
     @Test
-    void updateUserInfo() {
+    void updateUserInfo() throws Exception{
+        UserInfo userInfo = new UserInfo();
+        given(service.getmyInfo()).willReturn(userInfo);
     }
 
     @Test
