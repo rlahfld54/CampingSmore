@@ -49,6 +49,7 @@ class ReviewMapperTest {
 
     @Test
     void selLastReview() {
+
         Long iitem = 1L;
 
         int result = mapper.selLastReview(iitem);
@@ -70,4 +71,5 @@ class ReviewMapperTest {
     @Test
     void delReview() {
     }
-}*/
+}
+*/
