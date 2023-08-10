@@ -201,21 +201,21 @@ class SignControllerTest {
 
     @Test
     void searchPW() throws Exception {
-//        String id = "rlahfld54";
-//        String name = "황주은";
-//        String email = "rlahfld54@gmail.com";
-//
-//
-//        given(service.searchPW(id,name,email)).willReturn(7);
-//
-//        mvc.perform(
-//                        post("/sign-api/search-pw")
-//                                .param("id",id)
-//                                .param("name",name)
-//                                .param("email",email)
-//                ).andExpect(status().isOk())
-//                .andDo(print());
-//
-//        verify(service).searchPW(id,name,email);
+        String id = "rlahfld54";
+        String name = "황주은";
+        String email = "rlahfld54@gmail.com";
+
+
+        given(service.searchPW(id,name,email)).willReturn(7);
+
+        mvc.perform(
+                        get("/sign-api/search-pw")
+                                .param("id",id)
+                                .param("name",name)
+                                .param("email",email)
+                ).andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).searchPW(id,name,email);
     }
 }
