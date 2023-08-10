@@ -135,7 +135,8 @@ public class SignController {
                     "name: 이름 \n\n " +
                     "birth_date: 생년월일 \n\n " +
                     "phone: 핸드폰 번호 \n\n " +
-                    "user_address: 주소 \n\n "
+                    "user_address: 주소 \n\n " +
+                    "user_address_detail : 상세주소"
     )
     public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user,@RequestBody UpdateUserInfoDto updateUserInfoDto) {
         // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..

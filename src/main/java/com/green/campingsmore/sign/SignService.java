@@ -248,7 +248,7 @@ public class SignService {
             throw new RuntimeException(e);
         }
 
-        return MAPPER.searchPW(updatePwDto);
+        return MAPPER.searchPW(updatePwDto); // 성공시 1 반환
     }
 
 
