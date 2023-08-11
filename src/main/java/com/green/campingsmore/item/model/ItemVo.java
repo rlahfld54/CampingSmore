@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
@@ -13,5 +13,8 @@ public class ItemVo {
     private String name;
     private String pic;
     private int price;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
+
+    public ItemVo(long l, String s, String url, int i, LocalDate parse) {
+    }
 }

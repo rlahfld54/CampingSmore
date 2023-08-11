@@ -39,8 +39,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -194,30 +193,128 @@ class PayControllerTest {
 
     @Test
     @DisplayName("PayController - 상세 결제 내역 보기(마이 페이지)")
-    void getDetailedItemPaymentInfo() {
+    void getDetailedItemPaymentInfo() throws Exception {
+        SelDetailedItemPaymentInfoVo item = new SelDetailedItemPaymentInfoVo();
+        item.setIitem(1L);
+        item.setName("양의나라 유기농 양고기 양갈비 양꼬치 프렌치렉 숄더랙 캠핑 냉장 냉동");
+        item.setPrice(30000L);
+        item.setQuantity(1L);
+        item.setTotalPrice(33000L);
+        item.setPic("https://shopping-phinf.pstatic.net/main_8014052/80140522706.10.jpg");
+        item.setPaymentDate(LocalDate.parse("2023-07-25"));
+        item.setAddress("서울특별시 마포구 상암동 495-81");
+        item.setAddressDetail("null같은 상세주소");
+        item.setShippingPrice(3000L);
+        item.setShippingMemo("빨리 배송해줘요");
 
+        given(service.selDetailedItemPaymentInfo(any(), any())).willReturn(item);
 
+        ResultActions ra = mvc.perform(get("/api/payment/paymentList/detail/{iorder}", 1L)
+                .param("iitem", "1"));
+
+        ra.andExpect(status().isOk())
+                .andExpect(jsonPath("$.iitem").value(1L))
+                .andExpect(jsonPath("$.name").value("양의나라 유기농 양고기 양갈비 양꼬치 프렌치렉 숄더랙 캠핑 냉장 냉동"))
+                .andExpect(jsonPath("$.price").value(30000L))
+                .andExpect(jsonPath("$.quantity").value(1L))
+                .andExpect(jsonPath("$.totalPrice").value(33000L))
+                .andExpect(jsonPath("$.pic").value("https://shopping-phinf.pstatic.net/main_8014052/80140522706.10.jpg"))
+                .andExpect(jsonPath("$.paymentDate").value("2023-07-25"))
+                .andExpect(jsonPath("$.address").value("서울특별시 마포구 상암동 495-81"))
+                .andExpect(jsonPath("$.addressDetail").value("null같은 상세주소"))
+                .andExpect(jsonPath("$.shippingPrice").value(3000L))
+                .andExpect(jsonPath("$.shippingMemo").value("빨리 배송해줘요"));
+
+        then(service).should(times(1)).selDetailedItemPaymentInfo(any(), any());
     }
 
     @Test
-    @DisplayName("PayController - ")
-    void delPaymentDetail() {
+    @DisplayName("PayController - 전체 결제 내역에서 하나의 결제 내역 삭제(아이템별, 마이 페이지)")
+    void delPaymentDetail() throws Exception {
+        Long testIorder = 1L;
+        Long testIitem = 1L;
 
+        given(service.delPaymentDetail(testIorder, testIitem)).willReturn(1L);
+
+        ResultActions ra = mvc.perform(put("/api/payment/paymentList/{iorder}", testIorder)
+                .param("iitem", "1"));
+
+        ra.andExpect(status().isOk())
+                .andExpect(content().string("1"))
+                .andDo(print());
+
+        then(service).should(times(1)).delPaymentDetail(any(), any());
     }
 
 
     @Test
-    @DisplayName("PayController - ")
-    void getPaymentItemList() {
+    @DisplayName("PayController - 장바구니 결제 버튼 -> 체크된 장바구니 아이템 정보들을 결제 페이지에서 보여주기")
+    void getPaymentItemList() throws Exception {
+        CartPKDto testDto = new CartPKDto();
+        List<Long> icart = new ArrayList<>();
+        icart.add(1L);
+        icart.add(2L);
+        testDto.setIcart(icart);
 
+        List<PaymentDetailDto> itemList = new ArrayList<>();
+        PaymentDetailDto item1 = new PaymentDetailDto();
+        item1.setIitem(1L);
+        item1.setPic("테스트지겹다.jpg");
+        item1.setName("괴기괴기");
+        item1.setPrice(50000L);
+        item1.setQuantity(1L);
+
+        given(service.selPaymentPageItemList(any())).willReturn(itemList);
+
+        ObjectMapper om = new ObjectMapper();
+        String jsonItem = om.writeValueAsString(testDto);
+
+        ObjectMapper om1 = new ObjectMapper();
+        String jsonItem1 = om1.writeValueAsString(itemList);
+
+        ResultActions ra = mvc.perform(post("/api/payment/order/cart")
+                .content(jsonItem)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        ra.andExpect(status().isOk())
+                .andExpect(content().string(jsonItem1))
+                .andDo(print());
+
+        then(service).should(times(1)).selPaymentPageItemList(any());
     }
 
 
     @Test
-    @DisplayName("PayController - ")
-    void getPaymentItem() {
-    }
+    @DisplayName("PayController - 아이템 구매 버튼 -> 단일 아이템 정보를 결제 페이지에서 보여주기")
+    void getPaymentItem() throws Exception {
+        Long testItem = 1L;
+        Long testQuantity = 3L;
 
+        PaymentDetailDto item = new PaymentDetailDto();
+        item.setIitem(1L);
+        item.setPic("테스트지겹다.jpg");
+        item.setName("괴기괴기");
+        item.setPrice(50000L);
+        item.setQuantity(1L);
+        item.setTotalPrice(50000L);
+
+        given(service.selPaymentPageItem(any(), any())).willReturn(item);
+
+        ResultActions ra = mvc.perform(get("/api/payment/order/{iitem}", testItem)
+                .param("quantity",testQuantity.toString()));
+
+        ra.andExpect(status().isOk())
+                .andExpect(jsonPath("$.iitem").exists())
+                .andExpect(jsonPath("$.iitem").value(1L))
+                .andExpect(jsonPath("$.pic").value("테스트지겹다.jpg"))
+                .andExpect(jsonPath("$.name").value("괴기괴기"))
+                .andExpect(jsonPath("$.price").value(50000L))
+                .andExpect(jsonPath("$.quantity").value(1L))
+                .andExpect(jsonPath("$.totalPrice").value(50000L))
+                .andDo(print());
+
+        then(service).should(times(1)).selPaymentPageItem(any(), any());
+    }
 
 
     @Test

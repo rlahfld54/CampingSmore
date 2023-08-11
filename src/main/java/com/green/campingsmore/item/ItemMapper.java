@@ -27,10 +27,10 @@ public interface ItemMapper {
     List<String> selDetailPic(Long iitem);
     // 아이템 상세페이지 변경 del->ins
     int delDetailPic(Long iitem);
-    int insDetailPic(ItemInsDetailDto dto);
+    int insDetailPic(ItemInsDetailDto dto2);
 
     // 추천 아이템
-    int insBestItem(ItemInsBest dto);
+    int insBestItem(ItemInsBestDto dto);
     List<ItemVo> selBestItem();
 
 }
