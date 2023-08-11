@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.SecurityConfiguration;
-import com.green.campingsmore.config.security.UserDetailsMapper;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
 import com.green.campingsmore.sign.model.*;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,9 +49,6 @@ class SignControllerTest {
 
     @MockBean
     private SignService service;
-
-    @MockBean
-    private UserDetailsMapper MAPPER;
 
     @MockBean
     private RedisService redisService;
@@ -100,8 +95,8 @@ class SignControllerTest {
         String user_info = objectMapper.writeValueAsString(userLogin);
         System.out.println("user_info : " + user_info);
 
-        String accessToken = JWT_PROVIDER.generateJwtToken("7", Collections.singletonList("ROLE_USER"), JWT_PROVIDER.ACCESS_TOKEN_VALID_MS, JWT_PROVIDER.ACCESS_KEY);
-        String refreshToken = JWT_PROVIDER.generateJwtToken("7", Collections.singletonList("ROLE_USER"), JWT_PROVIDER.REFRESH_TOKEN_VALID_MS, JWT_PROVIDER.REFRESH_KEY);
+        String accessToken = "fjhfljkashd.asdfjaksjflskdjfklasdlfkadfasdf.asdfjalskdfjalsdkfs.sdasddfadf";
+        String refreshToken = "asdfasdfhd.asdfjaksjflskdjfklasdlfkadfasdf.asdfjalskdfjalsdkfs.sdasddfadf";
 
         RedisJwtVo redisJwtVo = RedisJwtVo.builder()
                 .accessToken(accessToken)
@@ -116,20 +111,19 @@ class SignControllerTest {
         given(service.signIn(userLogin,"127.0.0.1")).willReturn(result);
 
         mvc.perform(
-                post("/sign-api/sign-in")
-                        .content(user_info)
-                        .contentType("application/json")
+                        post("/sign-api/sign-in")
+                                .content(user_info)
+                                .contentType("application/json")
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
 
         verify(service).signIn(userLogin,"127.0.0.1");
-
     }
 
     @Test // 로그아웃
     void logout() {
-        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4";
         Long iuser = FACADE.getLoginUserPk();
         String ip = request.getRemoteAddr();
 
@@ -147,6 +141,7 @@ class SignControllerTest {
         long expiration = JWT_PROVIDER.getTokenExpirationTime(accessToken, JWT_PROVIDER.ACCESS_KEY)
                 - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         redisService.setValuesWithTimeout(accessToken, "logout", expiration);
+
     }
 
     @Test // 회원가입
@@ -186,35 +181,27 @@ class SignControllerTest {
         verify(service).signUp(signUpDto);
     }
 
-    @Test
-    void refreshToken() throws Exception{
+//    @Test // 리프레쉬 토큰...일단 로그인을 한 생태로 해야하는데 401 에러..
+//    void refreshToken() throws Exception{
 //        UserRefreshToken userRefreshToken = new UserRefreshToken();
 //        userRefreshToken.setRefreshToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4");
-//        String refreshToken = userRefreshToken.getRefreshToken();
-////        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
-//        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkxNzI1OTAzfQ.vZDiU7mmT9dPyEAcDg8c3Sbox0PolJljjSdgeoRIA54";
+//        // jackson objectmapper 객체 생성
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String result = objectMapper.writeValueAsString(userRefreshToken);
+//        System.out.println("userRefreshToken : " + userRefreshToken);
 //
-//        String refresh = "{"+"\"refreshToken\":"+"\"" + refreshToken + "\""+"}";
-//        System.out.println(refresh);
-//
-//        SignInResultDto signInResultDto = SignInResultDto.builder()
-//                .accessToken(accessToken)
-//                .refreshToken(refresh)
-//                .build();
-//
-//        given(service.refreshToken(request,refreshToken)).willReturn(signInResultDto);
 //
 //        mvc.perform(
 //                post("/sign-api/refresh-token")
-//                        .content(refresh)
+//                        .content(result)
 //                        .contentType("application/json")
 //                )
 //                .andExpect(status().isOk())
 //                .andDo(print());
 //
-//        verify(service.refreshToken(request,refreshToken));
-
-    }
+//        verify(service.refreshToken(request,userRefreshToken.getRefreshToken()));
+//
+//    }
 
     @Test
     void searchID() throws Exception {
@@ -249,7 +236,7 @@ class SignControllerTest {
     }
 
     @Test
-    void getmyInfo() throws Exception{
+    void getmyInfo(){
     }
 
     @Test
