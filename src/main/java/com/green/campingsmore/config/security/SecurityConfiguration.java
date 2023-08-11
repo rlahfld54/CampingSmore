@@ -34,14 +34,14 @@ public class SecurityConfiguration {
                                     , "/index.html"
                                     , "/static/**"
 
-                                    ,"/oauth/authorize" //로그인
-                                    , "/oauth/logout" // 로그아웃
-                                    , "/user" // 회원가입
-                                    , "/search/id" // 아이디 찾기
-                                    , "/search/pw" // 비밀번호 찾기
-                                    , "/exception"
+                                    ,"/api/oauth/authorize" //로그인
+                                    , "/api/oauth/logout" // 로그아웃
+                                    , "/api/user" // 회원가입
+                                    , "/api/search/id" // 아이디 찾기
+                                    , "/api/search/pw" // 비밀번호 찾기
+                                    , "/api/exception"
                             ).permitAll()
-                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/oauth/token").permitAll() // 리프레쉬 토큰...
                             .requestMatchers(HttpMethod.GET, "/api/community/**/**").permitAll()// api/community/**/**
                             .requestMatchers(HttpMethod.GET, "/api/item/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/review/**").permitAll() // review/{item}/detail
