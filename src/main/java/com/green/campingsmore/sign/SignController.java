@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "회원")
-@RequestMapping
+@RequestMapping("/api")
 public class SignController {
     private final SignService SERVICE;
 
@@ -105,7 +105,7 @@ public class SignController {
         return SERVICE.searchID(name, phone, birth);
     }
 
-    @DeleteMapping("user/delete")
+    @DeleteMapping("/user/delete")
     @Operation(summary = "회원탈퇴",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "iuser:  iuser PK \n\n "
@@ -115,7 +115,7 @@ public class SignController {
     }
 
 
-    @GetMapping("user/me")
+    @GetMapping("/user/me")
     @Operation(summary = "로그인 했을때 , 본인 회원 정보 출력",
             description = "Try it out -> Execute 눌러주세요 \n\n ")
     public UserInfo getmyInfo(){
@@ -123,7 +123,7 @@ public class SignController {
     }
 
 
-    @PostMapping("user/update-profile")
+    @PostMapping("/user/update-profile")
     @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
