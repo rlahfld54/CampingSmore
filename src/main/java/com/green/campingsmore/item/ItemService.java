@@ -102,19 +102,20 @@ public class ItemService {
     }
 
     //상세이미지 추가
-    public List<ItemInsDetailDto> insDetailPic(ItemInsDetailPicDto dto) {
+    public int insDetailPic(ItemInsDetailPicDto dto) {
         // 아이템 PK에 사진이 있으면 삭제
         // 아이템 PK로 아이템 추가
         MAPPER.delDetailPic(dto.getIitem());
 
-        ItemInsDetailDto dto2 = new ItemInsDetailDto();
-        dto.setIitem(dto.getIitem());
+
         for (int i = 0; i < dto.getPicUrl().size(); i++) {
+            ItemInsDetailDto dto2 = new ItemInsDetailDto();
+            dto2.setIitem(dto.getIitem());
             dto2.setPic(dto.getPicUrl().get(i));
             MAPPER.insDetailPic(dto2);
         }
 
-        return null;
+        return dto.getPicUrl().size();
     }
 
 
@@ -128,7 +129,7 @@ public class ItemService {
         return MAPPER.selDetail(iitem);
     }*/
 
-    public int insBestItem(ItemInsBest dto) {
+    public int insBestItem(ItemInsBestDto dto) {
         return MAPPER.insBestItem(dto);
     }
 

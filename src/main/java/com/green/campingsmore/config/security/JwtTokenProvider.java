@@ -49,7 +49,7 @@ public class JwtTokenProvider {
         Date now = new Date();
 
         String token = Jwts.builder()
-                .setClaims(createClaims(strIuser, roles)) // 페이로드, 토큰에 담기는 내용
+                .setClaims(createClaims(strIuser, roles))
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + token_valid_ms))
                 .signWith(key)
