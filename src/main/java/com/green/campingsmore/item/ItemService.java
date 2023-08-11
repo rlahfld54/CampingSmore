@@ -115,7 +115,7 @@ public class ItemService {
             MAPPER.insDetailPic(dto2);
         }
 
-        return 1;
+        return dto.getPicUrl().size();
     }
 
 
