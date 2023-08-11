@@ -1,15 +1,17 @@
 package com.green.campingsmore.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.SecurityConfiguration;
+import com.green.campingsmore.config.security.UserDetailsMapper;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.config.security.redis.RedisService;
 import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
-import com.green.campingsmore.sign.model.SignInResultDto;
-import com.green.campingsmore.sign.model.SignUpResultDto;
-import com.green.campingsmore.sign.model.UserLogin;
+import com.green.campingsmore.sign.model.*;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,13 +47,22 @@ class SignControllerTest {
     private MockMvc mvc;
 
     @MockBean
+    private HttpServletRequest request;
+
+    @MockBean
     private SignService service;
+
+    @MockBean
+    private UserDetailsMapper MAPPER;
 
     @MockBean
     private RedisService redisService;
 
     @MockBean
     private JwtTokenProvider JWT_PROVIDER;
+
+    @MockBean
+    private AuthenticationFacade FACADE;
 
     @BeforeEach
     void beforeEach() {
@@ -114,8 +127,26 @@ class SignControllerTest {
 
     }
 
-    @Test
+    @Test // 로그아웃
     void logout() {
+        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
+        Long iuser = FACADE.getLoginUserPk();
+        String ip = request.getRemoteAddr();
+
+        // Redis에 저장되어 있는 RT 삭제
+        String redisKey = String.format("RT(%s):%s:%s", "Server", iuser, ip);
+        String refreshTokenInRedis = redisService.getValues(redisKey);
+
+        redisService.getValues(redisKey);
+        if (refreshTokenInRedis != null) {
+            System.out.println("Redis에 저장되어 있는 RT 삭제");
+            redisService.deleteValues(redisKey);
+        }
+
+        // Redis에 로그아웃 처리한 AT 저장
+        long expiration = JWT_PROVIDER.getTokenExpirationTime(accessToken, JWT_PROVIDER.ACCESS_KEY)
+                - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        redisService.setValuesWithTimeout(accessToken, "logout", expiration);
     }
 
     @Test // 회원가입
@@ -156,7 +187,33 @@ class SignControllerTest {
     }
 
     @Test
-    void refreshToken() {
+    void refreshToken() throws Exception{
+//        UserRefreshToken userRefreshToken = new UserRefreshToken();
+//        userRefreshToken.setRefreshToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4");
+//        String refreshToken = userRefreshToken.getRefreshToken();
+////        String accessToken = JWT_PROVIDER.resolveToken(request, JWT_PROVIDER.TOKEN_TYPE);
+//        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkxNzI1OTAzfQ.vZDiU7mmT9dPyEAcDg8c3Sbox0PolJljjSdgeoRIA54";
+//
+//        String refresh = "{"+"\"refreshToken\":"+"\"" + refreshToken + "\""+"}";
+//        System.out.println(refresh);
+//
+//        SignInResultDto signInResultDto = SignInResultDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refresh)
+//                .build();
+//
+//        given(service.refreshToken(request,refreshToken)).willReturn(signInResultDto);
+//
+//        mvc.perform(
+//                post("/sign-api/refresh-token")
+//                        .content(refresh)
+//                        .contentType("application/json")
+//                )
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//
+//        verify(service.refreshToken(request,refreshToken));
+
     }
 
     @Test
@@ -165,7 +222,7 @@ class SignControllerTest {
         String phone = "01025521549";
         String birth = "1998-06-12";
 
-        given(service.searchID(name, phone, birth)).willReturn("아이디 찾기");
+        given(service.searchID(name, phone, birth)).willReturn("rlahfld54");
 
         mvc.perform(
                 get("/sign-api/search-id")
@@ -192,30 +249,53 @@ class SignControllerTest {
     }
 
     @Test
-    void getmyInfo() {
+    void getmyInfo() throws Exception{
     }
 
     @Test
-    void updateUserInfo() {
+    void updateUserInfo() throws Exception{
+        UpdateUserInfoDto updateUserInfoDto = UpdateUserInfoDto.builder()
+                .name("황주은")
+                .email("rlahfld54@naver.com")
+                .birth_date("1998-06-12")
+                .phone("01025521549")
+                .user_address("대구광역시 남구")
+                .user_address_detail("니 마음속(하트)")
+                .build();
+
+        given(service.updateUserInfo(updateUserInfoDto)).willReturn(1);
+
+        // jackson objectmapper 객체 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(updateUserInfoDto);
+        System.out.println("result : " + result);
+
+        mvc.perform(
+                post("/sign-api/update-info")
+                        .content(result)
+                        .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
     void searchPW() throws Exception {
-//        String id = "rlahfld54";
-//        String name = "황주은";
-//        String email = "rlahfld54@gmail.com";
-//
-//
-//        given(service.searchPW(id,name,email)).willReturn(7);
-//
-//        mvc.perform(
-//                        post("/sign-api/search-pw")
-//                                .param("id",id)
-//                                .param("name",name)
-//                                .param("email",email)
-//                ).andExpect(status().isOk())
-//                .andDo(print());
-//
-//        verify(service).searchPW(id,name,email);
+        String id = "rlahfld54";
+        String name = "황주은";
+        String email = "rlahfld54@gmail.com";
+
+
+        given(service.searchPW(id,name,email)).willReturn(1);
+
+        mvc.perform(
+                        get("/sign-api/search-pw")
+                                .param("id",id)
+                                .param("name",name)
+                                .param("email",email)
+                ).andExpect(status().isOk())
+                .andDo(print());
+
+        verify(service).searchPW(id,name,email);
     }
 }

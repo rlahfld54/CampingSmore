@@ -30,7 +30,6 @@ public class CommentService {
     }
     public Long delComment(CommentEntity entity){
         entity.setIuser(FACADE.getLoginUserPk());
-
         return mapper.delComment(entity);
     }
     public CommentRes selComment(CommentPageDto dto){

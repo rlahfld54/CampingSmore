@@ -62,6 +62,7 @@
         , birth_date = #{birth_date}
         , phone = #{phone}
         , user_address = #{user_address}
+        , user_address_detail = #{user_address_detail}
         where user_id = #{uid}
     </update>
 
