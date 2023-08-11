@@ -1,7 +1,6 @@
 package com.green.campingsmore.item.model;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;

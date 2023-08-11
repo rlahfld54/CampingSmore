@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ItemInsBest {
+public class ItemInsBestDto {
     private Long iitem;
     private LocalDate monthLike;
 }
