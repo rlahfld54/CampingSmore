@@ -354,4 +354,7 @@ public class BoardService {
         }
         return mapper.delOnePic(dto);
     }
+    public Long insCategory(String name){
+        return mapper.insCategory(name);
+    }
 }
