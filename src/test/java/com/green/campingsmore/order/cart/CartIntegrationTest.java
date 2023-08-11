@@ -43,7 +43,7 @@ public class CartIntegrationTest extends IntegrationTest {
         roles.add("ROLE_USER");
 
         UserDetails userDetails = MyUserDetails.builder()
-                .iuser(2L)
+                .iuser(1L)
                 .name("신형주")
                 .roles(roles)
                 .build();
@@ -53,7 +53,7 @@ public class CartIntegrationTest extends IntegrationTest {
     @Test
     @Rollback(value = false)
     @DisplayName("Cart - 장바구니에 등록하기")
-    public void postCart() throws Exception {
+    void postCart() throws Exception {
         InsCartDto item = new InsCartDto();
         item.setIitem(3L);
         item.setQuantity(20L);
@@ -61,8 +61,8 @@ public class CartIntegrationTest extends IntegrationTest {
         String jsonItem = om.writeValueAsString(item);
 
         MvcResult mr = mvc.perform(post("/api/cart")
-                .content(jsonItem)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(jsonItem)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -75,7 +75,7 @@ public class CartIntegrationTest extends IntegrationTest {
     @Test
     @Rollback(value = false)
     @DisplayName("Cart - 장바구니에 목록 보기")
-    public void getCart() throws Exception {
+    void getCart() throws Exception {
         MvcResult mr = mvc.perform(get("/api/cart"))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -89,7 +89,7 @@ public class CartIntegrationTest extends IntegrationTest {
     @Test
     @Rollback(value = false)
     @DisplayName("Cart - 장바구니 목록 삭제")
-    public void delCart() throws Exception {
+    void delCart() throws Exception {
         Long icart = 1L;
         MvcResult mr = mvc.perform(delete("/api/cart/{icart}", icart))
                 .andExpect(status().isOk())
@@ -102,23 +102,24 @@ public class CartIntegrationTest extends IntegrationTest {
 
     }
 
-//    @Test
-//    @Rollback(value = false)
-//    @DisplayName("Cart - 장바구니 목록 삭제")
-//    public void delCartAll() throws Exception {
-//        List<Long> icart = new ArrayList<>();
-//        icart.add(1L);
-//        Long icart = 1L;
-//        MvcResult mr = mvc.perform(delete("/api/cart")
-//                        .param("icart", String.valueOf(icart)))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andReturn();
-//
-//        String content = mr.getResponse().getContentAsString();
-//        om.readValue(content, Long.class);
-//        log.info("result : {}", content);
-//
-//    }
+    @Test
+    @Rollback(value = false)
+    @DisplayName("Cart - 체크된 장바구니 정보들 삭제")
+    void delCartAll() throws Exception {
+        List<Long> icart = new ArrayList<>();
+        icart.add(1L);
+        icart.add(2L);
+        Long testIcart = 1L;
+        MvcResult mr = mvc.perform(delete("/api/cart")
+                        .param("icart", String.valueOf(testIcart)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String content = mr.getResponse().getContentAsString();
+        om.readValue(content, Long.class);
+        log.info("result : {}", content);
+
+    }
 
 }

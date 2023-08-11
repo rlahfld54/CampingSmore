@@ -140,4 +140,8 @@
         FROM board_image
         WHERE iboardpic = #{iboardpic};
     </select>
+    <insert id="insCategory">
+        INSERT INTO board_category
+        SET name = #{name}
+    </insert>
 </mapper>

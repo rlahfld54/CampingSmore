@@ -245,6 +245,13 @@ class BoardMapperTest {
 
         Long result = mapper.delOnePic(dto);
         assertEquals(1L,result);
+    }
 
+    @Test
+    void insCategory() {
+        String name = "hi";
+        Long result = mapper.insCategory(name);
+
+        assertEquals(1L,result);
     }
 }
