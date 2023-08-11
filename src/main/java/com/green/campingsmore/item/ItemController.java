@@ -17,7 +17,7 @@ public class ItemController {
 
 
     @GetMapping("/category")
-    @Operation(summary = "아이템 카테고리"
+    @Operation(summary = "아이템 카테고리 리스트"
             , description = "" )
     public List<ItemSelCateVo> getCategory(){
         return SERVICE.selCategory();

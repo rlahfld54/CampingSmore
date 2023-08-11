@@ -44,7 +44,22 @@ class ItemControllerTest {
     private ItemService service;
 
     @Test
-    void getCategory() {
+    @DisplayName("Item - 아이템 카테고리 리스트")
+    void getCategory() throws Exception{
+/*        List<ItemSelCateVo> cateList = new ArrayList<>();
+        cateList.add(new ItemSelCateVo(11L,"축산물"));
+        cateList.add(new ItemSelCateVo(16L,"수산물"));
+        cateList.add(new ItemSelCateVo(13L,"소스/드레싱"));
+        cateList.add(new ItemSelCateVo(18L,"밀키트"));
+        cateList.add(new ItemSelCateVo(17L,"농산물"));
+
+        given(service.selCategory()).willReturn(cateList);
+
+        mvc.perform(get("/category"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(5)))
+                .andExpect(jsonPath(""))*/
+
 
     }
 
@@ -79,7 +94,7 @@ class ItemControllerTest {
                         .content(jsonParam)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("1"))
+                        .andExpect(content().string(String.valueOf(result)))
                         .andDo(print());
 
         verify(service).insItem(any());
@@ -126,6 +141,7 @@ class ItemControllerTest {
     @Test
     void getItemDetail() {
 
+
     }
 
     @Test
@@ -157,7 +173,7 @@ class ItemControllerTest {
                         .content(jsonDto)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("3"))
+                .andExpect(content().string(String.valueOf(result)))
                 .andDo(print());
 
         verify(service).insDetailPic(any());
