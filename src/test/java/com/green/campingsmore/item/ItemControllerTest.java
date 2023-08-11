@@ -144,7 +144,7 @@ class ItemControllerTest {
         picUrl.add("test3.jpg");
         dto.setPicUrl(picUrl);
 
-        int result = 1;
+        int result = picUrl.size();
 
         given(service.insDetailPic(dto)).willReturn(result);
 
@@ -157,10 +157,10 @@ class ItemControllerTest {
                         .content(jsonDto)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1"))
+                .andExpect(content().string("3"))
                 .andDo(print());
 
-        verify(service).insItem(any());
+        verify(service).insDetailPic(any());
 
 
 
