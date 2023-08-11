@@ -117,4 +117,9 @@ public class PayServiceImpl implements PayService {
     public ShippingListSelVo selOneAddress(SelUserAddressDto dto) {
         return MAPPER.selOneAddress(dto);
     }
+
+    @Override
+    public Long delAddress(Long iaddress) {
+        return MAPPER.delAddress(iaddress);
+    }
 }

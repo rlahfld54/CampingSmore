@@ -26,4 +26,6 @@ public interface PayMapper {
     SelUserAddressVo selUserAddress(Long iuser);
     List<ShippingListSelVo> selAddressList(Long iuser);
     ShippingListSelVo selOneAddress(SelUserAddressDto dto);
+    Long delAddress(Long iaddress);
+
 }
