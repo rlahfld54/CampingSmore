@@ -5,6 +5,7 @@ import com.green.campingsmore.MockMvcConfig;
 import com.green.campingsmore.community.comment.model.CommentDelDto;
 import com.green.campingsmore.community.comment.model.CommentEntity;
 import com.green.campingsmore.community.comment.model.CommentInsDto;
+import com.green.campingsmore.community.comment.model.CommentUpdDto;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.order.cart.CartController;
@@ -91,9 +92,32 @@ class CommentControllerTest {
     }
 
     @Test
-    void updComment() {
+    void updComment() throws Exception {
+        // 준비
+        CommentUpdDto dto = new CommentUpdDto();
+        dto.setIcomment(1L);
+        dto.setCtnt("Updated comment content");
 
+        CommentEntity entity = new CommentEntity();
+        entity.setIcomment(dto.getIcomment());
+        entity.setCtnt(dto.getCtnt());
+
+        given(service.updComment(any())).willReturn(1L);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 실행 및 검증
+        mvc.perform(put("/api/comment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"))
+                .andDo(print());
+
+        verify(service).updComment(any());
     }
+
+
 
     @Test
     void delComment() throws Exception {

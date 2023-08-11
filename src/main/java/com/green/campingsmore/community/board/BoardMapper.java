@@ -29,4 +29,5 @@ public interface BoardMapper {
     Long delOnePic(BoardPicDelDto dto); // 사진 한장 삭제
     Long delBoardPic(Long iboard);
     String selPicName(Long iboardPic);
+    Long insCategory(String name);
 }
