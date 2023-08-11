@@ -34,14 +34,12 @@ public class SecurityConfiguration {
                                     , "/index.html"
                                     , "/static/**"
 
-                                    ,"/sign-api/sign-in"
-                                    , "/sign-api/sign-up"
-                                    , "/sign-api/logout"
-                                    , "/sign-api/search-pw"
-                                    , "/sign-api/search-id"
-                                    , "/sign-api/exception"
-                                    , "/sign-api/otp"
-                                    , "/sign-api/otp-valid"
+                                    ,"/oauth/authorize" //로그인
+                                    , "/oauth/logout" // 로그아웃
+                                    , "/user" // 회원가입
+                                    , "/search/id" // 아이디 찾기
+                                    , "/search/pw" // 비밀번호 찾기
+                                    , "/exception"
                             ).permitAll()
                             .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/community/**/**").permitAll()// api/community/**/**

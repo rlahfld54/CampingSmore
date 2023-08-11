@@ -40,7 +40,7 @@ public class WishListController {
         return SERVICE.getWishlist(Math.toIntExact(FACADE.getLoginUserPk()));
     }
 
-    @GetMapping("/review-list")
+    @GetMapping("/reviewlist")
     @Operation(summary = "유저별로 리뷰 목록 불러오기",
             description = "Try it out -> Execute 눌러주세요 \n\n "
     )

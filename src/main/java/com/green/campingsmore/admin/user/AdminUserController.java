@@ -24,7 +24,7 @@ public class AdminUserController {
     private final SignService signService;
     private final AdminUserService SERVICE;
 
-    @PostMapping("/sign-in")
+    @PostMapping("/oauth/authorize")
     @Operation(summary = "관리자 로그인",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "id:  아이디 \n\n " +
