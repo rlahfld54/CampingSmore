@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -111,7 +110,7 @@ class SignControllerTest {
         given(service.signIn(userLogin,"127.0.0.1")).willReturn(result);
 
         mvc.perform(
-                        post("/sign-api/sign-in")
+                        post("/api/oauth/authorize")
                                 .content(user_info)
                                 .contentType("application/json")
                 )
@@ -122,7 +121,7 @@ class SignControllerTest {
     }
 
     @Test // 로그아웃
-    void logout() {
+    void logout() throws Exception {
         String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4";
         Long iuser = FACADE.getLoginUserPk();
         String ip = request.getRemoteAddr();
@@ -142,6 +141,12 @@ class SignControllerTest {
                 - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         redisService.setValuesWithTimeout(accessToken, "logout", expiration);
 
+        mvc.perform(
+                post("/api/oauth/logout")
+                        .contentType("application/json")
+        )
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test // 회원가입
@@ -171,7 +176,7 @@ class SignControllerTest {
         given(service.signUp(signUpDto)).willReturn(result);
 
         mvc.perform(
-                post("/sign-api/sign-up")
+                post("/api/user")
                         .content(signup)
                         .contentType("application/json")
         )
@@ -190,9 +195,14 @@ class SignControllerTest {
 //        String result = objectMapper.writeValueAsString(userRefreshToken);
 //        System.out.println("userRefreshToken : " + userRefreshToken);
 //
+//        SignInResultDto signInResultDto = SignInResultDto.builder()
+//                .refreshToken(userRefreshToken.getRefreshToken())
+//                .build();
+//
+//        given(service.refreshToken(request,userRefreshToken.getRefreshToken())).willReturn(signInResultDto);
 //
 //        mvc.perform(
-//                post("/sign-api/refresh-token")
+//                post("/api/oauth/token")
 //                        .content(result)
 //                        .contentType("application/json")
 //                )
@@ -212,7 +222,7 @@ class SignControllerTest {
         given(service.searchID(name, phone, birth)).willReturn("rlahfld54");
 
         mvc.perform(
-                get("/sign-api/search-id")
+                get("/api/search/id")
                         .param("name",name)
                         .param("phone",phone)
                         .param("birth",birth)
@@ -228,7 +238,7 @@ class SignControllerTest {
 
         given(service.deleteUser(iuser)).willReturn(1);
 
-        mvc.perform(delete("/sign-api/delete-user").param("iuser", String.valueOf(iuser)))
+        mvc.perform(delete("/api/user/delete").param("iuser", String.valueOf(iuser)))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -236,7 +246,18 @@ class SignControllerTest {
     }
 
     @Test
-    void getmyInfo(){
+    void getmyInfo() throws Exception {
+        UserInfo user = new UserInfo();
+        user.setIuser(7);
+        user.setUser_id("rlahfld54");
+        user.setName("황주은");
+        given(service.getmyInfo()).willReturn(user);
+
+        mvc.perform(
+                get("/api/user/me")
+        )
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
@@ -258,7 +279,7 @@ class SignControllerTest {
         System.out.println("result : " + result);
 
         mvc.perform(
-                post("/sign-api/update-info")
+                post("/api/user/update-profile")
                         .content(result)
                         .contentType("application/json")
                 )
@@ -276,7 +297,7 @@ class SignControllerTest {
         given(service.searchPW(id,name,email)).willReturn(1);
 
         mvc.perform(
-                        get("/sign-api/search-pw")
+                        get("/api/search/pw")
                                 .param("id",id)
                                 .param("name",name)
                                 .param("email",email)
