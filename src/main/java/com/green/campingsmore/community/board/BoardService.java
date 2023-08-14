@@ -157,7 +157,7 @@ public class BoardService {
 
             BoardPicEntity picEntity = new BoardPicEntity();
             picEntity.setIboard(entity.getIboard());
-            picEntity.setPic(fileDir + centerPath + "/" + saveName);
+            picEntity.setPic(centerPath + "/" + saveName);
             mapper.insBoardOnePic(picEntity);
 
             return centerPath + "/" + saveName;
