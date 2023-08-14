@@ -223,7 +223,6 @@ public class BoardService {
     public List<BoardMyVo> selMyBoard(BoardMyDto dto) {
         log.info("유저 PK  : {}", FACADE.getLoginUserPk());
         return mapper.selMyBoard(dto);
-
     }
 
     public Long delBoard(BoardDelDto dto) {

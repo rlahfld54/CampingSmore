@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class BoardListVo {
+    private Long iboard;
     private Long icategory;
     private String name;
     private String title;
