@@ -124,10 +124,10 @@ public class BoardService {
                 }
                 BoardPicEntity picEntity = new BoardPicEntity();
                 picEntity.setIboard(entity.getIboard());
-                picEntity.setPic("file:///D:/" + fileDir + centerPath + "/" + saveName);
+                picEntity.setPic(fileDir + centerPath + "/" + saveName);
                 picEntities.add(picEntity);
 
-                fileUrls.add("file:///D:/" + fileDir + centerPath + "/" + saveName);
+                fileUrls.add(fileDir + centerPath + "/" + saveName);
             }
             mapper.insBoardPic(picEntities);
         }
@@ -157,10 +157,10 @@ public class BoardService {
 
             BoardPicEntity picEntity = new BoardPicEntity();
             picEntity.setIboard(entity.getIboard());
-            picEntity.setPic("file:///D:/" + fileDir + centerPath + "/" + saveName);
+            picEntity.setPic(fileDir + centerPath + "/" + saveName);
             mapper.insBoardOnePic(picEntity);
 
-            return "file:///D:/" + fileDir + centerPath + "/" + saveName;
+            return fileDir + centerPath + "/" + saveName;
         }
         return null;
     }
