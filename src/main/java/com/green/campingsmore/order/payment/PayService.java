@@ -14,11 +14,10 @@ public interface PayService {
     Long delPaymentDetail(Long iorder, Long iitem);
     SelDetailedItemPaymentInfoVo selDetailedItemPaymentInfo(Long iorder, Long iitem);
 
-
-
     //주소 관련
     Long insAddress(ShippingInsDto1 dto);
     SelUserAddressVo selUserAddress(Long iuser);
     List<ShippingListSelVo> selAddressList(Long iuser);
     ShippingListSelVo selOneAddress(SelUserAddressDto dto);
+    Long delAddress(Long iaddress);
 }

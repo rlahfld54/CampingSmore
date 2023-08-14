@@ -374,9 +374,9 @@ class PayControllerTest {
         //given
         List<ShippingListSelVo> itemList = new ArrayList<>();
         ShippingListSelVo item1 = new ShippingListSelVo
-                ("주소주소주소1", "상세주소주소1", "수령인1", "01022225555");
+                (1L,"주소주소주소1", "상세주소주소1", "수령인1", "01022225555");
         ShippingListSelVo item2 = new ShippingListSelVo
-                ("주소주소주소2", "상세주소주소2", "수령인2", "01055552222");
+                (2L,"주소주소주소2", "상세주소주소2", "수령인2", "01055552222");
         itemList.add(item1);
         itemList.add(item2);
 
@@ -387,15 +387,18 @@ class PayControllerTest {
 
         ra.andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(itemList.size())))
+                .andExpect(jsonPath("$[*].iaddress").exists())
                 .andExpect(jsonPath("$[*].address").exists())
                 .andExpect(jsonPath("$[*].addressDetail").exists())
                 .andExpect(jsonPath("$[*].name").exists())
                 .andExpect(jsonPath("$[*].phone").exists())
+                .andExpect(jsonPath("$[0].iaddress").value(1L))
                 .andExpect(jsonPath("$[0].address").value("주소주소주소1"))
                 .andExpect(jsonPath("$[0].addressDetail").value("상세주소주소1"))
                 .andExpect(jsonPath("$[0].name").value("수령인1"))
                 .andExpect(jsonPath("$[0].phone").value("01022225555"))
 
+                .andExpect(jsonPath("$[1].iaddress").value(2L))
                 .andExpect(jsonPath("$[1].address").value("주소주소주소2"))
                 .andExpect(jsonPath("$[1].addressDetail").value("상세주소주소2"))
                 .andExpect(jsonPath("$[1].name").value("수령인2"))
@@ -411,7 +414,7 @@ class PayControllerTest {
     void selOneAddress() throws Exception {
         //given
         ShippingListSelVo item = new ShippingListSelVo
-                ("주소주소주소1", "상세주소주소1", "수령인1", "01022225555");
+                (1L,"주소주소주소1", "상세주소주소1", "수령인1", "01022225555");
 
         given(service.selOneAddress(any())).willReturn(item);
 
@@ -419,6 +422,8 @@ class PayControllerTest {
         ResultActions ra = mvc.perform(get("/api/payment/addressList/{iaddress}", 1L));
 
         ra.andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.iaddress").value(1L))
                 .andExpect(jsonPath("$.address").value("주소주소주소1"))
                 .andExpect(jsonPath("$.addressDetail").value("상세주소주소1"))
                 .andExpect(jsonPath("$.name").value("수령인1"))

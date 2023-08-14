@@ -263,4 +263,19 @@ public class PayIntegrationTest extends IntegrationTest {
         om.readValue(content, ShippingListSelVo.class);
         log.info("result : {}", content);
     }
+
+    @Test
+    @Rollback(value = false)
+    @DisplayName("Payment - 등록된 배송지 제거")
+    void delAddress() throws Exception {
+        Long iaddress = 1L;
+        MvcResult mr = mvc.perform(delete("/api/payment/address/{iaddress}", iaddress))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String content = mr.getResponse().getContentAsString();
+        om.readValue(content, Long.class);
+        log.info("result : {}", content);
+    }
 }
