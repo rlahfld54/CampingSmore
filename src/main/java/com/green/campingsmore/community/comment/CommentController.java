@@ -26,6 +26,7 @@ public class CommentController {
     public Long insComment(@RequestBody CommentInsDto dto) {
         return service.insComment(dto);
     }
+
     @PutMapping
     @Operation(summary = "댓글 수정")
     public Long updComment(@RequestBody CommentUpdDto dto){
@@ -34,6 +35,7 @@ public class CommentController {
         entity.setCtnt(dto.getCtnt());
         return service.updComment(entity);
     }
+
     @PutMapping("/comment")
     @Operation(summary = "댓글 삭제")
     public Long delComment(@RequestBody CommentDelDto dto){

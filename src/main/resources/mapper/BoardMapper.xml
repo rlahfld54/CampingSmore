@@ -53,7 +53,7 @@
         where iuser=#{iuser} and iboard=#{iboard}
     </update>
     <select id="selBoardList">
-        select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
+        select A.iboard,A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
         from board A
         inner join user B
         on A.iuser = B.iuser
@@ -74,7 +74,7 @@
         ) A
     </select>
     <select id="categoryBoardList">
-        select A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
+        select A.iboard,A.icategory,B.name,A.title,A.ctnt,A.created_at createdat,A.board_view boardview
         from board A
         inner join user B
         on A.iuser = B.iuser
@@ -140,4 +140,8 @@
         FROM board_image
         WHERE iboardpic = #{iboardpic};
     </select>
+    <insert id="insCategory">
+        INSERT INTO board_category
+        SET name = #{name}
+    </insert>
 </mapper>

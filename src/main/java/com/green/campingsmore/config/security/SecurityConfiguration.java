@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,16 +32,14 @@ public class SecurityConfiguration {
                                     , "/index.html"
                                     , "/static/**"
 
-                                    ,"/sign-api/sign-in"
-                                    , "/sign-api/sign-up"
-                                    , "/sign-api/logout"
-                                    , "/sign-api/search-pw"
-                                    , "/sign-api/search-id"
-                                    , "/sign-api/exception"
-                                    , "/sign-api/otp"
-                                    , "/sign-api/otp-valid"
+                                    ,"/api/oauth/authorize" //로그인
+                                    , "/api/oauth/logout" // 로그아웃
+                                    , "/api/user" // 회원가입
+                                    , "/api/search/id" // 아이디 찾기
+                                    , "/api/search/pw" // 비밀번호 찾기
+                                    , "/api/exception"
                             ).permitAll()
-                            .requestMatchers(HttpMethod.GET, "/sign-api/refresh-token").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/oauth/token").permitAll() // 리프레쉬 토큰...
                             .requestMatchers(HttpMethod.GET, "/api/community/**/**").permitAll()// api/community/**/**
                             .requestMatchers(HttpMethod.GET, "/api/item/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/review/**").permitAll() // review/{item}/detail

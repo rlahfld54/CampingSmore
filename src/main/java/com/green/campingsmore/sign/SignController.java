@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "회원")
-@RequestMapping("/sign-api")
+@RequestMapping("/api")
 public class SignController {
     private final SignService SERVICE;
 
     //ApiParam은 문서 자동화를 위한 Swagger에서 쓰이는 어노테이션이고
     //RequestParam은 http 로부터 요청 온 정보를 받아오기 위한 스프링 어노테이션이다.
     //@AuthenticationPrincipal을 통해 로그인한 사용자 정보,PK를 받아 사용할 수 있다.
-    @PostMapping("/sign-in")
+    @PostMapping("/oauth/authorize")
     @Operation(summary = "로그인",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "id:  아이디 \n\n " +
@@ -42,7 +42,7 @@ public class SignController {
         return SERVICE.signIn(userLogin,ip);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/oauth/logout")
     @Operation(summary = "로그아웃",
             description = "Try it out -> Execute 눌러주세요 \n\n "
     )
@@ -62,7 +62,7 @@ public class SignController {
                 .build();
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/user")
     @Operation(summary = "회원가입",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "uid: 회원가입 아이디 \n\n " +
@@ -82,7 +82,7 @@ public class SignController {
         return dto;
     }
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/oauth/token")
     @Operation(summary = "리프레쉬 토큰",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "refreshToken :  리프레쉬 토큰 \n\n "
@@ -93,7 +93,7 @@ public class SignController {
         return dto == null ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null) : ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/search-id")
+    @GetMapping("/search/id")
     @Operation(summary = "아이디 찾기",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "user_id :  아이디 찾기 \n\n "
@@ -105,7 +105,7 @@ public class SignController {
         return SERVICE.searchID(name, phone, birth);
     }
 
-    @DeleteMapping("/delete-user")
+    @DeleteMapping("/user/delete")
     @Operation(summary = "회원탈퇴",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                     "iuser:  iuser PK \n\n "
@@ -115,7 +115,7 @@ public class SignController {
     }
 
 
-    @GetMapping("/myinfo")
+    @GetMapping("/user/me")
     @Operation(summary = "로그인 했을때 , 본인 회원 정보 출력",
             description = "Try it out -> Execute 눌러주세요 \n\n ")
     public UserInfo getmyInfo(){
@@ -123,7 +123,7 @@ public class SignController {
     }
 
 
-    @PostMapping("/update-info")
+    @PostMapping("/user/update-profile")
     @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
@@ -146,7 +146,7 @@ public class SignController {
         return SERVICE.updateUserInfo(updateUserInfoDto);
     }
 
-    @GetMapping("/search-pw")
+    @GetMapping("/search/pw")
     @Operation(summary = "비밀번호 찾기 - 이메일로 임시 비밀번호 제공",
             description = "Try it out -> Execute 눌러주세요 \n\n " +
                         "user_id :  아이디 \n\n "+

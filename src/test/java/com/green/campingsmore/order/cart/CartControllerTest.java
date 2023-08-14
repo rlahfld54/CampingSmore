@@ -5,6 +5,7 @@ import com.green.campingsmore.MockMvcConfig;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.order.cart.model.InsCartDto;
 import com.green.campingsmore.order.cart.model.SelCartVo;
+import com.green.campingsmore.order.payment.PayController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+@MockMvcConfig
+@WebMvcTest(CartController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class CartControllerTest {
 
     @Autowired

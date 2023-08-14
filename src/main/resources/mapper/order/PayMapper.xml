@@ -110,13 +110,13 @@
     </select>
 
     <select id="selAddressList">
-        SELECT address, address_detail addressDetail, name, phone
+        SELECT iaddress, address, address_detail addressDetail, name, phone
         FROM shipping_address
         WHERE iuser = #{iuser}
     </select>
 
     <select id="selOneAddress">
-        SELECT address, address_detail addressDetail, name, phone
+        SELECT iaddress, address, address_detail addressDetail, name, phone
         FROM shipping_address
         WHERE iuser = #{iuser}
         AND iaddress = #{iaddress}
@@ -134,4 +134,9 @@
         iorder = #{iorder}
         AND del_yn = 0
     </update>
+    
+    <delete id="delAddress">
+        DELETE FROM shipping_address
+        WHERE iaddress = #{iaddress}
+    </delete>
 </mapper>

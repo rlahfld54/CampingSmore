@@ -214,4 +214,14 @@ public class PayController {
         dto1.setIaddress(iaddress);
         return SERVICE.selOneAddress(dto1);
     }
+
+    @DeleteMapping("/address/{iaddress}")
+    @Operation(summary = "등록된 배송지 제거",
+    description = "<h3> iaddress : 등록한 배송지PK\n" +
+            "<h3>-----------------------------------\n" +
+            "Code 1 : 삭제 성공\n"
+    )
+    public Long delAddress(@PathVariable Long iaddress) {
+        return SERVICE.delAddress(iaddress);
+    }
 }

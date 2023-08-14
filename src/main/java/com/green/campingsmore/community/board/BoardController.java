@@ -127,4 +127,11 @@ public class BoardController {
     public Long delOnePic(@RequestBody BoardPicDelDto dto){
         return service.delOnePic(dto);
     }
+
+    @PostMapping("/insCategory")
+    @Operation
+    public Long insCategory(String name){
+        return service.insCategory(name);
+    }
+
 }

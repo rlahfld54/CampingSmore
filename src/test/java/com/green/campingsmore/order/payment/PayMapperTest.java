@@ -154,7 +154,7 @@ class PayMapperTest {
         Long delPaymentDetail = mapper.delPaymentDetail(iuser, iitem);
 
         assertEquals(1L, delPaymentDetail);
-        log.info("Cart delete 성공여부 : {} (1 = 성공, 0 = 실패)", delPaymentDetail);
+        log.info("delete 성공여부 : {} (1 = 성공, 0 = 실패)", delPaymentDetail);
     }
 
     @Test
@@ -176,5 +176,15 @@ class PayMapperTest {
         assertEquals(null,item.getAddressDetail());
         assertEquals(3000L,item.getShippingPrice());
         assertEquals("맛있는고기",item.getShippingMemo());
+    }
+
+    @Test
+    @DisplayName("PayMapper - 배송지 삭제")
+    void delAddress() {
+        Long iaddress = 1L;
+        Long result = mapper.delAddress(iaddress);
+
+        assertEquals(1L, result);
+        log.info("배송지 삭제 성공여부 : {} (1 = 성공, 0 = 실패)", result);
     }
 }
