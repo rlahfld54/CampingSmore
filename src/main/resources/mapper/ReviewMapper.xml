@@ -13,13 +13,20 @@
         review_ctnt = #{reviewCtnt},
         star_rating = #{starRating}
     </insert>
-
+<!-- 리뷰 작성전 확인 -->
     <select id="selReviewOrder" resultType="int">
         SELECT A.del_yn
         FROM `order` A
         INNER JOIN order_item B
         ON A.iorder = B.iorder
         WHERE A.iorder = #{iorder} AND A.iuser = #{iuser} AND B.iitem = #{iitem}
+    </select>
+
+    <select id="selReviewCheck" resultType="int">
+        SELECT IfNULL(max(del_yn),0) del_yn
+        FROM review
+        WHERE iuser = #{iuser} AND iorder = #{iorder} AND iitem = #{iitem}
+
     </select>
 
 <!--  리스트 개수  -->
@@ -29,6 +36,7 @@
         WHERE iitem = iitem
         AND del_yn = 1;
     </select>
+
 
 <!--  리뷰 리스트  -->
     <select id="selReview" resultType="ReviewSelVo">

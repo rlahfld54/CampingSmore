@@ -26,6 +26,7 @@ public class ItemController {
     @PostMapping("/itempost")
     @Operation(summary = "아이템 추가 - 관리자페이지"
             , description = "" +
+            "\"iitemCategory\": [-] 아이템 카테고리 PK,<br>" +
             "\"name\": [-] 아이템 제목,<br>" +
             "\"pic\": [-]  아이템 썸네일 pic url,<br>" +
             "\"price\": [-] 아이템 가격,<br>" +
@@ -56,6 +57,20 @@ public class ItemController {
         dto.setSort(sort);
         return SERVICE.searchItem(dto);
     }
+
+    @PutMapping
+    @Operation(summary = "아이템 수정 - 관리자 페이지"
+            , description = "" +
+            "\"iitem\": [-] 아이템 PK,<br>" +
+            "\"iitemCategory\": [-] 아이템 카테고리 PK,<br>" +
+            "\"name\": [-] 아이템 제목,<br>" +
+            "\"pic\": [-]  아이템 썸네일 pic url,<br>" +
+            "\"price\": [-] 아이템 가격,<br>" +
+            "\"picUrl\": [-] 사진 이미지 url<br>")
+    public int putItem(@RequestBody ItemUpdDto dto){
+        return SERVICE.updItem(dto);
+    }
+
     
     @DeleteMapping("/{iitem}")
     @Operation(summary = "아이템 삭제 - 관리자 페이지"
