@@ -16,10 +16,6 @@
     <properties>
         <java.version>17</java.version>
     </properties>
-    dependencies {
-    testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
-    }
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
