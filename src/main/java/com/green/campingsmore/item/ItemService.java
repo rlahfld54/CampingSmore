@@ -40,21 +40,29 @@ public class ItemService {
         entity.setName(dto.getName());
         entity.setPic(dto.getPic());
         entity.setPrice(dto.getPrice());
+        try {
+            Long result = MAPPER.insItem(entity);
 
-        Long result = MAPPER.insItem(entity);
-        if( result == 1L) {
+            if( result == 1L) {
+                try {
+                    for (int i = 0; i < dto.getPicUrl().size(); i++) {
+                        ItemInsDetailDto picDto = new ItemInsDetailDto();
+                        picDto.setIitem(entity.getIitem());
 
-            for (int i = 0; i < dto.getPicUrl().size(); i++) {
-                ItemInsDetailDto picDto = new ItemInsDetailDto();
-                picDto.setIitem(entity.getIitem());
-
-                picDto.setPic(dto.getPicUrl().get(i).toString());
-
-                MAPPER.insDetailPic(picDto);
+                        picDto.setPic(dto.getPicUrl().get(i).toString());
+                        MAPPER.insDetailPic(picDto);
+                    }
+                } catch (Exception e){
+                    log.info("아이템 사진 추가 실패");
+                    return 0L;
+                }
+                return entity.getIitem();
             }
-            return entity.getIitem();
-        }
 
+        } catch (Exception e1){
+            log.info("아이템 추가 실패");
+            return 0L;
+        }
         return 0L;
     }
 

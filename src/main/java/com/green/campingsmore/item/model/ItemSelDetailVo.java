@@ -1,8 +1,7 @@
 package com.green.campingsmore.item.model;
-
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -11,6 +10,6 @@ public class ItemSelDetailVo {
     private String name;
     private String pic;
     private int price;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     private List<String> picList;
 }

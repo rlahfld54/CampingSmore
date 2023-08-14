@@ -1,13 +1,12 @@
 package com.green.campingsmore.review.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Getter
+@AllArgsConstructor
 public class ReviewRes {
     private Long iitem;
     private int startIdx;

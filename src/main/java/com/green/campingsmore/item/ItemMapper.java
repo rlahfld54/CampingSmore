@@ -13,7 +13,6 @@ public interface ItemMapper {
     int insCate(String categoryName);
     //카테고리 보기
     List<ItemSelCateVo> selCategory();
-//    String selCate(String categoryName);
     Long selIcate(String categoryName);
 
     // 아이템 추가
