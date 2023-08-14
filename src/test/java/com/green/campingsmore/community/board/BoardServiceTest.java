@@ -10,6 +10,7 @@ import com.green.campingsmore.config.security.model.MyUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -341,7 +343,32 @@ class BoardServiceTest {
 //    }
 
     @Test
-    void delOnePic() {
+    public void testDelOnePic() throws Exception {
+        // Given
+        BoardPicDelDto dto = new BoardPicDelDto();
+        dto.setIboard(1L);
+        dto.setIboardpic(1L);
+
+        File mockFile = mock(File.class);
+        when(mockFile.exists()).thenReturn(true);
+        when(mockFile.listFiles()).thenReturn(new File[] {mockFile});
+        when(mockFile.getName()).thenReturn("test.jpg");
+
+        when(mapper.selPicName(eq(dto.getIboardpic()))).thenReturn("test.jpg");
+        when(mapper.delOnePic(eq(dto))).thenReturn(1L);
+
+//
+//        PowerMockito.mockStatic(FileUtils.class); // FileUtils 클래스를 모의
+//        PowerMockito.when(FileUtils.getAbsolutePath(anyString())).thenReturn("absolutePath");
+//        PowerMockito.whenNew(File.class).withAnyArguments().thenReturn(mockFile);
+
+        // When
+        Long result = service.delOnePic(dto);
+
+        // Then
+        assertEquals(1L, result);
+        verify(mockFile).delete();
+        verify(mockFile).listFiles();
     }
 
     @Test
