@@ -321,9 +321,10 @@ public class BoardService {
         }
 
         CommentRes commentRes = commentService.selComment(dto1);
-        BoardCmtDeVo result = BoardCmtDeVo.builder().iuser(FACADE.getLoginUserPk()).boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
+        BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
                 .build();
-        return result;}
+        return result;
+   }
 
         catch (Exception e) {
             // 예외 처리 로직
