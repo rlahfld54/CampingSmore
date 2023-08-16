@@ -14,8 +14,8 @@ springboot:
 spring:
   servlet:
     multipart:
-      max-file-size: 3MB
-      max-request-size: 12MB
+      max-file-size: 50MB
+      max-request-size: 100MB
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     jdbc-url: jdbc:mariadb://192.168.0.144:3306/team_e
