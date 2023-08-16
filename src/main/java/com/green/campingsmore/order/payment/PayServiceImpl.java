@@ -24,7 +24,9 @@ public class PayServiceImpl implements PayService {
         try {
             orderDto.setIuser(dto.getIuser());
             orderDto.setAddress(dto.getAddress());
+            orderDto.setAddressDetail(dto.getAddressDetail());
             orderDto.setShippingPrice(dto.getShippingPrice());
+            orderDto.setShippingMemo(dto.getShippingMemo());
             orderDto.setTotalPrice(dto.getTotalPrice());
             MAPPER.insPayInfo(orderDto);
 
