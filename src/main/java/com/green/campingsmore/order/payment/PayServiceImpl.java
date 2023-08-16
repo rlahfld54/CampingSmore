@@ -24,7 +24,9 @@ public class PayServiceImpl implements PayService {
         try {
             orderDto.setIuser(dto.getIuser());
             orderDto.setAddress(dto.getAddress());
+            orderDto.setAddressDetail(dto.getAddressDetail());
             orderDto.setShippingPrice(dto.getShippingPrice());
+            orderDto.setShippingMemo(dto.getShippingMemo());
             orderDto.setTotalPrice(dto.getTotalPrice());
             MAPPER.insPayInfo(orderDto);
 
@@ -81,16 +83,17 @@ public class PayServiceImpl implements PayService {
 
         try {
             Long result1 = MAPPER.delPaymentDetail(iorder, iitem);
-            List<Long> result2 = MAPPER.paymentDetailNullCheck(iorder);
+            Long result2 = MAPPER.paymentDetailNullCheck(iorder, iitem);
 
-            if (result1 == 1L && result2 == null) {
+            if (result1 == 1L && result2 == 0L) {
                 MAPPER.delOrder(iorder);
-                return 1L;
+                return 2L;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return 0L;
         }
-        return 0L;
+        return 1L;
     }
 
     @Override
