@@ -80,7 +80,7 @@ public class SignService {
         log.info("[getSignInResult] UserEntity : {}",user);
         log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
         if(!PW_ENCODER.matches(password, user.getUpw())) {
-            throw new RuntimeException("비밀번호 다름");
+            throw new RuntimeException("비밀번호 다름"); // return문 대신에 throw 예욍처리해도 된다.
         }
         log.info("[getSignInResult] 패스워드 일치");
 

@@ -11,6 +11,7 @@ import com.green.campingsmore.config.security.redis.model.RedisJwtVo;
 import com.green.campingsmore.sign.model.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -70,20 +71,20 @@ class SignControllerTest {
     private UserDetails createUserDetails() {
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
-        //roles.add("ROLE_ADMIN");
+        roles.add("ROLE_ADMIN");
         Long IUSER = 7L; //  "rlahfld54" , iuser : 7
 
-        UserDetails userDetails = MyUserDetails.builder()
+        return MyUserDetails.builder()
                 .iuser(IUSER)
                 .uid("rlahfld54")
                 .upw("0000")
                 .roles(roles)
                 .build();
-        return userDetails;
     }
 
 
-    @Test // 로그인
+    @Test
+    @DisplayName("SignController - 로그인")
     void signIn() throws Exception {
         UserLogin userLogin = new UserLogin();
         userLogin.setUid("rlahfld54");
@@ -120,7 +121,8 @@ class SignControllerTest {
         verify(service).signIn(userLogin,"127.0.0.1");
     }
 
-    @Test // 로그아웃
+    @Test
+    @DisplayName("SignController - 로그아웃")
     void logout() throws Exception {
         String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4";
         Long iuser = FACADE.getLoginUserPk();
@@ -149,7 +151,8 @@ class SignControllerTest {
                 .andDo(print());
     }
 
-    @Test // 회원가입
+    @Test
+    @DisplayName("SignController - 회원가입")
     void signUp() throws Exception {
         SignUpDto signUpDto = SignUpDto.builder()
                 .uid("rlahfld54")
@@ -186,7 +189,8 @@ class SignControllerTest {
         verify(service).signUp(signUpDto);
     }
 
-//    @Test // 리프레쉬 토큰...일단 로그인을 한 생태로 해야하는데 401 에러..
+//    @Test // 리프레쉬 토큰...일단 로그인을 한 생태로 해야하는데 401 에러
+//    @DisplayName("SignController - 리프레쉬 토큰 요청")
 //    void refreshToken() throws Exception{
 //        UserRefreshToken userRefreshToken = new UserRefreshToken();
 //        userRefreshToken.setRefreshToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MTYzOTUwMywiZXhwIjoxNjkyOTM1NTAzfQ.ynFAAxFl-78mFCto5afzqmLQqmzRAaQ7bJgkECfAit4");
@@ -214,6 +218,7 @@ class SignControllerTest {
 //    }
 
     @Test
+    @DisplayName("SignController - 아이디 찾기")
     void searchID() throws Exception {
         String name = "황주은";
         String phone = "01025521549";
@@ -233,6 +238,7 @@ class SignControllerTest {
     }
 
     @Test
+    @DisplayName("SignController - 본인 회원탈퇴")
     void deleteUser() throws Exception {
         int iuser = 7;
 
@@ -246,6 +252,7 @@ class SignControllerTest {
     }
 
     @Test
+    @DisplayName("SignController - 본인 회원정보 조회")
     void getmyInfo() throws Exception {
         UserInfo user = new UserInfo();
         user.setIuser(7);
@@ -261,6 +268,7 @@ class SignControllerTest {
     }
 
     @Test
+    @DisplayName("SignController - 회원정보 수정")
     void updateUserInfo() throws Exception{
         UpdateUserInfoDto updateUserInfoDto = UpdateUserInfoDto.builder()
                 .name("황주은")
@@ -288,6 +296,7 @@ class SignControllerTest {
     }
 
     @Test
+    @DisplayName("SignController - 비밀번호 찾기")
     void searchPW() throws Exception {
         String id = "rlahfld54";
         String name = "황주은";
