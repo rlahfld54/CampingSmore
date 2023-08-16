@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.green.campingsmore.MockMvcConfig;
 import com.green.campingsmore.item.model.*;
+import com.green.campingsmore.review.ReviewService;
+import com.green.campingsmore.review.model.ReviewPageDto;
+import com.green.campingsmore.review.model.ReviewRes;
+import com.green.campingsmore.review.model.ReviewSelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +48,33 @@ class ItemControllerTest {
     @MockBean
     private ItemService service;
 
+    @MockBean
+    private ReviewService reviewService;
+
     @Test
-    void getCategory() {
+    @DisplayName("Item - 아이템 카테고리 리스트")
+    void getCategory() throws Exception{
+        List<ItemSelCateVo> cateList = new ArrayList<>();
+        cateList.add(new ItemSelCateVo(11L,"축산물"));
+        cateList.add(new ItemSelCateVo(16L,"수산물"));
+        cateList.add(new ItemSelCateVo(13L,"소스/드레싱"));
+        cateList.add(new ItemSelCateVo(18L,"밀키트"));
+        cateList.add(new ItemSelCateVo(17L,"농산물"));
+
+        given(service.selCategory()).willReturn(cateList);
+
+        mvc.perform(get("/api/item/category"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(5)))
+                .andExpect(jsonPath("$[*].iitemCategory").exists())
+                .andExpect(jsonPath("$[*].name").exists())
+
+                .andExpect(jsonPath("$[*].iitemCategory").isNotEmpty())
+                .andExpect(jsonPath("$[*].name").isNotEmpty())
+                .andDo(print());
+
+
+        verify(service).selCategory();
 
     }
 
@@ -70,7 +100,6 @@ class ItemControllerTest {
         item.setPicUrl(picUrl1);
 
 
-
         ObjectMapper om = new ObjectMapper();
         String jsonParam = om.writeValueAsString(item);
 
@@ -79,7 +108,7 @@ class ItemControllerTest {
                         .content(jsonParam)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("1"))
+                        .andExpect(content().string(String.valueOf(result)))
                         .andDo(print());
 
         verify(service).insItem(any());
@@ -93,7 +122,6 @@ class ItemControllerTest {
     @Test
     void getSearchItem() {
 
-/*
         Long cate = 11L;
         String text = "고기";
         int page = 1;
@@ -106,11 +134,12 @@ class ItemControllerTest {
         dto.setRow(row);
         dto.setIitemCategory(cate);
         dto.setSort(sort);
-*/
+
+        ItemSelDetailRes res = ItemSelDetailRes.builder()
+                .build();
 
 
-
-//        given(service.searchItem(dto).willReturn();
+        given(service.searchItem(any())).willReturn(res);
 
 
 
@@ -119,17 +148,97 @@ class ItemControllerTest {
     }
 
     @Test
-    void delItem() {
+    @DisplayName("Item - 아이템 삭제 처리")
+    void delItem() throws Exception{
+        Long iitem = 8L;
+
+        int result = 1;
+
+        given(service.delItem(iitem)).willReturn(result);
+
+        mvc.perform(delete("/api/item/{iitem}",iitem))
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(result)))
+                .andDo(print());
+
+        verify(service).delItem(any());
+
 
     }
 
     @Test
-    void getItemDetail() {
+    @DisplayName("Item - 아이템 상세페이지")
+    void getItemDetail() throws Exception{
 
+        ItemSelDetailDto dto = new ItemSelDetailDto();
+        dto.setIitem(1L);
+        dto.setPage(1);
+        dto.setRow(1);
+
+
+        //item
+        List<String> picList = new ArrayList<>();
+        picList.add("test1.jpg");
+        picList.add("test2.jpg");
+        picList.add("test3.jpg");
+
+        ItemSelDetailVo itemVo = new ItemSelDetailVo();
+        itemVo.setIitem(1L);
+        itemVo.setName("상품명");
+        itemVo.setPic("main.jpg");
+        itemVo.setPrice(16500);
+        itemVo.setCreatedAt(LocalDate.parse("2023-07-25"));
+        itemVo.setPicList(picList);
+
+        //
+        List<ReviewSelVo> reVo = new ArrayList<>();
+        reVo.add(new ReviewSelVo(1L,"글쓴이","리뷰내용",1,10));
+        reVo.add(new ReviewSelVo(2L,"글쓴이","리뷰내용",2,20));
+
+        ReviewRes res = ReviewRes.builder()
+                .iitem(dto.getIitem())
+                .maxPage(3)
+                .page(dto.getPage())
+                .row(dto.getRow())
+                .startIdx((dto.getPage() - 1) * dto.getRow())
+                .isMore(3 > dto.getPage() ? 1 : 0)
+                .list(reVo)
+                .build();
+
+        //
+        ItemDetailReviewVo vo = ItemDetailReviewVo.builder()
+                .item(itemVo)
+                .review(res)
+                .build();
+
+        given(service.selDetail(any())).willReturn(vo);
+
+        mvc.perform(get("/api/item/detail/{iitem}",dto.getIitem())
+                        .param("page", "1")
+                        .param("row","15"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.item").exists())
+                .andExpect(jsonPath("$.item.iitem").value(1))
+                .andExpect(jsonPath("$.item.name").value("상품명"))
+                .andExpect(jsonPath("$.item.pic").value("main.jpg"))
+                .andExpect(jsonPath("$.item.price").value(16500))
+                .andExpect(jsonPath("$.item.createdAt").value("2023-07-25"))
+                .andExpect(jsonPath("$.item.picList",hasSize(3)))
+
+                .andExpect(jsonPath("$.review").exists())
+                .andExpect(jsonPath("$.review.iitem").exists())
+                .andExpect(jsonPath("$.review.startIdx").exists())
+                .andExpect(jsonPath("$.review.maxPage").exists())
+                .andExpect(jsonPath("$.review.isMore").exists())
+                .andExpect(jsonPath("$.review.page").exists())
+                .andExpect(jsonPath("$.review.row").exists())
+                .andExpect(jsonPath("$.review.list",hasSize(2)))
+                .andDo(print());
+        verify(service).selDetail(any());
     }
 
     @Test
-    @DisplayName("Item - 아아템 상세이미지 업로드")
+    @DisplayName("Item - 아이템 상세이미지 업로드")
     void insDetailPic() throws  Exception{
         List<ItemInsDetailDto> listDto = new ArrayList<>();
         listDto.add(new ItemInsDetailDto(1L,"test1.jpg"));
@@ -157,7 +266,7 @@ class ItemControllerTest {
                         .content(jsonDto)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("3"))
+                .andExpect(content().string(String.valueOf(result)))
                 .andDo(print());
 
         verify(service).insDetailPic(any());
@@ -235,6 +344,7 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$[*].createdAt").isNotEmpty())
                 .andDo(print());
 
+        verify(service.selBestItem());
 
     }
 }

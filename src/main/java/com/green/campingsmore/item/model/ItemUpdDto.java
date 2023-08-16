@@ -1,15 +1,14 @@
 package com.green.campingsmore.item.model;
+
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.List;
-
 @Data
-public class ItemSelDetailVo {
+public class ItemUpdDto {
     private Long iitem;
+    private Long iitemCategory;
     private String name;
     private String pic;
     private int price;
-    private LocalDate createdAt;
-    private List<String> picList;
+    private List<String> picUrl;
 }

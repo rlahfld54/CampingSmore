@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ShippingListSelVo {
+    private Long iaddress;
     private String address;
     private String addressDetail;
     private String name;

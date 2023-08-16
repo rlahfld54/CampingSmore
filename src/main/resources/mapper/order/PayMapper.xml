@@ -110,28 +110,34 @@
     </select>
 
     <select id="selAddressList">
-        SELECT address, address_detail addressDetail, name, phone
+        SELECT iaddress, address, address_detail addressDetail, name, phone
         FROM shipping_address
         WHERE iuser = #{iuser}
     </select>
 
     <select id="selOneAddress">
-        SELECT address, address_detail addressDetail, name, phone
+        SELECT iaddress, address, address_detail addressDetail, name, phone
         FROM shipping_address
         WHERE iuser = #{iuser}
         AND iaddress = #{iaddress}
     </select>
 
     <select id="paymentDetailNullCheck">
-        SELECT iorder
+        SELECT del_yn
         FROM order_item
         WHERE iorder = #{iorder}
+        AND iitem = #{iitem}
     </select>
 
     <update id="delOrder">
-        UPDATE order
+        UPDATE `order`
         SET
-        iorder = #{iorder}
-        AND del_yn = 0
+        del_yn = 0
+        WHERE iorder = #{iorder}
     </update>
+    
+    <delete id="delAddress">
+        DELETE FROM shipping_address
+        WHERE iaddress = #{iaddress}
+    </delete>
 </mapper>

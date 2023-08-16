@@ -220,17 +220,17 @@ class PayServiceTest {
         Long testIitem = 1L;
         Long testResult1 = 1L;
 
-        List<Long> testResult2 = null;
+        Long testResult2 = 0L;
 
         given(mapper.delPaymentDetail(any(), any())).willReturn(testResult1);
-        given(mapper.paymentDetailNullCheck(any())).willReturn(testResult2);
+        given(mapper.paymentDetailNullCheck(any(), any())).willReturn(testResult2);
         given(mapper.delOrder(any())).willReturn(1L);
 
         Long result1 = mapper.delPaymentDetail(testIorder, testIitem);
-        List<Long> result2 = mapper.paymentDetailNullCheck(testIorder);
+        Long result2 = mapper.paymentDetailNullCheck(testIorder, testIitem);
 
 
-        if (result1 == 1L && result2 == null) {
+        if (result1 == 1L && result2 == 0L) {
             Long result = mapper.delOrder(testIorder);
             log.info("result : {}, 1은 삭제완료", result);
         }
@@ -238,7 +238,7 @@ class PayServiceTest {
         assertEquals(result1, testResult1);
 
         then(mapper).should(times(1)).delPaymentDetail(any(), any());
-        then(mapper).should(times(1)).paymentDetailNullCheck(any());
+        then(mapper).should(times(1)).paymentDetailNullCheck(any(), any());
         then(mapper).should(times(1)).delOrder(any());
     }
 
@@ -323,7 +323,7 @@ class PayServiceTest {
     void selAddressList() {
         Long testUser = 1L;
         ShippingListSelVo item = new ShippingListSelVo
-                ("주소주소", "상세주소주소", "신형주", "01066229988");
+                (1L,"주소주소", "상세주소주소", "신형주", "01066229988");
 
         List<ShippingListSelVo> itemList = new ArrayList<>();
         itemList.add(item);
@@ -333,6 +333,7 @@ class PayServiceTest {
         List<ShippingListSelVo> result = mapper.selAddressList(testUser);
 
         assertEquals(result.size(), 1);
+        assertEquals(result.get(0).getIaddress(), item.getIaddress());
         assertEquals(result.get(0).getAddress(), item.getAddress());
         assertEquals(result.get(0).getAddressDetail(), item.getAddressDetail());
         assertEquals(result.get(0).getPhone(), item.getPhone());
@@ -349,12 +350,13 @@ class PayServiceTest {
         testDto.setIuser(1L);
 
         ShippingListSelVo item = new ShippingListSelVo
-                ("주소주소", "상세주소주소", "신형주", "01066229988");
+                (1L,"주소주소", "상세주소주소", "신형주", "01066229988");
 
         given(mapper.selOneAddress(any())).willReturn(item);
 
         ShippingListSelVo result = mapper.selOneAddress(testDto);
 
+        assertEquals(result.getIaddress(), item.getIaddress());
         assertEquals(result.getAddress(), item.getAddress());
         assertEquals(result.getAddressDetail(), item.getAddressDetail());
         assertEquals(result.getPhone(), item.getPhone());
@@ -362,4 +364,20 @@ class PayServiceTest {
 
         then(mapper).should(times(1)).selOneAddress(any());
     }
+
+    @Test
+    @DisplayName("PayService - 배송지 삭제")
+    void delAddress() {
+        Long iaddress = 1L;
+        Long testResult = 1L;
+
+        given(mapper.delAddress(any())).willReturn(testResult);
+
+        Long result = mapper.delAddress(iaddress);
+
+        assertEquals(result, testResult);
+
+        then(mapper).should(times(1)).delAddress(any());
+    }
+
 }

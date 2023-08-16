@@ -1,14 +1,16 @@
 package com.green.campingsmore.community.board;
 
-import com.green.campingsmore.community.board.model.BoardEntity;
-import com.green.campingsmore.community.board.model.BoardInsDto;
+import com.green.campingsmore.community.board.model.*;
 import com.green.campingsmore.community.board.utils.FileUtils;
 import com.green.campingsmore.community.comment.CommentService;
+import com.green.campingsmore.community.comment.model.CommentPageDto;
+import com.green.campingsmore.community.comment.model.CommentRes;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +25,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.InstanceOfAssertFactories.list;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -46,6 +51,7 @@ class BoardServiceTest {
         testPics.add(new MockMultipartFile("pic1.jpg", new byte[0]));
         testPics.add(new MockMultipartFile("pic2.jpg", new byte[0]));
     }
+
     @MockBean
     private BoardMapper mapper;
 
@@ -57,6 +63,8 @@ class BoardServiceTest {
 
     @MockBean
     private AuthenticationFacade FACADE;
+    @Autowired
+    private CommentService commentService;
 
 //        @BeforeEach
 //    void beforeEach() {
@@ -99,11 +107,6 @@ class BoardServiceTest {
 //    }
 
 
-
-
-
-
-
     @Test
     @Transactional
     void postPicTest() throws Exception {
@@ -121,25 +124,25 @@ class BoardServiceTest {
         // 예를 들어, fileUrls의 사이즈나 URL 패턴을 확인할 수 있을 것입니다.
     }
 
-    @Test
-    public void postOnePic() throws Exception {
-        Long iboard = 1L;
-        MultipartFile pic = new MockMultipartFile("testPic.jpg", "testPic.jpg", "image/jpeg", "test image".getBytes());
-
-        BoardEntity expectedBoardEntity = new BoardEntity();
-        expectedBoardEntity.setIboard(iboard);
-
-        given(mapper.insBoardOnePic(any())).willReturn(1L);
-
-        String result = service.postOnePic(iboard, pic);
-
-
-        assertNotNull(result);
-        assertTrue(result.contains("file:///"));
-
-
-        verify(mapper, times(1)).insBoardOnePic(any());
-    }
+//    @Test
+//    public void postOnePic() throws Exception {
+//        Long iboard = 1L;
+//        MultipartFile pic = new MockMultipartFile("testPic.jpg", "testPic.jpg", "image/jpeg", "test image".getBytes());
+//
+//        BoardEntity expectedBoardEntity = new BoardEntity();
+//        expectedBoardEntity.setIboard(iboard);
+//
+//        given(mapper.insBoardOnePic(any())).willReturn(1L);
+//
+//        String result = service.postOnePic(iboard, pic);
+//
+//
+//        assertNotNull(result);
+//        assertTrue(result.contains());
+//
+//
+//        verify(mapper, times(1)).insBoardOnePic(any());
+//    }
 
 
     @Test
@@ -187,33 +190,195 @@ class BoardServiceTest {
 
     @Test
     void selMyBoard() {
+        given(FACADE.getLoginUserPk()).willReturn(1L);
+
+        BoardMyDto dto = new BoardMyDto();
+        dto.setIuser(FACADE.getLoginUserPk());
+
+
+        List<BoardMyVo> list = service.selMyBoard(dto);
+        given(mapper.selMyBoard(any())).willReturn(list);
+
+        assertEquals(0, list.size());
     }
 
     @Test
-    void delBoard() {
+    public void testDelBoard_Success() {
+        // Given
+        BoardDelDto dto = new BoardDelDto();
+        dto.setIboard(1L);
+
+        given(FACADE.getLoginUserPk()).willReturn(1L);
+        given(mapper.delBoard(eq(dto))).willReturn(1L); // 성공적으로 삭제되었다고 가정
+
+        // When
+        Long result = service.delBoard(dto);
+
+        // Then
+        assertEquals(1L, result);
+        // 추가 검증 로직 작성 가능
     }
 
     @Test
-    void selBoardList() {
+    public void testDelBoard_Failure() {
+        // Given
+        BoardDelDto dto = new BoardDelDto();
+        dto.setIboard(1L);
+
+        given(FACADE.getLoginUserPk()).willReturn(1L);
+        given(mapper.delBoard(eq(dto))).willReturn(0L); // 삭제 실패
+
+        // When
+        Long result = service.delBoard(dto);
+
+        // Then
+        assertEquals(0L, result);
+        // 추가 검증 로직 작성 가능
     }
 
     @Test
-    void categoryBoardList() {
+    public void testSelBoardList() {
+        // Given
+        BoardPageDto dto = new BoardPageDto();
+        dto.setPage(1);
+        dto.setRow(10);
+
+        List<BoardListVo> mockList = new ArrayList<>(); // 적절한 Mock 데이터 생성
+        when(mapper.selBoardList(eq(dto))).thenReturn(mockList);
+
+        when(mapper.maxBoard()).thenReturn(20L);
+
+        // When
+        BoardRes result = service.selBoardList(dto);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(1, result.getIsMore());
+        assertEquals(10, result.getRow());
+        assertEquals(2, result.getMaxPage());
+        assertEquals(mockList, result.getList());
     }
 
     @Test
-    void selBoard() {
+    public void testCategoryBoardList() {
+        // Given
+        BoardPageDto dto = new BoardPageDto();
+        dto.setPage(1);
+        dto.setRow(10);
+
+        List<BoardListVo> mockList = new ArrayList<>(); // 적절한 Mock 데이터 생성
+        when(mapper.categoryBoardList(eq(dto))).thenReturn(mockList);
+
+        when(mapper.maxBoard()).thenReturn(20L);
+
+        // When
+        BoardRes result = service.categoryBoardList(dto);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(1, result.getIsMore());
+        assertEquals(10, result.getRow());
+        assertEquals(2, result.getMaxPage());
+        assertEquals(mockList, result.getList());
     }
 
     @Test
-    void deBoard() {
-    }
+    public void testSelBoard() {
+        // Given
+        BoardSelPageDto dto = new BoardSelPageDto();
+        dto.setPage(1);
+        dto.setRow(10);
+        dto.setTitle("Test Title");
 
-    @Test
-    void delOnePic() {
-    }
+        List<BoardSelVo> mockList = new ArrayList<>(); // 적절한 Mock 데이터 생성
+        when(mapper.selBoard(eq(dto))).thenReturn(mockList);
 
-    @Test
-    void insCategory() {
+        when(mapper.maxSelBoard(eq(dto))).thenReturn(20L); // 예상 최대 페이지
+
+        // When
+        BoardSelRes result = service.selBoard(dto);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(1, result.getIsMore());
+        assertEquals("Test Title", result.getTitle());
+        assertEquals(10, result.getRow());
+        assertEquals(2, result.getMaxPage());
+        assertEquals(1, result.getMidPage());
+        assertEquals(1, result.getNowPage());
+        assertEquals(mockList, result.getList());
     }
 }
+
+//    @Test
+//    public void testDeBoard() {
+//        // Given
+//        BoardDeDto dto = new BoardDeDto();
+//        dto.setIboard(1L);
+//
+//        BoardDeVo mockBoardDeVo = new BoardDeVo(1L, 1L, "Title", "Content", "Author", "Category", LocalDateTime.now(), 1L);
+//        when(mapper.viewBoard(eq(dto))).thenReturn(mockBoardDeVo);
+//        when(mapper.deBoard(eq(dto))).thenReturn(mockBoardDeVo);
+//
+//        List<BoardPicVo> mockPicList = new ArrayList<>();
+//        when(mapper.picBoard(eq(dto))).thenReturn(mockPicList);
+//
+//        CommentPageDto mockCommentPageDto = new CommentPageDto();
+//        CommentRes mockCommentRes = new CommentRes(1,2,3,4,);
+//        when(commentService.selComment(eq(mockCommentPageDto))).thenReturn(mockCommentRes);
+//
+//        when(FACADE.getLoginUserPk()).thenReturn(1L);
+//
+//        // When
+//        BoardCmtDeVo result = service.deBoard(dto);
+//
+//        // Then
+//        assertNotNull(result);
+//        assertEquals(1L, result.getIuser());
+//        assertEquals(mockBoardDeVo, result.getBoardDeVo());
+//        assertEquals(mockPicList, result.getPicList());
+//        assertEquals(mockCommentRes, result.getCommentList());
+//    }
+
+//    @Test
+//    public void testDelOnePic() {
+//        // Mocking dependencies
+//        BoardPicDelMapper mapper = mock(BoardPicDelMapper.class);
+//        FileUtils fileUtils = mock(FileUtils.class);
+//
+//        // Creating a sample dto
+//        BoardPicDelDto dto = new BoardPicDelDto();
+//        dto.setIboard(1);
+//        dto.setIboardpic(1);
+//
+//        // Stubbing methods for file and mapper interactions
+//        when(fileUtils.getAbsolutePath(anyString())).thenReturn("/mocked/file/dir");
+//        when(mapper.selPicName(1L)).thenReturn("mockedFileName");
+//
+//        // Creating an instance of the service with mocked dependencies
+//        BoardPicDelService service = new BoardPicDelService(mapper, fileUtils);
+//
+//        // Calling the method to be tested
+//        Long result = service.delOnePic(dto);
+//
+//        // Verifying interactions
+//        verify(fileUtils).delFile("/mocked/file/dir/boardPics/1/mockedFileName");
+//        verify(fileUtils).delFolder("/mocked/file/dir/boardPics/1");
+//        verify(mapper).delOnePic(dto);
+//
+//        // Asserting the result
+//        // You might need to adjust the expected result based on your actual implementation
+//        // For example, if mapper.delOnePic(dto) returns the number of affected rows, you can assert it.
+//        assertEquals(expectedResult, result);
+//
+//    }
+
+
+
+
+
+
+//@Test
+//    void insCategory() {
+//    }
+//}

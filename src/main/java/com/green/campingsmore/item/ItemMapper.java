@@ -13,13 +13,13 @@ public interface ItemMapper {
     int insCate(String categoryName);
     //카테고리 보기
     List<ItemSelCateVo> selCategory();
-//    String selCate(String categoryName);
     Long selIcate(String categoryName);
 
     // 아이템 추가
     Long insItem(ItemEntity entity);
     int selLastItem(ItemSearchDto dto);
     List<ItemVo> searchItem(ItemSearchDto dto);
+    int updItem(ItemEntity entity);
     // 아이템 삭제
     int delItem(Long item);
     // 아이템 상세페이지

@@ -19,11 +19,13 @@ public interface PayMapper {
     Long delOrder(Long iorder);
 
     //결제 내역 널 체크
-    List<Long> paymentDetailNullCheck(Long iorder);
+    Long paymentDetailNullCheck(Long iorder, Long iitem);
 
     //주소 관련
     Long insAddress(ShippingInsDto1 dto);
     SelUserAddressVo selUserAddress(Long iuser);
     List<ShippingListSelVo> selAddressList(Long iuser);
     ShippingListSelVo selOneAddress(SelUserAddressDto dto);
+    Long delAddress(Long iaddress);
+
 }
