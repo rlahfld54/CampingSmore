@@ -123,16 +123,17 @@
     </select>
 
     <select id="paymentDetailNullCheck">
-        SELECT iorder
+        SELECT del_yn
         FROM order_item
         WHERE iorder = #{iorder}
+        AND iitem = #{iitem}
     </select>
 
     <update id="delOrder">
-        UPDATE order
+        UPDATE `order`
         SET
-        iorder = #{iorder}
-        AND del_yn = 0
+        del_yn = 0
+        WHERE iorder = #{iorder}
     </update>
     
     <delete id="delAddress">
