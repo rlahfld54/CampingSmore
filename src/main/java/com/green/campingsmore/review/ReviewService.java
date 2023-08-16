@@ -36,12 +36,19 @@ public class ReviewService {
         log.info("result: {}",result);*/
 
         try {
-            MAPPER.selReviewOrder(entity);
+               MAPPER.selReviewOrder(entity);
         } catch (Exception e1) {
             return "리뷰를 작성 할 수 없습니다";
         } try {
-            MAPPER.insReview(entity);
+            int result = MAPPER.selReviewCheck(entity);
+            log.info("result: {}",result);
+                if (result == 1) {
+                    return "리뷰를 추가 작성 할 수 없습니다.";
+                }else if(result == 0) {
+                    MAPPER.insReview(entity);
+                }
         }catch (Exception e2) {
+            e2.printStackTrace();
             return "리뷰 작성 에러";
         } try {
             if (pic != null) {

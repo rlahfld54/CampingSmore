@@ -72,6 +72,17 @@
         </if>
         LIMIT ${startIdx}, ${row}
     </select>
+
+<!--  아이템 수정  -->
+    <update id="updItem">
+        UPDATE item
+        SET iitem_category = #{iitemCategory},
+        name = #{name},
+        price = #{price},
+        pic = #{pic}
+        WHERE iitem = #{iitem}
+    </update>
+
 <!--  아이템 삭제  -->
     <update id="delItem">
         UPDATE item

@@ -126,6 +126,41 @@ public class ItemService {
         return dto.getPicUrl().size();
     }
 
+    public int updItem(ItemUpdDto dto) {
+        ItemEntity entity = new ItemEntity();
+        entity.setIitem(dto.getIitem());
+        entity.setIitemCategory(dto.getIitemCategory());
+        entity.setName(dto.getName());
+        entity.setPic(dto.getPic());
+        entity.setPrice(dto.getPrice());
+
+        try {
+            MAPPER.updItem(entity);
+
+            if( dto.getPicUrl() != null) {
+                try {
+                        MAPPER.delDetailPic(entity.getIitem());
+                    for (int i = 0; i < dto.getPicUrl().size(); i++) {
+                        ItemInsDetailDto picDto = new ItemInsDetailDto();
+                        picDto.setIitem(entity.getIitem());
+
+                        picDto.setPic(dto.getPicUrl().get(i).toString());
+                        MAPPER.insDetailPic(picDto);
+                    }
+                } catch (Exception e){
+                    log.info("아이템 사진 추가 실패");
+                    return 0;
+                }
+                return 1;
+            }
+
+        } catch (Exception e1){
+            log.info("아이템 추가 실패");
+            return 0;
+        }
+        return 0;
+    }
+
 
 
     public int delDetailPic(Long iitem) {

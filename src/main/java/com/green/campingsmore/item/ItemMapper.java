@@ -19,6 +19,7 @@ public interface ItemMapper {
     Long insItem(ItemEntity entity);
     int selLastItem(ItemSearchDto dto);
     List<ItemVo> searchItem(ItemSearchDto dto);
+    int updItem(ItemEntity entity);
     // 아이템 삭제
     int delItem(Long item);
     // 아이템 상세페이지
