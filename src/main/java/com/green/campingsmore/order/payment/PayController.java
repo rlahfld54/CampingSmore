@@ -23,20 +23,20 @@ public class PayController {
     @Operation(summary = "결제 정보 저장하기",
             description =
                     "<h3> address : 배송지\n" +
-                    "<h3> addressDetail : 상세 배송지\n" +
-                    "<h3> totalPrice : 총 결제 금액\n" +
-                    "<h3> shippingPrice : 배송비\n" +
-                    "<h3> shippingMemo : 배송 메모\n" +
-                    "<h3>purchaseList : 구입 목록\n" +
-                    "<h3>   └iitem : 결제한 아이템 PK\n" +
-                    "<h3>   └quantity : 아이템 수량\n" +
-                    "<h3>   └totalPrice : 아이템별 총 가격\n" +
-                    "<h3>-----------------------------------\n" +
-                    "<h3>   CODE 1 : DB 정보 저장 성공\n" +
-                    "<h3>   CODE 0 : DB 정보 저장 실패\n"
+                            "<h3> addressDetail : 상세 배송지\n" +
+                            "<h3> totalPrice : 총 결제 금액\n" +
+                            "<h3> shippingPrice : 배송비\n" +
+                            "<h3> shippingMemo : 배송 메모\n" +
+                            "<h3>purchaseList : 구입 목록\n" +
+                            "<h3>   └iitem : 결제한 아이템 PK\n" +
+                            "<h3>   └quantity : 아이템 수량\n" +
+                            "<h3>   └totalPrice : 아이템별 총 가격\n" +
+                            "<h3>-----------------------------------\n" +
+                            "<h3>   CODE 1 : DB 정보 저장 성공\n" +
+                            "<h3>   CODE 0 : DB 정보 저장 실패\n"
     )
     public Long postPayInfo(@AuthenticationPrincipal MyUserDetails user,
-                             @RequestBody InsPayInfoDto dto) {
+                            @RequestBody InsPayInfoDto dto) {
         InsPayInfoDto1 dto1 = new InsPayInfoDto1();
         dto1.setIuser(user.getIuser());
         dto1.setAddress(dto.getAddress());
@@ -99,14 +99,18 @@ public class PayController {
 
     ) //유저마이페이지에서 조회
     public SelDetailedItemPaymentInfoVo getDetailedItemPaymentInfo(@AuthenticationPrincipal MyUserDetails user,
-                                                                    @PathVariable Long iorder, @RequestParam Long iitem) {
+                                                                   @PathVariable Long iorder, @RequestParam Long iitem) {
         return SERVICE.selDetailedItemPaymentInfo(iorder, iitem);
     }
 
     @PutMapping("/paymentList/{iorder}")
     @Operation(summary = "전체 결제 내역에서 하나의 결제 내역 삭제(아이템별, 마이 페이지)",
             description = "<h3> iorder : 결제내역 PK\n" +
-                    "<h3> iitem : 아이템 PK\n"
+                    "<h3> iitem : 아이템 PK\n" +
+                    "<h3>-----------------------------------\n" +
+                    "<h3>CODE 1 : 선택한 결제내역 삭제\n" +
+                    "<h3>CODE 2 : 선택한 결제내역 삭제 + 텅빈 결제내역 틀 삭제\n" +
+                    "<h3>CODE 0 : 삭제되지 않음\n"
     ) //유저마이페이지에서 조회
     public Long delPaymentDetail(@PathVariable Long iorder, @RequestParam Long iitem) {
         return SERVICE.delPaymentDetail(iorder, iitem);
@@ -126,7 +130,7 @@ public class PayController {
                     "<h3> Pic : 이미지\n"
     )
     public List<PaymentDetailDto> getPaymentItemList(@AuthenticationPrincipal MyUserDetails user,
-                                                      @RequestBody CartPKDto dto) {
+                                                     @RequestBody CartPKDto dto) {
         return SERVICE.selPaymentPageItemList(dto);
     }
 
@@ -143,7 +147,7 @@ public class PayController {
                             "<h3> totalPrice : 아이템 총 가격\n" +
                             "<h3> Pic : 이미지\n")
     public PaymentDetailDto getPaymentItem(@AuthenticationPrincipal MyUserDetails user,
-                                                @PathVariable Long iitem, @RequestParam Long quantity) {
+                                           @PathVariable Long iitem, @RequestParam Long quantity) {
         return SERVICE.selPaymentPageItem(iitem, quantity);
     }
 
@@ -151,11 +155,11 @@ public class PayController {
     @Operation(summary = "배송지 추가 등록",
             description =
                     "<h3> address : 주소\n" +
-                    "<h3> addressDetail : 상세 주소\n" +
-                    "<h3> name : 수령인\n" +
-                    "<h3> phone : 전화번호 (하이픈 '-'없이)\n" +
-                    "<h3>-----------------------------------\n" +
-                    "CODE 1 : 등록 성공\n"
+                            "<h3> addressDetail : 상세 주소\n" +
+                            "<h3> name : 수령인\n" +
+                            "<h3> phone : 전화번호 (하이픈 '-'없이)\n" +
+                            "<h3>-----------------------------------\n" +
+                            "CODE 1 : 등록 성공\n"
     )
     public Long insAddress(@AuthenticationPrincipal MyUserDetails user,
                            @RequestBody ShippingInsDto dto) {
@@ -171,7 +175,7 @@ public class PayController {
     @GetMapping("/address")
     @Operation(summary = "기본 배송지(유저 주소) 출력",
             description =
-                            "<h3>-----------------------------------\n" +
+                    "<h3>-----------------------------------\n" +
                             "<h3> userAddress : 해당 유저의 주소\n" +
                             "<h3> userAddressDetail : 해당 유저의 상세 주소\n" +
                             "<h3> name : 수령인\n" +
@@ -185,7 +189,7 @@ public class PayController {
     @GetMapping("/addressList")
     @Operation(summary = "등록된 배송지 리스트 출력",
             description =
-                            "<h3>-----------------------------------\n" +
+                    "<h3>-----------------------------------\n" +
                             "<h3> address : 주소\n" +
                             "<h3> addressDetail : 상세 주소\n" +
                             "<h3> name : 수령인\n" +
@@ -199,7 +203,7 @@ public class PayController {
     @GetMapping("/addressList/{iaddress}")
     @Operation(summary = "등록된 배송지 중 선택한 배송지 정보 출력",
             description =
-                            "<h3> iaddress : 등록한 배송지PK\n" +
+                    "<h3> iaddress : 등록한 배송지PK\n" +
                             "<h3>-----------------------------------\n" +
                             "<h3> address : 주소\n" +
                             "<h3> addressDetail : 상세 주소\n" +
@@ -217,9 +221,9 @@ public class PayController {
 
     @DeleteMapping("/address/{iaddress}")
     @Operation(summary = "등록된 배송지 제거",
-    description = "<h3> iaddress : 등록한 배송지PK\n" +
-            "<h3>-----------------------------------\n" +
-            "Code 1 : 삭제 성공\n"
+            description = "<h3> iaddress : 등록한 배송지PK\n" +
+                    "<h3>-----------------------------------\n" +
+                    "Code 1 : 삭제 성공\n"
     )
     public Long delAddress(@PathVariable Long iaddress) {
         return SERVICE.delAddress(iaddress);
