@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 public class BoardSelVo {
     private Long iboard;
+    private Long icategory;
     private String category;
     private String title;
     private String name;
