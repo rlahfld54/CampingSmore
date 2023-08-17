@@ -35,7 +35,7 @@ public class ReviewController {
     @Operation(summary = "리뷰 추가"
             , description = "" +
             "\"iuser\": [-] 유저 PK,<br>" +
-            "\"iorder\": [-]  아이템 썸네일 pic url,<br>" +
+            "\"iorder\": [-]  주문 PK,<br>" +
             "\"iitem\": [-] 아이템 PK,<br>" +
             "\"reviewCtnt\": [-] 리뷰 내용,<br>" +
             "\"starRating\": [-] 별점,<br>" +

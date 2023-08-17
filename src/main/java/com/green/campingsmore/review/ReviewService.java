@@ -32,10 +32,6 @@ public class ReviewService {
         entity.setReviewCtnt(dto.getReviewCtnt());
         entity.setStarRating(dto.getStarRating());
 
-/*        int result = MAPPER.selReviewOrder(entity.getIorder(), entity.getIuser(), entity.getIitem());
-        log.info("entity: {}",entity);
-        log.info("result: {}",result);*/
-
         try {
                MAPPER.selReviewOrder(entity);
         } catch (Exception e1) {
