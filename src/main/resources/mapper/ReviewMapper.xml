@@ -26,7 +26,6 @@
         SELECT IfNULL(max(del_yn),0) del_yn
         FROM review
         WHERE iuser = #{iuser} AND iorder = #{iorder} AND iitem = #{iitem}
-
     </select>
 
 <!--  리스트 개수  -->
