@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,17 +32,12 @@ public class ReviewService {
         entity.setReviewCtnt(dto.getReviewCtnt());
         entity.setStarRating(dto.getStarRating());
 
-/*        int result = MAPPER.selReviewOrder(entity.getIorder(), entity.getIuser(), entity.getIitem());
-        log.info("entity: {}",entity);
-        log.info("result: {}",result);*/
-
         try {
                MAPPER.selReviewOrder(entity);
         } catch (Exception e1) {
             return "리뷰를 작성 할 수 없습니다";
         } try {
             int result = MAPPER.selReviewCheck(entity);
-            log.info("result: {}",result);
                 if (result == 1) {
                     return "리뷰를 추가 작성 할 수 없습니다.";
                 }else if(result == 0) {
