@@ -72,7 +72,8 @@ public class PayController {
                     "<h3>   └name : 아이템 이름 PK\n" +
                     "<h3>   └totalPrice : 총 가격 PK\n" +
                     "<h3>   └Pic : 사진 PK\n" +
-                    "<h3>   └paymentDate : 결제일\n"
+                    "<h3>   └paymentDate : 결제일\n" +
+                    "<h3>   └reviewYn : 리뷰 존재 여부 (있을 시 ireview 반환, 없을 시 0 반환)\n"
     )
     //유저마이페이지에서 조회
     public List<SelPaymentDetailDto> getPaymentList(@AuthenticationPrincipal MyUserDetails user) {

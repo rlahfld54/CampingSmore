@@ -26,7 +26,7 @@ public interface BoardMapper {
     Long delWriteBoard(Long iboard);//작성중인 글 내용 삭제
     Long delPicBoard(Long iboard); // 작성중인 사진 삭제
     Long insBoardOnePic(BoardPicEntity pic); // 사진 한장 업로드
-    Long delOnePic(BoardPicDelDto dto); // 사진 한장 삭제
+    Long delOnePic(BoardEntity entity); // 사진 한장 삭제
     Long delBoardPic(Long iboard);
     String selPicName(Long iboardPic);
     Long insCategory(String name);

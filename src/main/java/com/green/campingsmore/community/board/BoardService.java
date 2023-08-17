@@ -335,25 +335,70 @@ public class BoardService {
 
     }
 
+//    public Long delOnePic(BoardPicDelDto dto) {
+//        try {
+//            long start = System.currentTimeMillis();
+//            BoardEntity entity = new BoardEntity();
+//            entity.setIboard(dto.getIboard());
+//            entity.setIboardpic(dto.getIboardpic());
+//            entity.setIuser(FACADE.getLoginUserPk());
+//            String centerPath = String.format("boardPics/%d", dto.getIboard());
+//            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+//            File file = new File(targetPath);
+//            if (file.exists()) {
+//                File[] deleteFolderList = file.listFiles();
+//                String result = mapper.selPicName(dto.getIboardpic());
+//                for (File deleteFile : deleteFolderList) {
+//                    if (deleteFile.getName().equals(result)) {
+//                        deleteFile.delete();
+//                    }
+//                }
+//                File[] re = file.listFiles();
+//                if (re != null && re.length == 0) {
+//                    FileUtils.delFolder(fileDir + centerPath);
+//                }
+//            }
+//            long end = System.currentTimeMillis();
+//            log.info("groupConcat : {}", (end - start));
+//            return mapper.delOnePic(entity);
+//
+//        } catch (Exception e) {
+//            return 0L;
+//        }
+//    }
     public Long delOnePic(BoardPicDelDto dto) {
-        String centerPath = String.format("boardPics/%d", dto.getIboard());
-        String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
-        File file = new File(targetPath);
-        if (file.exists()) {
-            File[] deleteFolderList = file.listFiles();
-            String result = mapper.selPicName(dto.getIboardpic());
-            for (File deleteFile : deleteFolderList) {
-                if (deleteFile.getName().equals(result)) {
-                    deleteFile.delete();
+        try {
+
+            BoardEntity entity = new BoardEntity();
+            entity.setIboard(dto.getIboard());
+            entity.setIboardpic(dto.getIboardpic());
+            entity.setIuser(FACADE.getLoginUserPk());
+            String centerPath = String.format("boardPics/%d", dto.getIboard());
+            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+            File file = new File(targetPath);
+
+            if (file.exists()) {
+                File[] deleteFolderList = file.listFiles();
+                String result = mapper.selPicName(dto.getIboardpic());
+                String picName = result.substring(result.lastIndexOf('/') + 1);
+                for (File deleteFile : deleteFolderList) {
+                    if (deleteFile.getName().equals(picName)) {
+                        deleteFile.delete();
+                    }
+                }
+
+                File[] re = file.listFiles();
+                if (re != null && re.length == 0) {
+                    FileUtils.delFolder(fileDir + centerPath);
                 }
             }
-            File[] re = file.listFiles();
-            if (re != null&& re.length==0){
-                FileUtils.delFolder(fileDir + centerPath);
-            }
+            return mapper.delOnePic(entity);
+        } catch (Exception e) {
+            log.error("An error occurred: {}", e.getMessage());
+            return 0L;
         }
-        return mapper.delOnePic(dto);
     }
+
     public Long insCategory(String name){
         return mapper.insCategory(name);
     }

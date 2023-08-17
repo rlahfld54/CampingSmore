@@ -83,7 +83,7 @@
         limit #{startIdx},#{row}
     </select>
     <select id="selBoard">
-        select A.iboard, C.name category, A.title, B.name, A.created_at createdat, A.board_view boardview
+        select A.iboard,C.icategory, C.name category, A.title, B.name, A.created_at createdat, A.board_view boardview
         from board A
         inner join user B
         on A.iuser = B.iuser
@@ -136,9 +136,11 @@
         where iboard = #{iboard};
     </delete>
     <select id="selPicName">
-        SELECT SUBSTRING_INDEX(pic, '/', -1) AS result
-        FROM board_image
-        WHERE iboardpic = #{iboardpic};
+        SELECT A.pic
+        FROM board_image A
+        LEFT JOIN board B
+        ON A.iboard = B.iboard
+        WHERE A.iboard = #{iboard} AND B.iuser = #{iuser}
     </select>
     <insert id="insCategory">
         INSERT INTO board_category

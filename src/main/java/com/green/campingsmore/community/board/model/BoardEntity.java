@@ -12,4 +12,5 @@ public class BoardEntity {
     private String title;
     private String ctnt;
     private String pic;
+    private Long iboardpic;
 }
