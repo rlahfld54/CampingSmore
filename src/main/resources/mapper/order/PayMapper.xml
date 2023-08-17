@@ -45,7 +45,8 @@
     </select>
 
     <select id="selPaymentDetailAll2" resultType="PaymentDetailDto2">
-        SELECT B.iitem, B.`name`, A.price, A.total_price totalPrice, B.pic, C.created_at paymentDate
+        SELECT B.iitem, B.`name`, A.price, A.total_price totalPrice, B.pic, C.created_at paymentDate,
+        IFNULL((SELECT ireview FROM review WHERE iitem = B.iitem AND `iorder` = #{iorder} AND del_yn = 1),0) reviewYn
         FROM order_item A
         INNER JOIN item B
         ON A.iitem = B.iitem
