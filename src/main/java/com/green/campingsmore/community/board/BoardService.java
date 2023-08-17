@@ -368,7 +368,6 @@ public class BoardService {
 //    }
     public Long delOnePic(BoardPicDelDto dto) {
         try {
-
             BoardEntity entity = new BoardEntity();
             entity.setIboard(dto.getIboard());
             entity.setIboardpic(dto.getIboardpic());
@@ -394,7 +393,6 @@ public class BoardService {
             }
             return mapper.delOnePic(entity);
         } catch (Exception e) {
-            log.error("An error occurred: {}", e.getMessage());
             return 0L;
         }
     }
