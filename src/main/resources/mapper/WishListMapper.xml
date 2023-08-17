@@ -16,7 +16,7 @@
     <select id="getReviewlist">
         SELECT ireview,iuser,iorder,iitem,review_ctnt reviewCtnt,pic,star_rating starRating,created_at createdAt,updated_at updatedAt,review_like reviewLike
         FROM review
-        WHERE iuser = #{iuser};
+        WHERE iuser = #{iuser} AND del_yn = 1;
     </select>
 
 </mapper>
