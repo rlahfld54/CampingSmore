@@ -2,12 +2,14 @@ package com.green.campingsmore.item.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemVo {
     private Long iitem;
     private String name;
@@ -15,6 +17,5 @@ public class ItemVo {
     private int price;
     private LocalDate createdAt;
 
-    public ItemVo(long l, String s, String url, int i, LocalDate parse) {
-    }
+
 }

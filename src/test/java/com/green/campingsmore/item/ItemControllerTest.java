@@ -114,9 +114,6 @@ class ItemControllerTest {
         verify(service).insItem(any());
 
 
-
-
-
     }
 
     @Test
@@ -138,12 +135,7 @@ class ItemControllerTest {
         ItemSelDetailRes res = ItemSelDetailRes.builder()
                 .build();
 
-
         given(service.searchItem(any())).willReturn(res);
-
-
-
-
 
     }
 
@@ -175,8 +167,7 @@ class ItemControllerTest {
         dto.setPage(1);
         dto.setRow(1);
 
-
-        //item
+        //
         List<String> picList = new ArrayList<>();
         picList.add("test1.jpg");
         picList.add("test2.jpg");
@@ -192,9 +183,9 @@ class ItemControllerTest {
 
         //
         List<ReviewSelVo> reVo = new ArrayList<>();
-        reVo.add(new ReviewSelVo(1L,"글쓴이","리뷰내용",1,10));
-        reVo.add(new ReviewSelVo(2L,"글쓴이","리뷰내용",2,20));
-
+ /*       reVo.add(new ReviewSelVo(1L,"글쓴이","리뷰내용","test1.jpg",1,10));
+        reVo.add(new ReviewSelVo(2L,"글쓴이","리뷰내용","test1.jpg",2,20));
+*/
         ReviewRes res = ReviewRes.builder()
                 .iitem(dto.getIitem())
                 .maxPage(3)
@@ -270,8 +261,6 @@ class ItemControllerTest {
                 .andDo(print());
 
         verify(service).insDetailPic(any());
-
-
 
     }
 

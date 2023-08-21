@@ -12,6 +12,7 @@ public class ReviewSelVo {
     private Long ireview;
     private String name;
     private String reviewCtnt;
+    private String pic;
     private int starRating;
     private int reviewLike;
 }
