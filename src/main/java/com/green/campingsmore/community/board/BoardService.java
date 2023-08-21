@@ -89,15 +89,21 @@ public class BoardService {
 //        }
 //        return iboard;
 //    }
+
     public Long postboard() {
-        BoardEntity entity = new BoardEntity();
-        entity.setIuser(FACADE.getLoginUserPk());
-        entity.setIcategory(1L);
-        entity.setTitle("");
-        entity.setCtnt("");
-        mapper.insBoard(entity);
-        Long iboard = entity.getIboard();
-        return iboard;
+        try {
+            BoardEntity entity = new BoardEntity();
+
+            entity.setIuser(FACADE.getLoginUserPk());
+            entity.setIcategory(1L);
+            entity.setTitle("");
+            entity.setCtnt("");
+            mapper.insBoard(entity);
+            Long iboard = entity.getIboard();
+            return iboard;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -166,13 +172,17 @@ public class BoardService {
     }
 
     public Long updContent(BoardInsDto dto) {
-        BoardEntity entity = new BoardEntity();
-        entity.setIboard(dto.getIboard());
-        entity.setIuser(FACADE.getLoginUserPk());
-        entity.setTitle(dto.getTitle());
-        entity.setCtnt(dto.getCtnt());
-        entity.setIcategory(dto.getIcategory());
-        return mapper.updBoardMain(entity);
+        try {
+            BoardEntity entity = new BoardEntity();
+            entity.setIboard(dto.getIboard());
+            entity.setIuser(FACADE.getLoginUserPk());
+            entity.setTitle(dto.getTitle());
+            entity.setCtnt(dto.getCtnt());
+            entity.setIcategory(dto.getIcategory());
+            return mapper.updBoardMain(entity);
+        } catch (Exception e) {
+            return null;
+        }
     }
 //    public Long updBoard(List<MultipartFile> pic, BoardUpdDto dto) {
 //        BoardEntity entity = new BoardEntity();
@@ -210,14 +220,20 @@ public class BoardService {
 //            }
 //        }
 
-    //        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
+        //        return result; // 파일이 없을 경우 게시글 정보 업데이트 결과 리턴
 //    }
-    public Long delWriteBoard(Long iboard) {
-        mapper.delPicBoard(iboard);
-        String centerPath = String.format("boardPics/%d", iboard);
-        FileUtils.delFolder(fileDir + centerPath);
 
-        return mapper.delWriteBoard(iboard);
+
+    public Long delWriteBoard(Long iboard) {
+        try {
+            mapper.delPicBoard(iboard);
+            String centerPath = String.format("boardPics/%d", iboard);
+            FileUtils.delFolder(fileDir + centerPath);
+
+            return mapper.delWriteBoard(iboard);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<BoardMyVo> selMyBoard(BoardMyDto dto) {
@@ -227,55 +243,53 @@ public class BoardService {
 
     public Long delBoard(BoardDelDto dto) {
         dto.setIuser(FACADE.getLoginUserPk());
-       try {
-           mapper.delBoardPic(dto.getIboard());
+        try {
+            mapper.delBoardPic(dto.getIboard());
 
-        String centerPath = String.format("boardPics/%d", dto.getIboard());
-        FileUtils.delFolder(fileDir + centerPath);
-        return mapper.delBoard(dto);
-       }
-       catch (Exception e) {
-           // 예외 처리 로직
-           e.printStackTrace(); // 예외 정보 출력
-           // 예외 처리 후 반환할 값이나 로직을 작성
-           return 0L; // 예시로 간단히 null 반환
-       }
+            String centerPath = String.format("boardPics/%d", dto.getIboard());
+            FileUtils.delFolder(fileDir + centerPath);
+            return mapper.delBoard(dto);
+        } catch (Exception e) {
+            // 예외 처리 로직
+            e.printStackTrace(); // 예외 정보 출력
+            // 예외 처리 후 반환할 값이나 로직을 작성
+            return 0L; // 예시로 간단히 null 반환
+        }
     }//게시글 삭제
 
 
     public BoardRes selBoardList(BoardPageDto dto) {
         int num = dto.getPage() - 1;
         dto.setStartIdx(num * dto.getRow());
-       try {
-           List<BoardListVo> list = mapper.selBoardList(dto);
+        try {
+            List<BoardListVo> list = mapper.selBoardList(dto);
 
-        Long maxboard = mapper.maxBoard();
-        int mp = (int) ceil((double) maxboard / dto.getRow());
+            Long maxboard = mapper.maxBoard();
+            int mp = (int) ceil((double) maxboard / dto.getRow());
 
-        int isMore = mp > dto.getPage() ? 1 : 0;
-        return BoardRes.builder().isMore(isMore)
-                .row(dto.getRow()).maxPage(mp).list(list).build();//페이징}
-       }
-       catch (Exception e) {
-           // 예외 처리 로직
-           e.printStackTrace(); // 예외 정보 출력
-           // 예외 처리 후 반환할 값이나 로직을 작성
-           return null; // 예시로 간단히 null 반환
-       }
+            int isMore = mp > dto.getPage() ? 1 : 0;
+            return BoardRes.builder().isMore(isMore)
+                    .row(dto.getRow()).maxPage(mp).list(list).build();//페이징}
+        } catch (Exception e) {
+            // 예외 처리 로직
+            e.printStackTrace(); // 예외 정보 출력
+            // 예외 처리 후 반환할 값이나 로직을 작성
+            return null; // 예시로 간단히 null 반환
+        }
     }
 
     public BoardRes categoryBoardList(BoardPageDto dto) {
         int num = dto.getPage() - 1;
         dto.setStartIdx(num * dto.getRow());
-        try{List<BoardListVo> list = mapper.categoryBoardList(dto);
-        Long maxboard = mapper.maxBoard();
-        int mp = (int) ceil((double) maxboard / dto.getRow());
+        try {
+            List<BoardListVo> list = mapper.categoryBoardList(dto);
+            Long maxboard = mapper.maxBoard();
+            int mp = (int) ceil((double) maxboard / dto.getRow());
 
-        int isMore = mp > dto.getPage() ? 1 : 0;
-        return BoardRes.builder().isMore(isMore)
-                .row(dto.getRow()).maxPage(mp).list(list).build();
-        }
-        catch (Exception e) {
+            int isMore = mp > dto.getPage() ? 1 : 0;
+            return BoardRes.builder().isMore(isMore)
+                    .row(dto.getRow()).maxPage(mp).list(list).build();
+        } catch (Exception e) {
             // 예외 처리 로직
             e.printStackTrace(); // 예외 정보 출력
             // 예외 처리 후 반환할 값이나 로직을 작성
@@ -288,54 +302,53 @@ public class BoardService {
 
         int num = dto.getPage() - 1;
         dto.setStartIdx(num * dto.getRow());
-       try {
-           List<BoardSelVo> list = mapper.selBoard(dto);
+        try {
+            List<BoardSelVo> list = mapper.selBoard(dto);
 
-           double maxpage = mapper.maxSelBoard(dto);
-           int mp = (int) ceil(maxpage / dto.getRow());
+            double maxpage = mapper.maxSelBoard(dto);
+            int mp = (int) ceil(maxpage / dto.getRow());
 
-           int isMore = mp > dto.getPage() ? 1 : 0;
-           int page = mp - dto.getPage();
-           return BoardSelRes.builder().isMore(isMore).title(dto.getTitle()).row(dto.getRow()).maxPage(mp).midPage(page).nowPage(dto.getPage()).list(list).build();
-       }catch (Exception e) {
-           // 예외 처리 로직
-           e.printStackTrace(); // 예외 정보 출력
-           // 예외 처리 후 반환할 값이나 로직을 작성
-           return null; // 예시로 간단히 null 반환
-       }
+            int isMore = mp > dto.getPage() ? 1 : 0;
+            int page = mp - dto.getPage();
+            return BoardSelRes.builder().isMore(isMore).title(dto.getTitle()).row(dto.getRow()).maxPage(mp).midPage(page).nowPage(dto.getPage()).list(list).build();
+        } catch (Exception e) {
+            // 예외 처리 로직
+            e.printStackTrace(); // 예외 정보 출력
+            // 예외 처리 후 반환할 값이나 로직을 작성
+            return null; // 예시로 간단히 null 반환
+        }
     }
 
     public BoardCmtDeVo deBoard(BoardDeDto dto) {
         int row = 15;
         int page = 1;
-   try {     mapper.viewBoard(dto);
-        BoardDeVo boardDeVo = mapper.deBoard(dto);
-        CommentPageDto dto1 = new CommentPageDto();
-        dto1.setIboard(dto.getIboard());
-        dto1.setPage(page);
-        dto1.setRow(row);
-        dto.setIboard(dto.getIboard());
-        List<BoardPicVo> picList = mapper.picBoard(dto);
-        if (picList == null) {
-            picList = new ArrayList<>();
-        }
+        try {
+            mapper.viewBoard(dto);
+            BoardDeVo boardDeVo = mapper.deBoard(dto);
+            CommentPageDto dto1 = new CommentPageDto();
+            dto1.setIboard(dto.getIboard());
+            dto1.setPage(page);
+            dto1.setRow(row);
+            dto.setIboard(dto.getIboard());
+            List<BoardPicVo> picList = mapper.picBoard(dto);
+            if (picList == null) {
+                picList = new ArrayList<>();
+            }
 
-        CommentRes commentRes = commentService.selComment(dto1);
-        BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
-                .build();
-        return result;
-   }
-
-        catch (Exception e) {
+            CommentRes commentRes = commentService.selComment(dto1);
+            BoardCmtDeVo result = BoardCmtDeVo.builder().boardDeVo(boardDeVo).picList(picList).commentList(commentRes)
+                    .build();
+            return result;
+        } catch (Exception e) {
             // 예외 처리 로직
             e.printStackTrace(); // 예외 정보 출력
             // 예외 처리 후 반환할 값이나 로직을 작성
             return null; // 예시로 간단히 null 반환
-    }
+        }
 
     }
 
-//    public Long delOnePic(BoardPicDelDto dto) {
+    //    public Long delOnePic(BoardPicDelDto dto) {
 //        try {
 //            long start = System.currentTimeMillis();
 //            BoardEntity entity = new BoardEntity();
@@ -397,7 +410,7 @@ public class BoardService {
         }
     }
 
-    public Long insCategory(String name){
+    public Long insCategory(String name) {
         return mapper.insCategory(name);
     }
 }
