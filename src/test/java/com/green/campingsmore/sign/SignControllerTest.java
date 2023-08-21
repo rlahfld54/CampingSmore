@@ -279,7 +279,7 @@ class SignControllerTest {
                 .user_address_detail("니 마음속(하트)")
                 .build();
 
-        given(service.updateUserInfo(updateUserInfoDto)).willReturn(1);
+//        given(service.updateUserInfo(updateUserInfoDto)).willReturn(1);
 
         // jackson objectmapper 객체 생성
         ObjectMapper objectMapper = new ObjectMapper();

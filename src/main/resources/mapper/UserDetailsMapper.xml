@@ -63,6 +63,7 @@
         , phone = #{phone}
         , user_address = #{user_address}
         , user_address_detail = #{user_address_detail}
+        , pic = #{pic}
         where user_id = #{uid}
     </update>
 

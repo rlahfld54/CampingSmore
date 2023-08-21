@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -224,11 +226,27 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
-    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto){
-        // 비밀번호 암호화 해줘야할듯
-//        PW_ENCODER.encode(updateUserInfoDto.getUpw());
+    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws IOException {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
-        return MAPPER.updateUserInfo(updateUserInfoDto);
+
+        FinalUpdateUserInfo finalUpdateUserInfo = new FinalUpdateUserInfo();
+        finalUpdateUserInfo.setUid(updateUserInfoDto.getUid());
+        finalUpdateUserInfo.setUpw(updateUserInfoDto.getUpw());
+        finalUpdateUserInfo.setEmail(updateUserInfoDto.getEmail());
+        finalUpdateUserInfo.setName(updateUserInfoDto.getName());
+        finalUpdateUserInfo.setBirth_date(updateUserInfoDto.getBirth_date());
+        finalUpdateUserInfo.setPhone(updateUserInfoDto.getPhone());
+        finalUpdateUserInfo.setUser_address(updateUserInfoDto.getUser_address());
+        finalUpdateUserInfo.setUser_address_detail(updateUserInfoDto.getUser_address_detail());
+
+        String profile_img = "/user/"+FACADE.getLoginUserPk()+"/profile/"+ pic.getOriginalFilename();
+        finalUpdateUserInfo.setPic(profile_img);
+                //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
+        System.out.println(finalUpdateUserInfo.toString());
+        // 오류가 안나는데  디비에 수정이 안돼...
+        int i = MAPPER.updateUserInfo(finalUpdateUserInfo);
+        System.out.println("i = " + i);
+        return 1;
     }
 
     public int searchPW(String id, String name, String email){

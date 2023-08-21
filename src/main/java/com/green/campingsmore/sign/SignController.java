@@ -8,12 +8,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -123,7 +123,7 @@ public class SignController {
     }
 
 
-    @PostMapping("/user/update-profile")
+    @PostMapping(value = "/user/update-profile",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "회원 정보 수정 => 회원이 자신의 정보를 수정할 수 있도록 하는 것",
             description = "Try it out -> Execute 눌러주세요 \n\n "+
                     "아이디,이름은 못 바꾸고 프론트에서도 고정시켜야함 \n\n "+
@@ -135,15 +135,18 @@ public class SignController {
                     "birth_date: 생년월일 \n\n " +
                     "phone: 핸드폰 번호 \n\n " +
                     "user_address: 주소 \n\n " +
-                    "user_address_detail : 상세주소"
+                    "user_address_detail : 상세주소 \n\n" +
+                    "프로필 이미지까지 담아서 해야함.. 아마 프로필 이미지 null이면 안될듯..."
     )
-    public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user,@RequestBody UpdateUserInfoDto updateUserInfoDto) {
+    public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user
+            ,@RequestPart UpdateUserInfoDto updateUserInfoDto
+            ,@RequestPart(required = false) MultipartFile pic) throws IOException {
         // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
         log.info("controller-iuser {}", user.getIuser());
         SERVICE.test();
 
         System.out.println(updateUserInfoDto);
-        return SERVICE.updateUserInfo(updateUserInfoDto);
+        return SERVICE.updateUserInfo(updateUserInfoDto,pic);
     }
 
     @PostMapping("/search/pw")
