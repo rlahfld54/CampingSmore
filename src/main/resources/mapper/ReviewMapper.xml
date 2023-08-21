@@ -39,7 +39,7 @@
 
 <!--  리뷰 리스트  -->
     <select id="selReview" resultType="ReviewSelVo">
-        SELECT ireview, `name`, review_ctnt reviewCtnt, star_rating starRating, review_like reviewLike
+        SELECT ireview, `name`, review_ctnt reviewCtnt, A.pic, star_rating starRating, review_like reviewLike
         FROM review A
         INNER JOIN `user` B
         ON A.iuser = B.iuser

@@ -317,14 +317,14 @@ class BoardServiceTest {
 //        dto.setIboard(1L);
 //
 //        BoardDeVo mockBoardDeVo = new BoardDeVo(1L, 1L, "Title", "Content", "Author", "Category", LocalDateTime.now(), 1L);
-//        when(mapper.viewBoard(eq(dto))).thenReturn(mockBoardDeVo);
+//        when(mapper.viewBoard(eq(dto))).thenReturn(1L);
 //        when(mapper.deBoard(eq(dto))).thenReturn(mockBoardDeVo);
 //
 //        List<BoardPicVo> mockPicList = new ArrayList<>();
 //        when(mapper.picBoard(eq(dto))).thenReturn(mockPicList);
 //
 //        CommentPageDto mockCommentPageDto = new CommentPageDto();
-//        CommentRes mockCommentRes = new CommentRes(1,2,3,4,);
+//        CommentRes mockCommentRes = new CommentRes(1, 2, 3, 4,5);
 //        when(commentService.selComment(eq(mockCommentPageDto))).thenReturn(mockCommentRes);
 //
 //        when(FACADE.getLoginUserPk()).thenReturn(1L);
@@ -334,11 +334,12 @@ class BoardServiceTest {
 //
 //        // Then
 //        assertNotNull(result);
-//        assertEquals(1L, result.getIuser());
+//        assertEquals(1L, result);
 //        assertEquals(mockBoardDeVo, result.getBoardDeVo());
 //        assertEquals(mockPicList, result.getPicList());
 //        assertEquals(mockCommentRes, result.getCommentList());
 //    }
+//}
 
 //    @Test
 //    public void testDelOnePic() {

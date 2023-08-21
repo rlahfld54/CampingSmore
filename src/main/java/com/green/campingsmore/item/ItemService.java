@@ -103,6 +103,7 @@ public class ItemService {
         reviewDto.setRow(dto.getRow());
         reviewDto.setStartIdx((dto.getPage() - 1) * dto.getRow());
         ReviewRes reviewList = REVIEWSERVICE.selReview(reviewDto);
+
     return ItemDetailReviewVo.builder()
             .item(vo)
             .review(reviewList)
