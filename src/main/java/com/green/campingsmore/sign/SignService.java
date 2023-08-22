@@ -74,10 +74,15 @@ public class SignService {
         String id = userLogin.getUid();
         String password = userLogin.getUpw();
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
+
         LoginDto user = MAPPER.getByUid(id);
 
-        log.info("[getSignInResult] id: {}", id);
+        System.out.println("LoginDto : "+user);
+        if(user == null){
+            throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
+        }
 
+        log.info("[getSignInResult] id: {}", id);
         log.info("[getSignInResult] 패스워드 비교 : {}",password);
         log.info("[getSignInResult] UserEntity : {}",user);
         log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());

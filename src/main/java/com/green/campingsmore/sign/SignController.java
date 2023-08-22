@@ -162,4 +162,6 @@ public class SignController {
                         ) {
         return SERVICE.searchPW(id,name,email);
     }
+
+    // 카카오 , 구글, 네이버 SNS 로그인
 }

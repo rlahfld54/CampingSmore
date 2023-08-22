@@ -18,7 +18,7 @@
     <select id="getByUid">
         SELECT iuser, user_id uid, password upw, name, role
         FROM user
-        WHERE user_id = #{uid}
+        WHERE user_id = #{uid} AND del_yn = 1
     </select>
 
     <insert id="updUserToken">
