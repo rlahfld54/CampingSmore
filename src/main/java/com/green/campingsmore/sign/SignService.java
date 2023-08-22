@@ -255,6 +255,14 @@ public class SignService {
     }
 
     public int searchPW(String id, String name, String email){
+
+        LoginDto user = MAPPER.getByUid(id);
+
+        System.out.println("LoginDto : "+user);
+        if(user == null){
+            throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
+        }
+
         // 임시 비밀번호 발급해서 DB에 저장하기
         UpdatePwDto updatePwDto = new UpdatePwDto();
         updatePwDto.setUid(id);
