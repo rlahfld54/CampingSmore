@@ -133,7 +133,7 @@ public class BoardService {
                 picEntity.setPic(centerPath + "/" + saveName);
                 picEntities.add(picEntity);
 
-                fileUrls.add("img/"+centerPath + "/" + saveName);
+                fileUrls.add(centerPath + "/" + saveName);
             }
             mapper.insBoardPic(picEntities);
         }
@@ -166,7 +166,7 @@ public class BoardService {
             picEntity.setPic(centerPath + "/" + saveName);
             mapper.insBoardOnePic(picEntity);
 
-            return "img/"+centerPath + "/" + saveName;
+            return centerPath + "/" + saveName;
         }
         return null;
     }
