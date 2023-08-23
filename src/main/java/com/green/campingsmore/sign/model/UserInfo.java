@@ -14,4 +14,5 @@ public class UserInfo {
     private String user_address;
     private String user_address_detail;
     private String role;
+    private String pic;
 }
