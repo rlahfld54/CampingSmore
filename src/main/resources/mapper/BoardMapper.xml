@@ -56,7 +56,7 @@
         SELECT A.iboard, A.icategory, B.name, A.title, A.ctnt, A.created_at AS createdat, A.board_view AS boardview
         FROM board A
         INNER JOIN user B ON A.iuser = B.iuser
-        WHERE A.del_yn = 1
+        WHERE A.del_yn = 1 and A.title != ''
         ORDER BY A.icategory = 1 DESC, A.iboard DESC
         LIMIT #{startIdx}, #{row}
     </select>
