@@ -63,6 +63,7 @@
     <select id="maxBoard">
         select count(iboard)
         from board
+        where title != ''
     </select>
     <select id="maxSelBoard">
         SELECT COUNT(A.iboard)
