@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "관리자 유저 관리 페이지")
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminUserController {
     // 관리자 로그아웃은 유저 로그아웃과 동일한 것을 쓴다.
     private final SignService signService;
