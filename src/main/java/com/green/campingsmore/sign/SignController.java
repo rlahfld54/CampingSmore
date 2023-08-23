@@ -140,7 +140,7 @@ public class SignController {
     )
     public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user
             ,@RequestPart UpdateUserInfoDto updateUserInfoDto
-            ,@RequestPart(required = false) MultipartFile pic) throws IOException {
+            ,@RequestPart(required = false) MultipartFile pic) throws Exception {
         // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
         log.info("controller-iuser {}", user.getIuser());
         SERVICE.test();
