@@ -236,7 +236,7 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
-    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
+    public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
 
         FinalUpdateUserInfo finalUpdateUserInfo = new FinalUpdateUserInfo();
@@ -273,7 +273,7 @@ public class SignService {
 
         int i = MAPPER.updateUserInfo(finalUpdateUserInfo);
         System.out.println("i = " + i);
-        return 1;
+        return profile_img;
     }
 
     public int searchPW(String id, String name, String email){
