@@ -21,7 +21,7 @@ public class AuthenticationFacade {
 
     public boolean isLogin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("황주은 - Authentication auth = "+auth);
+        System.out.println("황주은 - Authentication auth = " + auth);
         if(auth != null){
             return true;
         }

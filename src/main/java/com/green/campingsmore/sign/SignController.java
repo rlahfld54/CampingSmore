@@ -121,8 +121,6 @@ public class SignController {
     @Operation(summary = "로그인 했을때 , 본인 회원 정보 출력",
             description = "Try it out -> Execute 눌러주세요 \n\n ")
     public UserInfo getmyInfo(){
-//        if ()
-//        FACADE.isLogin()
         return SERVICE.getmyInfo();
     }
 
@@ -142,7 +140,7 @@ public class SignController {
                     "user_address_detail : 상세주소 \n\n" +
                     "프로필 이미지까지 담아서 해야함.. 아마 프로필 이미지 null이면 안될듯..."
     )
-    public String updateUserInfo(@AuthenticationPrincipal MyUserDetails user
+    public int updateUserInfo(@AuthenticationPrincipal MyUserDetails user
             ,@RequestPart UpdateUserInfoDto updateUserInfoDto
             ,@RequestPart(required = false) MultipartFile pic) throws Exception {
         // 로그인 했을때만 수정할 수 있도록 해야함  // 본인 자신만 수정할 수 있도록 해야함..
