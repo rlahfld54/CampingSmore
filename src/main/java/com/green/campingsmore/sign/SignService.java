@@ -248,28 +248,28 @@ public class SignService {
         finalUpdateUserInfo.setPhone(updateUserInfoDto.getPhone());
         finalUpdateUserInfo.setUser_address(updateUserInfoDto.getUser_address());
         finalUpdateUserInfo.setUser_address_detail(updateUserInfoDto.getUser_address_detail());
+        if (pic!= null) {
+            String centerPath = "user/" + FACADE.getLoginUserPk() + "/profile/";
+            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+            File file = new File(targetPath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            String originFile = pic.getOriginalFilename();
+            String saveName = FileUtils.makeRandomFileNm(originFile);
+            File fileTarget = new File(targetPath + "/" + saveName);
+            try {
+                pic.transferTo(fileTarget);
+            } catch (IOException e) {
+                throw new Exception("파일저장을 실패했습니다");
+            }
 
-        String centerPath = "user/"+FACADE.getLoginUserPk()+"/profile/";
-        String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
-        File file = new File(targetPath);
-        if (!file.exists()) {
-            file.mkdirs();
+
+            String profile_img = centerPath + saveName;
+            finalUpdateUserInfo.setPic(profile_img);
+            //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
+            System.out.println(finalUpdateUserInfo.toString());
         }
-
-        String originFile = pic.getOriginalFilename();
-        String saveName = FileUtils.makeRandomFileNm(originFile);
-        File fileTarget = new File(targetPath + "/" + saveName);
-        try {
-            pic.transferTo(fileTarget);
-        } catch (IOException e) {
-            throw new Exception("파일저장을 실패했습니다");
-        }
-
-
-        String profile_img = centerPath + saveName;
-        finalUpdateUserInfo.setPic(profile_img);
-        //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
-        System.out.println(finalUpdateUserInfo.toString());
 
         int i = MAPPER.updateUserInfo(finalUpdateUserInfo);
         System.out.println("i = " + i);
