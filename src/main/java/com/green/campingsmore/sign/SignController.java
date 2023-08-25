@@ -1,5 +1,6 @@
 package com.green.campingsmore.sign;
 
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.MyUserDetails;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.*;
@@ -22,6 +23,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class SignController {
     private final SignService SERVICE;
+    private final AuthenticationFacade FACADE;
 
     //ApiParam은 문서 자동화를 위한 Swagger에서 쓰이는 어노테이션이고
     //RequestParam은 http 로부터 요청 온 정보를 받아오기 위한 스프링 어노테이션이다.
@@ -119,6 +121,8 @@ public class SignController {
     @Operation(summary = "로그인 했을때 , 본인 회원 정보 출력",
             description = "Try it out -> Execute 눌러주세요 \n\n ")
     public UserInfo getmyInfo(){
+//        if ()
+//        FACADE.isLogin()
         return SERVICE.getmyInfo();
     }
 

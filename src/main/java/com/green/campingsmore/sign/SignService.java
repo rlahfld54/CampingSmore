@@ -236,6 +236,7 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
+    // 회원정보 수정하는 곳
     public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
 
