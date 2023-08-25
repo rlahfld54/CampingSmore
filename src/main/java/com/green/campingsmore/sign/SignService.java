@@ -4,6 +4,7 @@ package com.green.campingsmore.sign;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.campingsmore.CommonRes;
+import com.green.campingsmore.community.board.utils.FileUtils;
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.JwtTokenProvider;
 import com.green.campingsmore.config.security.UserDetailsMapper;
@@ -15,10 +16,12 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,6 +41,8 @@ public class SignService {
     private final ObjectMapper OBJECT_MAPPER;
     private final AuthenticationFacade FACADE;
     private final MailApi mail;
+    @Value("${file.dir}")
+    private String fileDir;
 
     public void test() {
         log.info("service-test-iuser : {}", FACADE.getLoginUserPk());
@@ -82,10 +87,10 @@ public class SignService {
             throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
         }
 
-        log.info("[getSignInResult] id: {}", id);
-        log.info("[getSignInResult] 패스워드 비교 : {}",password);
-        log.info("[getSignInResult] UserEntity : {}",user);
-        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
+//        log.info("[getSignInResult] id: {}", id);
+//        log.info("[getSignInResult] 패스워드 비교 : {}",password);
+//        log.info("[getSignInResult] UserEntity : {}",user);
+//        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
         if(!PW_ENCODER.matches(password, user.getUpw())) {
             throw new RuntimeException("비밀번호 다름"); // return문 대신에 throw 예욍처리해도 된다.
         }
@@ -231,7 +236,7 @@ public class SignService {
         return MAPPER.searchID(name,phone,birth);
     }
 
-    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws IOException {
+    public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
 
         FinalUpdateUserInfo finalUpdateUserInfo = new FinalUpdateUserInfo();
@@ -244,14 +249,31 @@ public class SignService {
         finalUpdateUserInfo.setUser_address(updateUserInfoDto.getUser_address());
         finalUpdateUserInfo.setUser_address_detail(updateUserInfoDto.getUser_address_detail());
 
-        String profile_img = "/user/"+FACADE.getLoginUserPk()+"/profile/"+ pic.getOriginalFilename();
+        String centerPath = "user/"+FACADE.getLoginUserPk()+"/profile/";
+        String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+        File file = new File(targetPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        String originFile = pic.getOriginalFilename();
+        String saveName = FileUtils.makeRandomFileNm(originFile);
+        File fileTarget = new File(targetPath + "/" + saveName);
+        try {
+            pic.transferTo(fileTarget);
+        } catch (IOException e) {
+            throw new Exception("파일저장을 실패했습니다");
+        }
+
+
+        String profile_img = centerPath + saveName;
         finalUpdateUserInfo.setPic(profile_img);
-                //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
+        //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
         System.out.println(finalUpdateUserInfo.toString());
-        // 오류가 안나는데  디비에 수정이 안돼...
+
         int i = MAPPER.updateUserInfo(finalUpdateUserInfo);
         System.out.println("i = " + i);
-        return 1;
+        return profile_img;
     }
 
     public int searchPW(String id, String name, String email){
@@ -284,6 +306,7 @@ public class SignService {
 
 
     public UserInfo getmyInfo(){
+        System.out.println("로그인 상태 유뮤 = " + FACADE.getLoginUserPk());
         return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
     }
 
