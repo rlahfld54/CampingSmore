@@ -81,6 +81,7 @@ public class SignService {
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
 
         LoginDto user = MAPPER.getByUid(id);
+        System.out.println("로그인 확인 = "+FACADE.isLogin());
 
         System.out.println("LoginDto : "+user);
         if(user == null){
@@ -311,10 +312,8 @@ public class SignService {
 
 
     public UserInfo getmyInfo(){
-        if(FACADE.isLogin()){
-            System.out.println("로그인 isLogin = "+FACADE.isLogin());
-        }
         System.out.println("로그인 상태 유뮤 = " + FACADE.getLoginUserPk());
+
         return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
     }
 
