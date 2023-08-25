@@ -87,10 +87,10 @@ public class SignService {
             throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
         }
 
-        log.info("[getSignInResult] id: {}", id);
-        log.info("[getSignInResult] 패스워드 비교 : {}",password);
-        log.info("[getSignInResult] UserEntity : {}",user);
-        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
+//        log.info("[getSignInResult] id: {}", id);
+//        log.info("[getSignInResult] 패스워드 비교 : {}",password);
+//        log.info("[getSignInResult] UserEntity : {}",user);
+//        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
         if(!PW_ENCODER.matches(password, user.getUpw())) {
             throw new RuntimeException("비밀번호 다름"); // return문 대신에 throw 예욍처리해도 된다.
         }
@@ -249,7 +249,7 @@ public class SignService {
         finalUpdateUserInfo.setUser_address(updateUserInfoDto.getUser_address());
         finalUpdateUserInfo.setUser_address_detail(updateUserInfoDto.getUser_address_detail());
 
-        String centerPath = "/user/"+FACADE.getLoginUserPk()+"/profile/";
+        String centerPath = "user/"+FACADE.getLoginUserPk()+"/profile/";
         String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
         File file = new File(targetPath);
         if (!file.exists()) {
@@ -306,6 +306,7 @@ public class SignService {
 
 
     public UserInfo getmyInfo(){
+        System.out.println("로그인 상태 유뮤 = " + FACADE.getLoginUserPk());
         return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
     }
 
