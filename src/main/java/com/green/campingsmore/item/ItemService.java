@@ -1,10 +1,12 @@
 package com.green.campingsmore.item;
 
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.dataset.NaverApi;
 import com.green.campingsmore.item.model.*;
 import com.green.campingsmore.review.ReviewService;
 import com.green.campingsmore.review.model.ReviewPageDto;
 import com.green.campingsmore.review.model.ReviewRes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,17 +15,12 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ItemService {
     private final ItemMapper MAPPER;
     private final NaverApi naverApi;
     private final ReviewService REVIEWSERVICE;
-
-@Autowired
-    public ItemService(ItemMapper MAPPER, NaverApi naverApi, ReviewService REVIEWSERVICE) {
-        this.MAPPER = MAPPER;
-        this.naverApi = naverApi;
-        this.REVIEWSERVICE = REVIEWSERVICE;
-    }
+    private final AuthenticationFacade FACADE;
 
     // 카테고리
     public List<ItemSelCateVo> selCategory(){
@@ -67,6 +64,22 @@ public class ItemService {
     }
 
     public ItemSelDetailRes searchItem(ItemSearchDto dto) {
+        // 아이템 리스트 뿌려주기 전에 로그인 상태 체크
+
+
+
+        /*if( == null) {
+            dto.setIuser(0L);
+        } else {
+            dto.setIuser(FACADE.getLoginUserPk());
+        }
+
+*/
+
+
+
+
+
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         List<ItemVo> list = MAPPER.searchItem(dto);
         int count = MAPPER.selLastItem(dto);

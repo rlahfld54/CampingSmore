@@ -16,6 +16,7 @@ public class ItemVo {
     private String pic;
     private int price;
     private LocalDate createdAt;
+    private int wish;
 
 
 }
