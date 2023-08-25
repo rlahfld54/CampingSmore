@@ -90,7 +90,7 @@
         on A.iuser = B.iuser
         inner join board_category C
         on A.icategory = C.icategory
-        where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1
+        where A.title LIKE CONCAT('%', #{title}, '%') and A.del_yn = 1 and title !=''
         order by A.icategory asc,A.iboard desc
         limit #{startIdx},#{row}
     </select>

@@ -74,12 +74,6 @@ public class ItemService {
             dto.setIuser(FACADE.getLoginUserPk());
             log.info("iuser: {}",dto.getIuser());
         }
-
-
-
-
-
-
         dto.setStartIdx((dto.getPage()-1) * dto.getRow());
         List<ItemVo> list = MAPPER.searchItem(dto);
         int count = MAPPER.selLastItem(dto);
