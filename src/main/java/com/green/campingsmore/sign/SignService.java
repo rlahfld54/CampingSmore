@@ -237,7 +237,7 @@ public class SignService {
     }
 
     // 회원정보 수정하는 곳
-    public String updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
+    public int updateUserInfo(UpdateUserInfoDto updateUserInfoDto, MultipartFile pic) throws Exception {
         updateUserInfoDto.setUpw(PW_ENCODER.encode(updateUserInfoDto.getUpw()));
 
         FinalUpdateUserInfo finalUpdateUserInfo = new FinalUpdateUserInfo();
@@ -249,32 +249,36 @@ public class SignService {
         finalUpdateUserInfo.setPhone(updateUserInfoDto.getPhone());
         finalUpdateUserInfo.setUser_address(updateUserInfoDto.getUser_address());
         finalUpdateUserInfo.setUser_address_detail(updateUserInfoDto.getUser_address_detail());
+        
+        if (pic != null) {
+            String centerPath = "user/" + FACADE.getLoginUserPk() + "/profile/";
+            String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
+            File file = new File(targetPath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
 
-        String centerPath = "user/"+FACADE.getLoginUserPk()+"/profile/";
-        String targetPath = String.format("%s/%s", FileUtils.getAbsolutePath(fileDir), centerPath);
-        File file = new File(targetPath);
-        if (!file.exists()) {
-            file.mkdirs();
+            String originFile = pic.getOriginalFilename();
+            String saveName = FileUtils.makeRandomFileNm(originFile);
+            File fileTarget = new File(targetPath + "/" + saveName);
+            try {
+                pic.transferTo(fileTarget);
+            } catch (IOException e) {
+                throw new Exception("파일저장을 실패했습니다");
+            }
+
+
+            String profile_img = centerPath + saveName;
+            finalUpdateUserInfo.setPic(profile_img);
+            //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
+            System.out.println(finalUpdateUserInfo.toString());
+
+
         }
-
-        String originFile = pic.getOriginalFilename();
-        String saveName = FileUtils.makeRandomFileNm(originFile);
-        File fileTarget = new File(targetPath + "/" + saveName);
-        try {
-            pic.transferTo(fileTarget);
-        } catch (IOException e) {
-            throw new Exception("파일저장을 실패했습니다");
-        }
-
-
-        String profile_img = centerPath + saveName;
-        finalUpdateUserInfo.setPic(profile_img);
-        //.pic("/user/"+FACADE.getLoginUserPk()+"/profile/"+pic)
-        System.out.println(finalUpdateUserInfo.toString());
 
         int i = MAPPER.updateUserInfo(finalUpdateUserInfo);
         System.out.println("i = " + i);
-        return profile_img;
+        return 1;
     }
 
     public int searchPW(String id, String name, String email){
@@ -307,6 +311,9 @@ public class SignService {
 
 
     public UserInfo getmyInfo(){
+        if(FACADE.isLogin()){
+            System.out.println("로그인 isLogin = "+FACADE.isLogin());
+        }
         System.out.println("로그인 상태 유뮤 = " + FACADE.getLoginUserPk());
         return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
     }
