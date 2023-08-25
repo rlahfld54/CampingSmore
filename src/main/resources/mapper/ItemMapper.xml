@@ -48,10 +48,10 @@
     <!--아이템 검색 및 검색리스트-->
     <select id="searchItem" resultType="ItemVo">
         SELECT iitem, `name`, pic, price, created_at createdAt,
-            <if test="iuser == 0">
+            <if test= "iuser == 0">
                 0 as wish
             </if>
-            <if test="iuser > 0" >
+            <if test= "iuser >= 1" >
                 IFNULL((SELECT del_yn
                 FROM wishlist
                 WHERE iitem = A.iitem and iuser = #{iuser}),0) wish

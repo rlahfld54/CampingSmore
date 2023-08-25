@@ -68,13 +68,13 @@ public class ItemService {
 
 
 
-        /*if( == null) {
+        if(!FACADE.isLogin()) {
             dto.setIuser(0L);
         } else {
             dto.setIuser(FACADE.getLoginUserPk());
+            log.info("iuser: {}",dto.getIuser());
         }
 
-*/
 
 
 
