@@ -91,7 +91,6 @@ public class BoardService {
 //    }
 
     public Long postboard() {
-        try {
             BoardEntity entity = new BoardEntity();
             entity.setIuser(FACADE.getLoginUserPk());
             entity.setIcategory(1L);
@@ -100,9 +99,7 @@ public class BoardService {
             mapper.insBoard(entity);
             Long iboard = entity.getIboard();
             return iboard;
-        } catch (Exception e) {
-            return null;
-        }
+
     }
 
     @Transactional(rollbackFor = Exception.class)

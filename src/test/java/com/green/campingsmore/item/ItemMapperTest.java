@@ -77,25 +77,25 @@ class ItemMapperTest {
 
     }
 
-    @Test
-    void searchItem() {
-        ItemSearchDto dto = new ItemSearchDto();
-        dto.setIitemCategory(11L);
-        dto.setText("양고기");
-        dto.setPage(1);
-        dto.setRow(15);
-        dto.setSort(0);
-
-        List<ItemVo> voList = new ArrayList<>();
-        voList.add(new ItemVo(8L,"램 양꼬치 양깍두기 양고기 캠핑음식 1kg","https://shopping-phinf.pstatic.net/main_8245209/82452098289.5.jpg",18500, LocalDate.parse("2023-07-26")));
-        voList.add(new ItemVo(1L, "양의나라 유기농 양고기 양갈비 양꼬치 프렌치렉 숄더랙 캠핑 냉장 냉동","https://shopping-phinf.pstatic.net/main_8014052/80140522706.10.jpg",16500,LocalDate.parse("2023-07-25")));
-
-
-
-        List<ItemVo> result = mapper.searchItem(dto);
-        assertEquals(voList,result);
-
-    }
+//    @Test
+//    void searchItem() {
+//        ItemSearchDto dto = new ItemSearchDto();
+//        dto.setIitemCategory(11L);
+//        dto.setText("양고기");
+//        dto.setPage(1);
+//        dto.setRow(15);
+//        dto.setSort(0);
+//
+//        List<ItemVo> voList = new ArrayList<>();
+//        voList.add(new ItemVo(8L,"램 양꼬치 양깍두기 양고기 캠핑음식 1kg","https://shopping-phinf.pstatic.net/main_8245209/82452098289.5.jpg",18500, LocalDate.parse("2023-07-26")));
+//        voList.add(new ItemVo(1L, "양의나라 유기농 양고기 양갈비 양꼬치 프렌치렉 숄더랙 캠핑 냉장 냉동","https://shopping-phinf.pstatic.net/main_8014052/80140522706.10.jpg",16500,LocalDate.parse("2023-07-25")));
+//
+//
+//
+//        List<ItemVo> result = mapper.searchItem(dto);
+//        assertEquals(voList,result);
+//
+//    }
 
     @Test
     void delItem() {

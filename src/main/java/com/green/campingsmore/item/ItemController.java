@@ -1,5 +1,6 @@
 package com.green.campingsmore.item;
 
+import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.item.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 @RestController
 @Tag(name="아이템")
@@ -49,12 +52,15 @@ public class ItemController {
                                           @RequestParam(defaultValue = "1")int page,
                                           @RequestParam(defaultValue = "15")int row,
                                           @RequestParam(defaultValue = "0")int sort) {
+
+        // 로그인을 안한 비회원인 경우 아이템 리스트 뿌려줌
         ItemSearchDto dto = new ItemSearchDto();
         dto.setText(text);
         dto.setPage(page);
         dto.setRow(row);
         dto.setIitemCategory(cate);
         dto.setSort(sort);
+
         return SERVICE.searchItem(dto);
     }
 

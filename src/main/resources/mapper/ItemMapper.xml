@@ -47,8 +47,16 @@
 
     <!--아이템 검색 및 검색리스트-->
     <select id="searchItem" resultType="ItemVo">
-        SELECT iitem, `name`, pic, price, created_at createdAt
-        FROM item
+        SELECT iitem, `name`, pic, price, created_at createdAt,
+            <if test= "iuser == 0">
+                0 as wish
+            </if>
+            <if test= "iuser >= 1" >
+                IFNULL((SELECT del_yn
+                FROM wishlist
+                WHERE iitem = A.iitem and iuser = #{iuser}),0) wish
+            </if>
+        FROM item A
         <where>
             <if test = "iitemCategory != null">
                 and iitem_category = #{iitemCategory}
@@ -71,6 +79,8 @@
             ORDER BY price
         </if>
         LIMIT ${startIdx}, ${row}
+
+
     </select>
 
 <!--  아이템 수정  -->
