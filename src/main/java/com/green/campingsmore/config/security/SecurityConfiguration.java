@@ -55,7 +55,8 @@ public class SecurityConfiguration {
                     except.accessDeniedHandler(new CustomAccessDeniedHandler());
                     except.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
                 })
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
+                .anonymous(anony -> anony.disable());
 
         return httpSecurity.build();
     }

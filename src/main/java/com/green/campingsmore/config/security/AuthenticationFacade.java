@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 public class AuthenticationFacade {
     public MyUserDetails getLoginUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("황주은 - Authentication auth = "+auth);
         MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
-        System.out.println("황주은 - AuthenticationFacade의 MyUserDetails = "+userDetails);
+
+        System.out.println("황주은 - AuthenticationFacade.getPrincipal() = "+auth.getPrincipal());
+        System.out.println("황주은 - AuthenticationFacade.getPrincipal()의 MyUserDetails = "+userDetails);
         return userDetails;
     }
 
@@ -21,7 +22,6 @@ public class AuthenticationFacade {
 
     public boolean isLogin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("황주은 - Authentication auth = " + auth);
         if(auth != null){
             return true;
         }
