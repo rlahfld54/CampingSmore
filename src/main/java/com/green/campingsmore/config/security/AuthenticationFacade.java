@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
     public MyUserDetails getLoginUser() {
+        // auth = null (로그인 안하면 null)
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
 
@@ -22,9 +23,9 @@ public class AuthenticationFacade {
 
     public boolean isLogin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null){
+        if(auth != null){ // 로그인 했으면 트루
             return true;
         }
-        return false;
+        return false;  // 로그인 안했으면 auth == null임
     }
 }

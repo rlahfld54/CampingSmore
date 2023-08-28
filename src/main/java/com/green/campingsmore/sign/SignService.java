@@ -282,14 +282,18 @@ public class SignService {
         return 1;
     }
 
-    public int searchPW(String id, String name, String email){
+    public int searchPW(SearchUserDto userinfo){
+        System.out.println("SearchUserDto = "+ userinfo);
+        System.out.println("DB리턴값 = "+MAPPER.searchUser(userinfo));
+        SearchUserDto correct = MAPPER.searchUser(userinfo);
 
-        LoginDto user = MAPPER.getByUid(id);
-
-        System.out.println("LoginDto : "+user);
-        if(user == null){
+        if(correct == null){
             throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
         }
+
+        String id = userinfo.getUid();
+        String name = userinfo.getName();
+        String email = userinfo.getEmail();
 
         // 임시 비밀번호 발급해서 DB에 저장하기
         UpdatePwDto updatePwDto = new UpdatePwDto();
@@ -299,6 +303,7 @@ public class SignService {
         updatePwDto.setPassword(PW_ENCODER.encode(PW));
         updatePwDto.setName(name);
         updatePwDto.setEmail(email);
+        System.out.println("updatePwDto = "+updatePwDto);
 
         // 임시 비밀번호 네이버 이메일로 쏴주기
         try {
