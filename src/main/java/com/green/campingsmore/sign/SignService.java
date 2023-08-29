@@ -59,7 +59,7 @@ public class SignService {
                 .phone(signUpDto.getPhone())
                 .gender(signUpDto.getGender())
                 .user_address(signUpDto.getUser_address())
-                .role(String.format("ROLE_%s", signUpDto.getRole()))
+                .role(String.format("ROLE_%s", signUpDto.getRole().toUpperCase()))
                 .build();
         int result = MAPPER.signUp(user);
         SignUpResultDto dto = new SignUpResultDto();
@@ -81,17 +81,14 @@ public class SignService {
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
 
         LoginDto user = MAPPER.getByUid(id);
-        System.out.println("로그인 확인 = "+FACADE.isLogin());
+        System.out.println("로그인 확인 = " + FACADE.isLogin());
 
-        System.out.println("LoginDto : "+user);
+        System.out.println("LoginDto = " + user);
         if(user == null){
             throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
         }
 
-//        log.info("[getSignInResult] id: {}", id);
-//        log.info("[getSignInResult] 패스워드 비교 : {}",password);
-//        log.info("[getSignInResult] UserEntity : {}",user);
-//        log.info("[getSignInResult] user.getUpw() : {}",user.getUpw());
+        // 비밀번호 일치하는지 확인
         if(!PW_ENCODER.matches(password, user.getUpw())) {
             throw new RuntimeException("비밀번호 다름"); // return문 대신에 throw 예욍처리해도 된다.
         }

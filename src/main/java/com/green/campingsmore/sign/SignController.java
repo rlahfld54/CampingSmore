@@ -75,6 +75,7 @@ public class SignController {
                     "phone: 핸드폰 번호 \n\n " +
                     "gender: 성별 -> 숫자 0(남자) 과 1(여자) (기본값이 남자이고 0) \n\n " +
                     "user_address: 주소 \n\n " +
+                    "user_address_detail: 상세 주소 \n\n " +
                     "role: USER 이거나 ADMIN\n\n "
     )
     public SignUpResultDto signUp(@RequestBody SignUpDto signUpDto) {
