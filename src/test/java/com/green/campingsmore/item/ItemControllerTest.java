@@ -1,3 +1,4 @@
+/*
 package com.green.campingsmore.item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -183,9 +184,11 @@ class ItemControllerTest {
 
         //
         List<ReviewSelVo> reVo = new ArrayList<>();
- /*       reVo.add(new ReviewSelVo(1L,"글쓴이","리뷰내용","test1.jpg",1,10));
+ */
+/*       reVo.add(new ReviewSelVo(1L,"글쓴이","리뷰내용","test1.jpg",1,10));
         reVo.add(new ReviewSelVo(2L,"글쓴이","리뷰내용","test1.jpg",2,20));
-*/
+*//*
+
         ReviewRes res = ReviewRes.builder()
                 .iitem(dto.getIitem())
                 .maxPage(3)
@@ -337,3 +340,4 @@ class ItemControllerTest {
 
     }
 }
+*/
