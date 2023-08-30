@@ -42,6 +42,7 @@
         FROM `order`
         WHERE iuser = #{iuser}
         AND del_yn = 1
+        ORDER BY created_at DESC
     </select>
 
     <select id="selPaymentDetailAll2" resultType="PaymentDetailDto2">

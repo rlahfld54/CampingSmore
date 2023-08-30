@@ -21,6 +21,7 @@ public class UserEntity {
     private String phone;
     private int gender; // 0이 남자, 1이 여자
     private String user_address;
+    private String user_address_detail;
     private String role;
     private String pic;
     private LocalDateTime  created_at;
