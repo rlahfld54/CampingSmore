@@ -45,7 +45,9 @@
     <select id="selMyBoard">
         select iboard, icategory,title,created_at createdat,board_view boardview
         from board
-        where iuser = #{iuser} and del_yn = 1
+        where iuser = #{iuser}
+        and del_yn = 1
+        and title != ''
     </select>
     <update id="delBoard">
         update board
