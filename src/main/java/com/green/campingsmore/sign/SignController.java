@@ -2,6 +2,7 @@ package com.green.campingsmore.sign;
 
 import com.green.campingsmore.config.security.AuthenticationFacade;
 import com.green.campingsmore.config.security.model.MyUserDetails;
+import com.green.campingsmore.config.security.model.SearchUserDto;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,6 +75,7 @@ public class SignController {
                     "phone: 핸드폰 번호 \n\n " +
                     "gender: 성별 -> 숫자 0(남자) 과 1(여자) (기본값이 남자이고 0) \n\n " +
                     "user_address: 주소 \n\n " +
+                    "user_address_detail: 상세 주소 \n\n " +
                     "role: USER 이거나 ADMIN\n\n "
     )
     public SignUpResultDto signUp(@RequestBody SignUpDto signUpDto) {
@@ -157,11 +159,8 @@ public class SignController {
                         "name :  이름 \n\n "+
                         "email :  이메일 \n\n "
     )
-    public int searchPW(@RequestParam String id,
-                        @RequestParam String name,
-                        @RequestParam String email
-                        ) {
-        return SERVICE.searchPW(id,name,email);
+    public int searchPW(@RequestBody SearchUserDto searchUserDto) {
+        return SERVICE.searchPW(searchUserDto);
     }
 
     // 카카오 , 구글, 네이버 SNS 로그인
