@@ -40,7 +40,12 @@
 
     <select id="getmyInfo">
         SELECT iuser,user_id,`name`,email,birth_date,phone,gender,user_address,user_address_detail,role,pic
-        FROM user WHERE iuser = #{iuser};
+        FROM user WHERE iuser = #{iuser}
+    </select>
+
+    <select id="searchUser">
+        SELECT * FROM user
+        where user_id = #{uid} and name =#{name} and email=#{email}
     </select>
 
     <update id="delYnUser">

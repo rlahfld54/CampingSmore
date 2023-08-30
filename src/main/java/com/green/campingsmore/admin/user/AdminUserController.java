@@ -33,16 +33,10 @@ public class AdminUserController {
     public SignInResultDto signIn(HttpServletRequest req, @RequestBody UserLogin userLogin){
         String id = userLogin.getUid();
         String password = userLogin.getUpw();
-
         String ip = req.getRemoteAddr();
-        log.info("[signIn] 관리자 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}", id, password, ip);
+        log.info("[signIn] 로그인을 시도하고 있습니다. id: {}, pw: {}, ip: {}",id, password, ip);
 
-        SignInResultDto dto = signService.signIn(userLogin, ip);
-        if (dto.getCode() == CommonRes.SUCCESS.getCode()) {
-            log.info("[signIn] 정상적으로 관리자 로그인 되었습니다. id: {}, token: {}", id, dto.getAccessToken());
-        }
-
-        return dto;
+        return SERVICE.adminSignIn(userLogin,ip);
     }
 
     @GetMapping("/users")

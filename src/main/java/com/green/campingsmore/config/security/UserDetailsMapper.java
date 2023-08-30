@@ -1,6 +1,7 @@
 package com.green.campingsmore.config.security;
 
 import com.green.campingsmore.config.security.model.LoginDto;
+import com.green.campingsmore.config.security.model.SearchUserDto;
 import com.green.campingsmore.config.security.model.SignUpDto;
 import com.green.campingsmore.sign.model.FinalUpdateUserInfo;
 import com.green.campingsmore.sign.model.UpdatePwDto;
@@ -16,4 +17,5 @@ public interface UserDetailsMapper {
     int updateUserInfo(FinalUpdateUserInfo finalUpdateUserInfo);
     int searchPW(UpdatePwDto updatePwDto);
     UserInfo getmyInfo(int iuser);
+    SearchUserDto searchUser(SearchUserDto searchUserDto);
 }

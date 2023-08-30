@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                     except.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
-                .anonymous(anony -> anony.disable());
+                .anonymous(anony -> anony.disable()); // 익명 사용자 disable();
 
         return httpSecurity.build();
     }
