@@ -81,9 +81,9 @@ public class SignService {
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
 
         LoginDto user = MAPPER.getByUid(id);
-        System.out.println("로그인 확인 = " + FACADE.isLogin());
 
-        System.out.println("LoginDto = " + user);
+        // 로그인을 하면 LoginDto에 담김..담기기만하고 유지가 안되는듯..?
+        System.out.println("LoginDto = " + user); //여기 저장되면 계속 유지되어야하는데...  MyUserDetails...
         if(user == null){
             throw new RuntimeException("없는 회원이거나 탈퇴한 회원입니다.");
         }
@@ -93,6 +93,16 @@ public class SignService {
             throw new RuntimeException("비밀번호 다름"); // return문 대신에 throw 예욍처리해도 된다.
         }
         log.info("[getSignInResult] 패스워드 일치");
+
+        MyUserDetails myUserDetails = MyUserDetails.builder()
+                .iuser(user.getIuser())
+                .uid(user.getUid())
+                .upw(user.getUpw())
+                .name(user.getName())
+                .roles(Collections.singletonList(user.getRole()))
+                .build();
+
+        System.out.println("로그인 유지되고 있어야하는데...myUserDetails = " + myUserDetails);
 
         // RT가 이미 있을 경우
         String redisKey = String.format("RT(%s):%s:%s", "Server", user.getIuser(), ip);
@@ -315,7 +325,6 @@ public class SignService {
 
     public UserInfo getmyInfo(){
         System.out.println("로그인 상태 유뮤 = " + FACADE.getLoginUserPk());
-
         return MAPPER.getmyInfo(Math.toIntExact(FACADE.getLoginUserPk()));
     }
 

@@ -11,9 +11,6 @@ public class AuthenticationFacade {
         // auth = null (로그인 안하면 null)
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
-
-        System.out.println("황주은 - AuthenticationFacade.getPrincipal() = "+auth.getPrincipal());
-        System.out.println("황주은 - AuthenticationFacade.getPrincipal()의 MyUserDetails = "+userDetails);
         return userDetails;
     }
 
@@ -23,6 +20,11 @@ public class AuthenticationFacade {
 
     public boolean isLogin(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
+
+        System.out.println("황주은 - AuthenticationFacade.getPrincipal() = "+auth.getPrincipal());
+        System.out.println("황주은 - AuthenticationFacade.getPrincipal()의 MyUserDetails = "+userDetails);
+
         if(auth != null){ // 로그인 했으면 트루
             return true;
         }
