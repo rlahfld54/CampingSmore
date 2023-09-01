@@ -26,7 +26,7 @@ public class ItemController {
         return SERVICE.selCategory();
     }
 
-    @PostMapping("/itempost")
+    @PostMapping
     @Operation(summary = "아이템 추가 - 관리자페이지"
             , description = "" +
             "\"iitemCategory\": [-] 아이템 카테고리 PK,<br>" +
@@ -103,7 +103,7 @@ public class ItemController {
         return SERVICE.selDetail(dto);
     }
 
-    @PostMapping("/detailpic")
+    @PostMapping("/detail-pic")
     @Operation(summary = "아이템 상세이미지 업로드 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK,<br>" +
@@ -112,7 +112,7 @@ public class ItemController {
         return SERVICE.insDetailPic(dto);
     }
 
-    @DeleteMapping("/detail/deletepic")
+    @DeleteMapping("/detail")
     @Operation(summary = "아이템 상세이미지 삭제 - 관리자페이지"
             , description = "" +
             "\"iitem\": [-] 아이템 PK<br>")
