@@ -70,13 +70,14 @@ public class JwtTokenProvider {
         log.info("JwtTokenProvider - getAuthentication: 토큰 인증 정보 조회 시작");
         UserDetails userDetails = getUserDetailsFromToken(token, ACCESS_KEY);
         System.out.println("userDetails : "+ userDetails);
-        log.info("JwtTokenProvider - getAuthentication: 토큰 인증 정보 조회 완료, UserDetails UserName : {}"
-                , userDetails.getUsername());
+        log.info("JwtTokenProvider - getAuthentication: 토큰 인증 정보 조회 완료, UserDetails Authorities : {}"
+                , userDetails.getAuthorities());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     private UserDetails getUserDetailsFromToken(String token, Key key) {
         Claims claims = getClaims(token, key);
+        System.out.println("Claims claims = "+claims);
         String strIuser = claims.getSubject();
         List<String> roles = (List<String>)claims.get("roles");
         return MyUserDetails
@@ -110,8 +111,8 @@ public class JwtTokenProvider {
             log.info("JwtTokenProvider - isValidateToken: 토큰 유효 체크 예외 발생");
             return false;
         }
-        // 지났으면 true > false;
-        // 안 지났으면 false > true;
+        // 지났으면 false;
+        // 안 지났으면 true;
     }
 
     public long getTokenExpirationTime(String token, Key key) {

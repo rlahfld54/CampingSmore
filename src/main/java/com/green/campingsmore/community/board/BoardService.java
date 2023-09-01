@@ -7,6 +7,7 @@ import com.green.campingsmore.community.comment.model.CommentPageDto;
 import com.green.campingsmore.community.comment.model.CommentRes;
 import com.green.campingsmore.community.comment.model.CommentVo;
 import com.green.campingsmore.config.security.AuthenticationFacade;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import com.green.campingsmore.community.board.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipException;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.decrementExact;
@@ -90,16 +92,21 @@ public class BoardService {
 //        return iboard;
 //    }
 
-    public Long postboard() {
-            BoardEntity entity = new BoardEntity();
-            entity.setIuser(FACADE.getLoginUserPk());
-            entity.setIcategory(1L);
-            entity.setTitle("");
-            entity.setCtnt("");
-            mapper.insBoard(entity);
-            Long iboard = entity.getIboard();
-            return iboard;
-
+    public Long postboard() throws NullPointerException {
+            try {
+                BoardEntity entity = new BoardEntity();
+                if (FACADE.isLogin()) {
+                }
+                entity.setIuser(FACADE.getLoginUserPk());
+                entity.setIcategory(1L);
+                entity.setTitle("");
+                entity.setCtnt("");
+                mapper.insBoard(entity);
+                Long iboard = entity.getIboard();
+                return iboard;
+            }catch (NullPointerException e){
+                throw new NullPointerException("로그인 안됨");
+            }
     }
 
     @Transactional(rollbackFor = Exception.class)
